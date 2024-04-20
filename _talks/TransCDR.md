@@ -1,7 +1,7 @@
 ---
 title: "TransCDR: User Group Enhanced Cross-Domain Recommendation via Transformers"
 type: "course paper"
-permalink: /file/TransCDR_张诚.pdf
+permalink: /files/TransCDR_张诚.pdf
 venue: "Recommendation Systems"
 date: 2023-06-26
 ---
