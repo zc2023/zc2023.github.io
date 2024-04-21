@@ -1,6 +1,5 @@
 ---
 permalink: /
-title: ""
 excerpt: "About me"
 author_profile: true
 redirect_from: 
@@ -9,7 +8,7 @@ redirect_from:
 ---
 
 About me  
-------
+======
 
 I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en).  
 
@@ -49,7 +48,7 @@ Research Interests
 
 Internship
 ------
-I'm looking for internship in Microsoft Research Aisa (MSRA).
+I'm looking for internship at Microsoft Research Aisa (MSRA).
 
 <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=tt&d=4yP6BEk3dPm3WM4dSyHf6UzOTTNUv23thzo95DQTAsw&co=a8e6ff&cmo=3acc3a&cmn=ff5353&ct=000000'></script>
 
