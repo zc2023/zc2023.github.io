@@ -1,5 +1,6 @@
 ---
 permalink: /
+title: "About me"
 excerpt: "About me"
 author_profile: true
 redirect_from: 
@@ -7,8 +8,6 @@ redirect_from:
   - /about.html
 ---
 
-About me  
-======
 
 I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en).  
 
