@@ -2,10 +2,10 @@
 main:
 
 
-  - title: "Personal Papers"
+  - title: "Personal Posts"
     url: /talks/  
 
-  - title: "Google Scholar profile"
+  - title: "Google Scholar Profile"
     url: https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en
 
   # - title: "Teaching"
