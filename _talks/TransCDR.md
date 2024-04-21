@@ -6,4 +6,4 @@ venue: "Recommendation Systems"
 date: 2023-06-26
 ---
 
-**Abstarct:** a course paper of Recommendation Systems.
+**Abstarct:** a course paper of Recommendation Systems. See paper [here](/files/TransCDR.pdf).
