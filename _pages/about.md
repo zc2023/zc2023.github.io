@@ -51,5 +51,5 @@ Internship
 ------
 I'm looking for internship in Microsoft Research Aisa (MSRA).
 
-<script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=4yP6BEk3dPm3WM4dSyHf6UzOTTNUv23thzo95DQTAsw"></script>
+<script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=tt&d=4yP6BEk3dPm3WM4dSyHf6UzOTTNUv23thzo95DQTAsw&co=a8e6ff&cmo=3acc3a&cmn=ff5353&ct=000000'></script>
 
