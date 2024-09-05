@@ -14,6 +14,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 Research Interests
 ------
+* Embodied AI
 * 3D Vision: Point cloud analysis  
 * Autonomous Driving  
 * Head Pose Estimation
@@ -23,7 +24,7 @@ Research Interests
 🔥 News
 ------
 
-* [20/4/2024] Open personal website.
+* [2024/4/20] Open personal website.
 
 📝 Publicaitons
 ------
