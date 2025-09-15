@@ -26,7 +26,7 @@ Research Interests
 
 📝 Publicaitons
 ------
-* [Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression](https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4), Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, **Cheng Zhang**, Jingdong Wang, Xiang Bai, *European Conference on Computer Vision*, 2024
+* [Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression](https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4), Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, **Cheng Zhang**, Jingdong Wang, Xiang Bai, *European Conference on Computer Vision (ECCV)*, 2024
 * [MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers](https://ieeexplore.ieee.org/document/10636220), Hai Liu, 
 Qiyun Zhou, **Cheng Zhang**, Junyan Zhu, Tingting Liu; Zhaoli Zhang, You-Fu Li, *IEEE Transactions on Industrial Informatics (TII)*, 2024
 * [Orientation Cues-aware Facial Relationship Representation for Head Pose Estimation via Transformer](https://ieeexplore.ieee.org/document/10318055), Hai Liu; **Cheng Zhang**; Yongjian Deng; Tingting Liu; Zhaoli Zhang; You-Fu Li, *IEEE Transactions on Image Processing (TIP)*, 2023
