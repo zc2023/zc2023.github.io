@@ -64,7 +64,9 @@ Research Interests
     <img class="publication-thumb" src="/images/publications/tip23.png" alt="toc3d" />
   </div>
   <div>
-    <h4 style="margin-top: 0;">Orientation Cues-aware Facial Relationship Representation for Head Pose Estimation via Transformer</h4>      <a href="https://ieeexplore.ieee.org/document/10318055" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+    <h4 style="margin-top: 0;">Orientation Cues-aware Facial Relationship Representation for Head Pose Estimation via Transformer
+    <a href="https://ieeexplore.ieee.org/document/10318055" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+    </h4>      
     <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE Transactions on Image Processing (TIP), 2023</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, <strong style="color: #000;">Cheng Zhang<sup>†</sup></strong>, Yongjian Deng, Tingting Liu, Zhaoli Zhang, You-Fu Li<sup>†</sup></p>
     <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
@@ -142,7 +144,7 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 .research-grid, .honors-grid { display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: start; margin-bottom: 12px; }
 .research-grid .meta, .honors-grid .meta { text-align: right; white-space: nowrap; font-size: 0.9em; color: #666; }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .publication-grid { grid-template-columns: 1fr !important; }
   .publication-img { width: 100%; height: 200px; }
   .page__content { padding: 0 1rem; max-width: 100%; }
@@ -218,15 +220,6 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 })();
 </script>
 
-
-
-* [Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression](https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4), Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, **Cheng Zhang**, Jingdong Wang, Xiang Bai, *European Conference on Computer Vision (ECCV)*, 2024
-* [MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers](https://ieeexplore.ieee.org/document/10636220), Hai Liu, 
-Qiyun Zhou, **Cheng Zhang**, Junyan Zhu, Tingting Liu; Zhaoli Zhang, You-Fu Li, *IEEE Transactions on Industrial Informatics (TII)*, 2024
-* [Orientation Cues-aware Facial Relationship Representation for Head Pose Estimation via Transformer](https://ieeexplore.ieee.org/document/10318055), Hai Liu; **Cheng Zhang**; Yongjian Deng; Tingting Liu; Zhaoli Zhang; You-Fu Li, *IEEE Transactions on Image Processing (TIP)*, 2023
-* [TokenHPE: Learning Orientation Tokens for Efficient Head Pose Estimation via Transformers](https://openaccess.thecvf.com/content/CVPR2023/html/Zhang_TokenHPE_Learning_Orientation_Tokens_for_Efficient_Head_Pose_Estimation_via_CVPR_2023_paper.html), **Cheng Zhang**, Hai Liu, Yongjian Deng, Bochen Xie, Youfu Li, *Conference on Computer Vision and Pattern Recognition (CVPR)*, 2023
-* [TransIFC: Invariant Cues-aware Feature Concentration Learning for Efficient Fine-grained Bird Image Classification](https://ieeexplore.ieee.org/abstract/document/10023961), Hai Liu; **Cheng Zhang**; Yongjian Deng; Bochen Xie; Tingting Liu; Zhaoli Zhang; You-Fu Li, *IEEE Transactions on Multimedia (TMM)*, 2023
-* [Affinity Relation-aware Fine-grained Bird Image Recognition for Robot Vision Tracking via Transformers](https://ieeexplore.ieee.org/abstract/document/10011861), Hai Liu; **Cheng Zhang**; Bochen Xie; Tingting Liu; Qingsong Xu; You-Fu Li, *IEEE International Conference on Robotics and Biomimetics (ROBIO)*, 2022
 
 🏅 Honors and Awards
 ------
