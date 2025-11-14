@@ -1,6 +1,7 @@
 # main links links
 main:
-
+  - title: "Gallery"
+    url: /portfolio/
 
   - title: "Personal Posts"
     url: /talks/  
@@ -10,10 +11,7 @@ main:
 
   # - title: "Teaching"
   #   url: /teaching/    
-    
-  - title: "Gallery"
-    url: /portfolio/
-        
+         
   # - title: "Blog Posts"
   #   url: /year-archive/
     
