@@ -16,12 +16,12 @@ Research Interests
 ------
 * 3D Multimodal Large Language Models (3D MLLMs)
 * Embodied AI
-* 3D Vision: Point cloud analysis  
+* 3D Vision: Point cloud analysis
 
 
 🔥 News
 ------
-
+* [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation!.
 * [2024/4/20] Open personal website.
 
 📝 Publicaitons
