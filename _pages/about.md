@@ -60,7 +60,7 @@ I am now available on the job market.
 ---
 
 <p align="center">
-  <img src="https://count.getloli.com/@zc2023.github.io?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=0.6&pixelated=1&darkmode=auto">
+  <img src="https://count.getloli.com/@zc2023.github.io?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=0.85&pixelated=1&darkmode=auto">
 </p>
 
 
