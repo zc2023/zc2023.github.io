@@ -26,6 +26,129 @@ Research Interests
 
 📝 Publicaitons
 ------
+<span style="font-size: 0.85em; color: #666;">* Equal Contribution, † Corresponding Author</span>
+
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+  <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
+  </div>
+  <div>
+    <h4 style="margin-top: 0;">Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression</h4>
+    <p style="color: #000; font-style: italic; margin: 5px 0;"> ECCV 2024</p>
+    <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, <strong style="color: #000;">Cheng Zhang</strong>, Jingdong Wang, Xiang Bai</p>
+    <p style="margin: 10px 0;">An efficient sparse query-based multi-view 3D detector for autonomous driving.</p>
+    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
+      <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
+      <a href="https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+      <a href="https://github.com/DYZhang09/ToC3D" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </div>
+  </div>
+</div>
+
+<style>
+.gh-stars{font-weight:600; margin-left:6px; color:#333; font-size:0.95em}
+.github-link i{margin-right:4px}
+
+/* Publication layout tweaks */
+.publication-grid { grid-auto-rows: auto; }
+.publication-img img { display:block; }
+
+/* Image container: use cover so images are visually uniform */
+.publication-img { width:320px; height:220px; overflow:hidden; border-radius:8px; position:relative; display:flex; align-items:center; justify-content:center; }
+.publication-img img.publication-thumb { width:100%; height:100%; object-fit:cover; object-position:center; }
+
+/* Compact icon links (small, no heavy background) */
+a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
+
+/* Widen the content column for this page and normalize typography to match resume style */
+.page__content { max-width: 980px; margin-left: auto; margin-right: auto; }
+.page__content h2 { font-size: 1.4rem !important; margin-top: 1.1em; }
+.page__content h3 { font-size: 1.15rem !important; margin-top: 1em; }
+.page__content h4 { font-size: 1.05rem !important; margin-top: 0.6em; }
+.page__content p, .page__content li, .page__content dd { font-size: 0.95rem !important; color: #333; line-height: 1.5; }
+
+/* Research/Honors grid helper classes (used below) */
+.research-grid, .honors-grid { display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: start; margin-bottom: 12px; }
+.research-grid .meta, .honors-grid .meta { text-align: right; white-space: nowrap; font-size: 0.9em; color: #666; }
+
+@media (max-width: 900px) {
+  .publication-grid { grid-template-columns: 1fr !important; }
+  .publication-img { width: 100%; height: 200px; }
+  .page__content { padding: 0 1rem; max-width: 100%; }
+}
+</style>
+
+<script>
+/*
+  Robust GitHub star fetcher with localStorage caching.
+  - Caches results 6 hours to avoid hitting unauthenticated rate limits
+  - Fills all elements with class 'gh-stars' (reads data-repo attribute)
+  - Falls back to a stale cached value or '–' on errors
+*/
+(async function(){
+  function cacheGet(key, maxAgeMs){
+    try{
+      const raw = localStorage.getItem(key);
+      if(!raw) return null;
+      const obj = JSON.parse(raw);
+      if(Date.now() - obj.t > maxAgeMs) { localStorage.removeItem(key); return null; }
+      return obj.v;
+    }catch(e){ return null; }
+  }
+  function cacheSet(key, value){
+    try{ localStorage.setItem(key, JSON.stringify({t: Date.now(), v: value})); }catch(e){}
+  }
+
+  async function fetchStars(repo){
+    const cacheKey = 'ghstars:' + repo;
+    const cached = cacheGet(cacheKey, 1000*60*60*6); // 6 hours
+    if(cached !== null) return cached;
+    try{
+      const res = await fetch('https://api.github.com/repos/' + repo, {headers:{'Accept':'application/vnd.github.v3+json'}});
+      if(!res.ok) {
+        const stale = cacheGet(cacheKey, Number.MAX_SAFE_INTEGER);
+        return stale !== null ? stale : '–';
+      }
+      const j = await res.json();
+      const count = (j.stargazers_count || 0).toLocaleString();
+      cacheSet(cacheKey, count);
+      return count;
+    }catch(e){
+      const stale = cacheGet(cacheKey, Number.MAX_SAFE_INTEGER);
+      return stale !== null ? stale : '–';
+    }
+  }
+
+  function render(el, text){ if(!el) return; el.textContent = '★ ' + text; }
+
+  function run(){
+    const els = document.querySelectorAll('.gh-stars');
+    if(!els || els.length === 0) return;
+    const repoMap = {};
+    els.forEach(el => {
+      const repo = el.dataset.repo;
+      if(repo) {
+        if(!repoMap[repo]) repoMap[repo] = [];
+        repoMap[repo].push(el);
+      }
+    });
+    Object.keys(repoMap).forEach(async repo => {
+      repoMap[repo].forEach(el => { el.textContent = '★ …'; });
+      const count = await fetchStars(repo);
+      repoMap[repo].forEach(el => render(el, count));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+})();
+</script>
+
+
+
 * [Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression](https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4), Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, **Cheng Zhang**, Jingdong Wang, Xiang Bai, *European Conference on Computer Vision (ECCV)*, 2024
 * [MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers](https://ieeexplore.ieee.org/document/10636220), Hai Liu, 
 Qiyun Zhou, **Cheng Zhang**, Junyan Zhu, Tingting Liu; Zhaoli Zhang, You-Fu Li, *IEEE Transactions on Industrial Informatics (TII)*, 2024
