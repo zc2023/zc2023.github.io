@@ -50,12 +50,11 @@ Research Interests
     <img class="publication-thumb" src="/images/publications/MMATrans.png" alt="toc3d" />
   </div>
   <div>
-    <h4 style="margin-top: 0;">MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers</h4>
+    <h4 style="margin-top: 0;">MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers
+    <a href="https://ieeexplore.ieee.org/document/10636220" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+    </h4>
     <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE Transactions on Industrial Informatics (TII), 2024</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, Qiyun Zhou, <strong style="color: #000;">Cheng Zhang</strong>, Junyan Zhu, Tingting Liu, Zhaoli Zhang, You-Fu Li</p>
-    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
-      <a href="https://ieeexplore.ieee.org/document/10636220" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-    </div>
   </div>
 </div>
 
@@ -69,9 +68,6 @@ Research Interests
     </h4>      
     <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE Transactions on Image Processing (TIP), 2023</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, <strong style="color: #000;">Cheng Zhang<sup>†</sup></strong>, Yongjian Deng, Tingting Liu, Zhaoli Zhang, You-Fu Li<sup>†</sup></p>
-    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
-
-    </div>
   </div>
 </div>
 
@@ -81,12 +77,11 @@ Research Interests
     <img class="publication-thumb" src="/images/publications/tokenhpe.png" alt="toc3d" />
   </div>
   <div>
-    <h4 style="margin-top: 0;">TokenHPE: Learning Orientation Tokens for Efficient Head Pose Estimation via Transformers</h4>
+    <h4 style="margin-top: 0;">TokenHPE: Learning Orientation Tokens for Efficient Head Pose Estimation via Transformers
+          <a href="https://openaccess.thecvf.com/content/CVPR2023/html/Zhang_TokenHPE_Learning_Orientation_Tokens_for_Efficient_Head_Pose_Estimation_via_CVPR_2023_paper.html" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+    </h4>
     <p style="color: #000; font-style: italic; margin: 5px 0;">CVPR 2023</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;"><strong style="color: #000;">Cheng Zhang</strong>, Hai Liu, Yongjian Deng, Bochen Xie, Youfu Li</p>
-    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
-      <a href="https://openaccess.thecvf.com/content/CVPR2023/html/Zhang_TokenHPE_Learning_Orientation_Tokens_for_Efficient_Head_Pose_Estimation_via_CVPR_2023_paper.html" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-    </div>
   </div>
 </div>
 
@@ -95,12 +90,11 @@ Research Interests
     <img class="publication-thumb" src="/images/publications/transifc.png" alt="toc3d" />
   </div>
   <div>
-    <h4 style="margin-top: 0;">TransIFC: Invariant Cues-aware Feature Concentration Learning for Efficient Fine-grained Bird Image Classification</h4>
+    <h4 style="margin-top: 0;">TransIFC: Invariant Cues-aware Feature Concentration Learning for Efficient Fine-grained Bird Image Classification
+    <a href="https://ieeexplore.ieee.org/abstract/document/10023961" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+    </h4>
     <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE Transactions on Multimedia (TMM), 2023</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, <strong style="color: #000;">Cheng Zhang<sup>†</sup></strong>, Yongjian Deng, Bochen Xie, Tingting Liu, Zhaoli Zhang, You-Fu Li<sup>†</sup></p>
-    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
-      <a href="https://ieeexplore.ieee.org/abstract/document/10023961" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-    </div>
   </div>
 </div>
 
@@ -109,12 +103,11 @@ Research Interests
     <img class="publication-thumb" src="/images/publications/robio.png" alt="toc3d" />
   </div>
   <div>
-    <h4 style="margin-top: 0;">Affinity Relation-aware Fine-grained Bird Image Recognition for Robot Vision Tracking via Transformers</h4>
+    <h4 style="margin-top: 0;">Affinity Relation-aware Fine-grained Bird Image Recognition for Robot Vision Tracking via Transformers
+    <a href="https://ieeexplore.ieee.org/abstract/document/10011861" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+    </h4>
     <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE International Conference on Robotics and Biomimetics (ROBIO), 2022</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, <strong style="color: #000;">Cheng Zhang<sup>†</sup></strong>, Bochen Xie, Tingting Liu, Qingsong Xu, You-Fu Li<sup>†</sup></p>
-    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
-      <a href="https://ieeexplore.ieee.org/abstract/document/10011861" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-    </div>
   </div>
 </div>
 
@@ -144,9 +137,9 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 .research-grid, .honors-grid { display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: start; margin-bottom: 12px; }
 .research-grid .meta, .honors-grid .meta { text-align: right; white-space: nowrap; font-size: 0.9em; color: #666; }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   .publication-grid { grid-template-columns: 1fr !important; }
-  .publication-img { width: 100%; height: 200px; }
+  .publication-img { width: 100%; height: 180px; }
   .page__content { padding: 0 1rem; max-width: 100%; }
 }
 </style>
@@ -221,9 +214,45 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 </script>
 
 
+
+Research Experience
+------
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 30px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">VLRLab, Huazhong University of Science and Technology, Wuhan</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Member</p>
+    <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em; color: #555;">
+      <li style="margin: 4px 0;"><strong>Advisor:</strong> <a href="https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en" style="color: #1976d2; text-decoration: none;">Xiang Bai</a></li>
+      <li style="margin: 4px 0;"><strong>Research Topics:</strong> 3D Multimodal Large Language Models, Embodied AI</li>
+    </ul>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Sep 2024 - Current</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 18px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">National Engineering Research Center for E-Learning, Central China Normal University, Wuhan</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Research Assistant</p>
+    <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em; color: #555;">
+      <li style="margin: 4px 0;"><strong>Advisor:</strong> <a href="https://scholar.google.com/citations?user=Tjw7zHEAAAAJ&hl=en" style="color: #1976d2; text-decoration: none;">Hai Liu</a></li>
+      <li style="margin: 4px 0;"><strong>Research Topics:</strong> Head Pose Estimation, Fine-grained Image Classification, Facial Expression Recognition</li>
+    </ul>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Sep 2022 - Jun 2024</div>
+</div>
+
 🏅 Honors and Awards
 ------
-2023.10, National Scholarship (Undergraduate)
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">National Scholarship (Undergraduate)</p>
+    <p style="margin: 0; color: #666; font-size: 0.9em;">Central China Normal University</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Oct 2023</div>
+</div>
+
 
 📖 Educations
 ------
