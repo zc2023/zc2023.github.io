@@ -38,9 +38,91 @@ Research Interests
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, <strong style="color: #000;">Cheng Zhang</strong>, Jingdong Wang, Xiang Bai</p>
     <p style="margin: 10px 0;">An efficient sparse query-based multi-view 3D detector for autonomous driving.</p>
     <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
-      <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
       <a href="https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
       <a href="https://github.com/DYZhang09/ToC3D" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </div>
+  </div>
+</div>
+
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+  <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
+  </div>
+  <div>
+    <h4 style="margin-top: 0;">MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers</h4>
+    <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE Transactions on Industrial Informatics (TII), 2024</p>
+    <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, Qiyun Zhou, <strong style="color: #000;">Cheng Zhang<sup>†</sup></strong>, Junyan Zhu, Tingting Liu, Zhaoli Zhang, You-Fu Li<sup>†</sup></p>
+    <p style="margin: 10px 0;">An orientation cues-aware facial relationship representation learning method for head pose estimation.</p>
+    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
+      <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
+      <a href="https://ieeexplore.ieee.org/document/10636220" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+      <a href="#" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </div>
+  </div>
+</div>
+
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+  <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
+  </div>
+  <div>
+    <h4 style="margin-top: 0;">Orientation Cues-aware Facial Relationship Representation for Head Pose Estimation via Transformer</h4>
+    <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE Transactions on Image Processing (TIP), 2023</p>
+    <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, <strong style="color: #000;">Cheng Zhang</strong>, Yongjian Deng, Tingting Liu, Zhaoli Zhang, You-Fu Li</p>
+    <p style="margin: 10px 0;">An efficient sparse query-based multi-view 3D detector for autonomous driving.</p>
+    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
+      <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
+      <a href="https://ieeexplore.ieee.org/document/10318055" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+      <a href="#" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </div>
+  </div>
+</div>
+
+
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+  <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
+  </div>
+  <div>
+    <h4 style="margin-top: 0;">TokenHPE: Learning Orientation Tokens for Efficient Head Pose Estimation via Transformers</h4>
+    <p style="color: #000; font-style: italic; margin: 5px 0;">CVPR 2023</p>
+    <p style="color: #666; margin: 5px 0; font-size: 0.9em;"><strong style="color: #000;">Cheng Zhang</strong>, Hai Liu, Yongjian Deng, Bochen Xie, Youfu Li</p>
+    <p style="margin: 10px 0;">An efficient sparse query-based multi-view 3D detector for autonomous driving.</p>
+    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
+      <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
+      <a href="https://openaccess.thecvf.com/content/CVPR2023/html/Zhang_TokenHPE_Learning_Orientation_Tokens_for_Efficient_Head_Pose_Estimation_via_CVPR_2023_paper.html" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+      <a href="#" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </div>
+  </div>
+</div>
+
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+  <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
+  </div>
+  <div>
+    <h4 style="margin-top: 0;">TransIFC: Invariant Cues-aware Feature Concentration Learning for Efficient Fine-grained Bird Image Classification</h4>
+    <p style="color: #000; font-style: italic; margin: 5px 0;">CVPR 2023</p>
+    <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu; <strong style="color: #000;">Cheng Zhang<sup>†</sup></strong>; Yongjian Deng; Bochen Xie; Tingting Liu; Zhaoli Zhang; You-Fu Li<sup>†</sup></p>
+    <p style="margin: 10px 0;">An efficient sparse query-based multi-view 3D detector for autonomous driving.</p>
+    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
+      <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
+      <a href="https://ieeexplore.ieee.org/abstract/document/10023961" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+      <a href="#" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </div>
+  </div>
+</div>
+
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+  <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
+  </div>
+  <div>
+    <h4 style="margin-top: 0;">Affinity Relation-aware Fine-grained Bird Image Recognition for Robot Vision Tracking via Transformers</h4>
+    <p style="color: #000; font-style: italic; margin: 5px 0;">IEEE International Conference on Robotics and Biomimetics (ROBIO), 2022</p>
+    <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, <strong style="color: #000;">Cheng Zhang</strong>, Bochen Xie, Tingting Liu, Qingsong Xu, You-Fu Li</p>
+    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
+      <a href="https://ieeexplore.ieee.org/abstract/document/10011861" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
     </div>
   </div>
 </div>
