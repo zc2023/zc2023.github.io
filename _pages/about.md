@@ -120,7 +120,7 @@ Research Interests
 .publication-img img { display:block; }
 
 /* Image container: use cover so images are visually uniform */
-.publication-img { width:320px; height:220px; overflow:hidden; border-radius:8px; position:relative; display:flex; align-items:center; justify-content:center; }
+.publication-img { width:300px; height:200px; overflow:hidden; border-radius:8px; position:relative; display:flex; align-items:center; justify-content:center; }
 .publication-img img.publication-thumb { width:100%; height:100%; object-fit:cover; object-position:center; }
 
 /* Compact icon links (small, no heavy background) */
@@ -137,9 +137,9 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 .research-grid, .honors-grid { display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: start; margin-bottom: 12px; }
 .research-grid .meta, .honors-grid .meta { text-align: right; white-space: nowrap; font-size: 0.9em; color: #666; }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
   .publication-grid { grid-template-columns: 1fr !important; }
-  .publication-img { width: 100%; height: 180px; }
+  .publication-img { width: 100%; height: 200px; }
   .page__content { padding: 0 1rem; max-width: 100%; }
 }
 </style>
