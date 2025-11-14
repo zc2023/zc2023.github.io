@@ -1,7 +1,7 @@
 # main links links
 main:
   - title: "Gallery"
-    url: /gallery.html
+    url: /portfolio/
 
   - title: "Personal Posts"
     url: /talks/  
