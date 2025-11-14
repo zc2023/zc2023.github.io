@@ -57,3 +57,6 @@ I am now available on the job market.
 
 <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=tt&d=4yP6BEk3dPm3WM4dSyHf6UzOTTNUv23thzo95DQTAsw&co=a8e6ff&cmo=3acc3a&cmn=ff5353&ct=000000'></script>
 
+---
+
+![](https://count.getloli.com/get/@zc2023.github.io?theme=gelbooru)
