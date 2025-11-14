@@ -28,24 +28,23 @@ Research Interests
 ------
 <span style="font-size: 0.85em; color: #666;">* Equal Contribution, † Corresponding Author</span>
 
-<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
   </div>
   <div>
-    <h4 style="margin-top: 0;">Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression</h4>
+    <h4 style="margin-top: 0;">Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression
+          <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
+      <a href="https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+      <a href="https://github.com/DYZhang09/ToC3D" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </h4>
     <p style="color: #000; font-style: italic; margin: 5px 0;"> ECCV 2024</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, <strong style="color: #000;">Cheng Zhang</strong>, Jingdong Wang, Xiang Bai</p>
     <p style="margin: 10px 0;">An efficient sparse query-based multi-view 3D detector for autonomous driving.</p>
-    <div style="display:flex; gap:12px; align-items:center; margin-top:10px;">
-      <a href="#" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
-      <a href="https://link.springer.com/chapter/10.1007/978-3-031-72970-6_4" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-      <a href="https://github.com/DYZhang09/ToC3D" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
-    </div>
   </div>
 </div>
 
-<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <img class="publication-thumb" src="/images/publications/MMATrans.png" alt="toc3d" />
   </div>
@@ -58,7 +57,7 @@ Research Interests
   </div>
 </div>
 
-<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <img class="publication-thumb" src="/images/publications/tip23.png" alt="toc3d" />
   </div>
@@ -72,7 +71,7 @@ Research Interests
 </div>
 
 
-<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <img class="publication-thumb" src="/images/publications/tokenhpe.png" alt="toc3d" />
   </div>
@@ -85,7 +84,7 @@ Research Interests
   </div>
 </div>
 
-<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <img class="publication-thumb" src="/images/publications/transifc.png" alt="toc3d" />
   </div>
@@ -98,7 +97,7 @@ Research Interests
   </div>
 </div>
 
-<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,320px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <img class="publication-thumb" src="/images/publications/robio.png" alt="toc3d" />
   </div>
@@ -120,7 +119,7 @@ Research Interests
 .publication-img img { display:block; }
 
 /* Image container: use cover so images are visually uniform */
-.publication-img { width:300px; height:200px; overflow:hidden; border-radius:8px; position:relative; display:flex; align-items:center; justify-content:center; }
+.publication-img { width:290px; height:180px; overflow:hidden; border-radius:8px; position:relative; display:flex; align-items:center; justify-content:center; }
 .publication-img img.publication-thumb { width:100%; height:100%; object-fit:cover; object-position:center; }
 
 /* Compact icon links (small, no heavy background) */
