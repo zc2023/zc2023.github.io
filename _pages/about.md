@@ -58,5 +58,5 @@ I am now available on the job market.
 <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=tt&d=4yP6BEk3dPm3WM4dSyHf6UzOTTNUv23thzo95DQTAsw&co=a8e6ff&cmo=3acc3a&cmn=ff5353&ct=000000'></script>
 
 ---
-![](https://count.getloli.com/@Younai2021?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=1&pixelated=1&darkmode=auto)
+![](https://count.getloli.com/@zc2023.github.io?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=1&pixelated=1&darkmode=auto)
 
