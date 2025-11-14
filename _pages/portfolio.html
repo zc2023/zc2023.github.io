@@ -1,14 +1,25 @@
 ---
 layout: archive
-title: "Portfolio"
+title: "Gallery"
 permalink: /portfolio/
 author_profile: true
 ---
 
-{% include base_path %}
+
+<div style="text-align:center; margin-top:20px;">
+  <img 
+    src="/images/cat720.jpeg" 
+    alt="my cat"
+    style="
+      width:300px; 
+      border-radius:12px; 
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    "
+    onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)'"
+    onmouseout="this.style.transform='none'; this.style.boxShadow='none'"
+  >
+  <div style="margin-top:10px; font-size:16px;">My cat Pudding.</div>
+</div>
 
 
-{% for post in site.portfolio %}
-  {% include archive-single.html %}
-{% endfor %}
 
