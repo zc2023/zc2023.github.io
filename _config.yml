@@ -82,12 +82,12 @@ analytics:
 author:
   name             : "Cheng Zhang"
   avatar           : "LOGOpro.png"
-  bio              : "I am interested in computer vision and 3D version."
+  bio              : "I'm a second year graduate student at HUST. My current research interests are mainly in 3D vision and multimodal large language models (MLLMs)."
   location         : "Wuhan, China"
   employer         :
  #  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   googlescholar    : "https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en"
-  email            : "zc2021@mails.ccnu.edu.cn"
+  email            : "czhang2024@hust.edu.cn"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
