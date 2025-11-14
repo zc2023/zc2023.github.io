@@ -1,5 +1,5 @@
 ---
-title: "My cat "Pudding" 🍮"
+title: "My cat: Pudding 🍮"
 excerpt: "<br/><img src='/images/cat720.jpeg'>"
 collection: portfolio
 ---
