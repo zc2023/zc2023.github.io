@@ -21,7 +21,7 @@ Research Interests
 
 🔥 News
 ------
-* [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation!.
+* [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation!
 * [2024/4/20] Open personal website.
 
 📝 Publicaitons
