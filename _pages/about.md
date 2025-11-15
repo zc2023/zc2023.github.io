@@ -9,14 +9,13 @@ redirect_from:
 ---
 
 
-I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en).  
-
+I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en). My current research interests are mainly in Multi-modal Large Language Models (MLLMs), embodied AI, and 3D vision.
 
 Research Interests
 ------
 * 3D Multimodal Large Language Models (3D MLLMs)
 * Embodied AI
-* 3D Vision: Point cloud analysis
+* 3D Vision
 
 
 🔥 News
