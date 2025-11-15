@@ -246,7 +246,7 @@ Research Experience
 
 <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
   <div>
-    <p style="margin: 0 0 2px 0; font-weight: bold;">National Scholarship (Undergraduate)</p>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">National Scholarship (Top 0.2%, Undergraduate)</p>
     <p style="margin: 0; color: #666; font-size: 0.9em;">Central China Normal University</p>
   </div>
   <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Oct 2023</div>
