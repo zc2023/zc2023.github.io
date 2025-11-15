@@ -263,7 +263,7 @@ Research Experience
 
 Academic Service
 ------
-Reviewer: NeurIPS 2024, AISTATS, ICML 2025, AAAI 2026, ICLR 2026
+Reviewer: NeurIPS 2024, AISTATS 2025, ICML 2025, AAAI 2026, ICLR 2026
 
 
 
