@@ -79,12 +79,13 @@ analytics:
 
 
 # Site Author
+# 边栏信息修改：
 author:
-  name             : "Cheng Zhang"
+  name             : "Cheng Zhang | 张 诚"
   avatar           : "LOGOpro.png"
   bio              : "I'm a second year graduate student at HUST. My current research interests are mainly in 3D vision and multimodal large language models (MLLMs)."
   location         : "Wuhan, China"
-  employer         :
+  employer         : "HUST"
  #  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   googlescholar    : "https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en"
   email            : "czhang2024@hust.edu.cn"
@@ -103,7 +104,7 @@ author:
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
   linkedin         :
-  orcid            : "https://orcid.org/my-orcid?orcid=0000-0001-6831-5103"
+  orcid            : "https://orcid.org/0000-0001-6831-5103"
   pinterest        :
   soundcloud       :
   stackoverflow    : # http://stackoverflow.com/users/123456/username
