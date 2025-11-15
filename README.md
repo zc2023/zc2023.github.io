@@ -1,9 +1,11 @@
-# Tips:
-Change navigation bar at: _data/navigation.yml
-Change homepage information at: _pages/about.md, other information upload is also in this directory.
-Change leftside bar information at: _config.yml
+# Tips
+Change navigation bar at: `_data/navigation.yml`
 
+Change homepage information at: `_pages/about.md`, other information upload is also in this directory.
 
+Change leftside bar information at: `_config.yml`
+
+# Acknowledgements
 
 A Github Pages template for academic websites. This was forked (then detached) by [Stuart Geiger](https://github.com/staeiou) from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/), which is © 2016 Michael Rose and released under the MIT License. See LICENSE.md.
 
