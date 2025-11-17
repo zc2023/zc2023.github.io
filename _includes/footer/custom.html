@@ -4,79 +4,123 @@
 <div class="back-to-top"></div>
 
 <style>
-  .back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: -120px; /* 初始在右侧隐藏 */
-    width: 108px;
-    height: 150px;
-    background: url("/images/back-to-top.png?v=1") no-repeat 0 0;
-    background-size: 108px 450px;
-    cursor: pointer;
-    opacity: 1;
-    transition: right 0.6s ease, opacity 0.3s ease;
-    z-index: 999;
-  }
+.back-to-top {
+  position: fixed;
+  z-index: 2;
+  right: -108px; /* 初始隐藏在屏幕右侧 */
+  bottom: 0;
+  width: 108px;
+  height: 150px;
+  background: url("/images/back-to-top.png?v=1") no-repeat 0 0;
+  background-size: 108px 450px;
+  opacity: 0.6;
+  transition: opacity 0.3s, right 0.8s;
+  cursor: pointer;
+}
 
-  .back-to-top:hover {
-    opacity: 1;
-    background-position: 0 -300px; /* 变换图像 */
-  }
+/* hover 时显示第二帧 */
+.back-to-top:hover {
+  background-position: 0 -150px;
+  opacity: 1;
+}
 
-  .back-to-top.show {
-    right: 30px; /* 滑入 */
-  }
+/* after 层显示第三帧特效 */
+.back-to-top::after {
+  content: "";
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  width: 108px;
+  height: 150px;
+  background: url("/images/back-to-top.png?v=1") no-repeat 0 0;
+  background-size: 108px 450px;
+  background-position: 0 -300px;
+  transition: opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
 
-  /* 点击退出动画 */
-  @keyframes leaveRight {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(150px);
-    }
-  }
+/* 滑入显示 */
+.back-to-top.load {
+  right: 30;
+}
 
-  .back-to-top.leave {
-    animation: leaveRight 0.4s forwards;
-  }
+/* 点击离场动画 */
+.back-to-top.ani-leave {
+  background-position: 0 -150px;
+  animation: ani-leave 390ms ease-in-out forwards;
+}
+
+/* 动画关键帧 */
+@keyframes ani-leave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(108px); }
+}
+
+/* 离场期间禁用点击 */
+.back-to-top.leaved,
+.back-to-top.ending {
+  pointer-events: none;
+}
+
+/* 完全离开时隐藏背景和动画 */
+.back-to-top.leaved {
+  background: none;
+  transition: none;
+}
+
+/* after 层显示光效 */
+.back-to-top.ending::after {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
 </style>
 
 <script>
-  (function () {
-    let lock = false;
-    const btn = document.querySelector('.back-to-top');
+document.addEventListener("DOMContentLoaded", function () {
+  let isShow = false;
+  let lock = false;
+  const btn = document.querySelector('.back-to-top');
 
-    function handleScroll() {
-      if (lock) return;
-
-      if (window.scrollY > 100) {
-        btn.classList.add('show');
-      } else {
-        btn.classList.remove('show');
+  // 监听滚动
+  function handleScroll() {
+    if (lock) return;
+    if (document.body.scrollTop >= 1000 || document.documentElement.scrollTop >= 1000) {
+      if (!isShow) {
+        btn.classList.add('load');
+        isShow = true;
       }
+    } else if (isShow) {
+      btn.classList.remove('load');
+      isShow = false;
     }
+  }
 
-    function handleClick() {
-      lock = true;
+  // 点击回顶
+  function handleClick() {
+    lock = true;
+    btn.classList.add('ani-leave');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      btn.classList.add('leave');
+    setTimeout(() => {
+      btn.classList.remove('ani-leave');
+      btn.classList.add('leaved');
+    }, 390);
 
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+    setTimeout(() => btn.classList.add('ending'), 120);
+    setTimeout(() => btn.classList.remove('load'), 1500);
 
-      setTimeout(() => {
-        btn.classList.remove('leave');
-        btn.classList.remove('show');
-        lock = false;
-      }, 600);
-    }
+    setTimeout(() => {
+      lock = false;
+      isShow = false;
+      btn.classList.remove('leaved', 'ending');
+    }, 2000);
+  }
 
-    window.addEventListener('scroll', handleScroll);
-    btn.addEventListener('click', handleClick);
-  })();
+  window.addEventListener('scroll', handleScroll);
+  btn.addEventListener('click', handleClick);
+});
 </script>
 
 <a href="/sitemap/">Sitemap</a>
