@@ -1,44 +1,45 @@
 <!-- start custom footer snippets -->
-<!-- Back to top button -->
-<!-- Back to top button -->
 
+
+
+<!-- Back to Top 按钮 -->
 <div class="back-to-top"></div>
 
 <style>
+/* 基本样式 */
 .back-to-top {
   position: fixed;
-  z-index: 2;
-  right: -108px; /* 初始隐藏在屏幕右侧 */
+  z-index: 999;
+  right: -108px; /* 初始隐藏在右侧 */
   bottom: 0;
   width: 108px;
   height: 150px;
-  background: url("{{ site.baseurl }}/images/back-to-top.png?v=1") no-repeat 0 0;
+  background: url("/images/back-to-top.png?v=1") no-repeat 0 0;
   background-size: 108px 450px;
   opacity: 0.6;
-  transition: opacity 0.3s, right 0.8s;
   cursor: pointer;
+  transition: opacity 0.3s, right 0.8s;
 }
 
-/* hover 时显示第二帧 */
+/* hover 悬停效果 */
 .back-to-top:hover {
   background-position: 0 -150px;
   opacity: 1;
 }
 
-/* after 层显示第三帧特效 */
+/* after 层效果 */
 .back-to-top::after {
   content: "";
   position: fixed;
-  z-index: 2;
+  z-index: 999;
   right: 0;
   bottom: 0;
   width: 108px;
   height: 150px;
-  background: url("{{ site.baseurl }}/images/back-to-top.png?v=1") no-repeat 0 0;
+  background: url("/images/back-to-top.png?v=1") no-repeat 0 -300px;
   background-size: 108px 450px;
-  background-position: 0 -300px;
-  transition: opacity 0.3s;
   opacity: 0;
+  transition: opacity 0.3s;
   pointer-events: none;
 }
 
@@ -65,7 +66,7 @@
   pointer-events: none;
 }
 
-/* 完全离开时隐藏背景和动画 */
+/* 完全离开时隐藏背景 */
 .back-to-top.leaved {
   background: none;
   transition: none;
@@ -84,10 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
   let lock = false;
   const btn = document.querySelector('.back-to-top');
 
-  // 监听滚动
+  // 滚动监听
   function handleScroll() {
     if (lock) return;
-    if (document.body.scrollTop >= 1000 || document.documentElement.scrollTop >= 1000) {
+
+    if (window.scrollY >= 1000) {
       if (!isShow) {
         btn.classList.add('load');
         isShow = true;
@@ -102,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleClick() {
     lock = true;
     btn.classList.add('ani-leave');
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     setTimeout(() => {
@@ -123,8 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
   btn.addEventListener('click', handleClick);
 });
 </script>
-
-
 
 
 <a href="/sitemap/">Sitemap</a>
