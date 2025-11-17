@@ -1,4 +1,46 @@
 <!-- start custom footer snippets -->
+<!-- Back to top button -->
 <div class="back-to-top"></div>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 108px;
+    height: 150px;
+    background: url("/images/back-to-top.png?v=1") no-repeat 0 0;
+    background-size: 108px 450px;
+    cursor: pointer;
+    display: none;
+    z-index: 999;
+  }
+</style>
+
+<script>
+  (function () {
+    let lock = false;
+    const btn = document.querySelector('.back-to-top');
+
+    const handleScroll = () => {
+      if (lock) return;
+      if (window.scrollY > 300) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    btn.addEventListener('click', () => {
+      lock = true;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => { lock = false }, 800);
+    });
+  })();
+</script>
+
+
 <a href="/sitemap/">Sitemap</a>
 <!-- end custom footer snippets -->
