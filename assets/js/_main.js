@@ -96,3 +96,23 @@ $(document).ready(function(){
   });
 
 });
+
+(() => {
+  let isShow = false, lock = false;
+  const btn = document.querySelector('.back-to-top');
+  const handleScroll = () => {
+    if (lock) return;
+    if (window.scrollY > 300) {
+      btn.style.display = 'block';
+    } else {
+      btn.style.display = 'none';
+    }
+  };
+  window.addEventListener('scroll', handleScroll);
+
+  btn.addEventListener('click', () => {
+    lock = true;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => { lock = false }, 800);
+  });
+})();
