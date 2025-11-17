@@ -13,18 +13,18 @@
     background: url("/images/back-to-top.png?v=1") no-repeat 0 0;
     background-size: 108px 450px;
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 1;
     transition: right 0.6s ease, opacity 0.3s ease;
     z-index: 999;
   }
 
   .back-to-top:hover {
     opacity: 1;
-    background-position: 0 -150px; /* 变换图像 */
+    background-position: 0 -150px;
   }
 
   .back-to-top.show {
-    right: 30px; /* 滑入 */
+    right: 300px; /* 滑入 */
   }
 
   /* 点击退出动画 */
@@ -45,14 +45,12 @@
 <script>
   (function () {
     let lock = false;
-    // let disabled = false; // 新增
     const btn = document.querySelector('.back-to-top');
 
     function handleScroll() {
-      // if (disabled) return;
       if (lock) return;
 
-      if (window.scrollY > 10) {
+      if (window.scrollY > 30) {
         btn.classList.add('show');
       } else {
         btn.classList.remove('show');
@@ -61,7 +59,7 @@
 
     function handleClick() {
       lock = true;
-      // disabled = true; // 禁用 scroll 判断
+
       btn.classList.add('leave');
 
       window.scrollTo({
@@ -73,7 +71,6 @@
         btn.classList.remove('leave');
         btn.classList.remove('show');
         lock = false;
-        // disabled = false; // 恢复 scroll 判断
       }, 600);
     }
 
