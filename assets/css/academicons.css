@@ -328,12 +328,12 @@
 .fa.fa-pull-left {
   margin-right: .3em;
 }
-.back-to-top {
+/* .back-to-top {
   position: fixed;
   height: 150px;
   background: url("./images/back-to-top.png?v=1") no-repeat 0 0;
   background-size: 108px 450px;
-}
+} */
 .fa.fa-pull-right {
   margin-left: .3em;
 }
