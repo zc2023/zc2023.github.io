@@ -13,7 +13,7 @@
     background: url("/images/back-to-top.png?v=1") no-repeat 0 0;
     background-size: 108px 450px;
     cursor: pointer;
-    opacity: 0.7;
+    opacity: 1;
     transition: right 0.6s ease, opacity 0.3s ease;
     z-index: 999;
   }
@@ -24,7 +24,7 @@
   }
 
   .back-to-top.show {
-    right: 30px; /* 滑入 */
+    right: 300px; /* 滑入 */
   }
 
   /* 点击退出动画 */
@@ -50,7 +50,7 @@
     function handleScroll() {
       if (lock) return;
 
-      if (window.scrollY > 300) {
+      if (window.scrollY > 30) {
         btn.classList.add('show');
       } else {
         btn.classList.remove('show');
