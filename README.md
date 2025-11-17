@@ -9,6 +9,8 @@ Change leftside bar icons and Email address at: `_includes/author-profile.html`
 
 Change leftside bar icon styles at `assets/css/academicons.css`
 
+Change website Tab icon at `_includes/head/custom.html`
+
 
 
 # Acknowledgements
