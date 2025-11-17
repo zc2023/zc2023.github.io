@@ -211,7 +211,7 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 })();
 </script>
 
-
+See full publication list on [Google Scholar ->](https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en)
 
 Research Experience
 ------
