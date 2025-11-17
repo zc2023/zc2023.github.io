@@ -145,12 +145,12 @@
 .ai-open-access-square:before {
   content: "\e839";
 }
-.ai-orcid:before {
-  content: "\e9d9";
-}
 /* .ai-orcid:before {
-  content: "\e840";
+  content: "\e9d9";
 } */
+.ai-orcid:before {
+  content: "\e840";
+}
 .ai-orcid-square:before {
   content: "\e841";
 }
