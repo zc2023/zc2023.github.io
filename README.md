@@ -7,6 +7,8 @@ Change leftside bar information at: `_config.yml`
 
 Change leftside bar icons and Email address at: `_includes/author-profile.html`
 
+Change leftside bar icon styles at `assets/css/academicons.css`
+
 
 
 # Acknowledgements
