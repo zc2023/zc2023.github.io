@@ -52,6 +52,9 @@
 .ai-arxiv-square:before {
   content: "\e809";
 }
+.ai-cv:before {
+  content: "\e9a5";
+}
 .ai-biorxiv:before {
   content: "\e810";
 }
@@ -143,8 +146,11 @@
   content: "\e839";
 }
 .ai-orcid:before {
-  content: "\e840";
+  content: "\e9d9";
 }
+/* .ai-orcid:before {
+  content: "\e840";
+} */
 .ai-orcid-square:before {
   content: "\e841";
 }
