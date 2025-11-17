@@ -74,48 +74,61 @@
 </style>
 
 <script>
+  // Back to top
+  let isShow = false;
+  let lock = false;
 
-  (function () {
-  let isShow = false, lock = false;
-  const btn = document.querySelector('.back-to-top');
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.querySelector('.back-to-top');
 
-  const handleScroll = () => {
-    if (lock) return;
-    if (document.body.scrollTop >= 1000) {
-      if (!isShow) {
-        btn.classList.add('load');
-        isShow = true;
+    // 监听滚动
+    function handleScroll() {
+      if (lock) return;
+
+      if (document.body.scrollTop >= 1000 || document.documentElement.scrollTop >= 1000) {
+        if (!isShow) {
+          btn.classList.add('load');
+          isShow = true;
+        }
+      } else if (isShow) {
+        btn.classList.remove('load');
+        isShow = false;
       }
-    } else if (isShow) {
-      btn.classList.remove('load');
-      isShow = false;
     }
-  };
 
-  const handleClick = () => {
-    lock = true;
-    btn.classList.add('ani-leave');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 点击按钮回顶
+    function handleClick() {
+      lock = true;
+      btn.classList.add('ani-leave');
 
-    setTimeout(() => {
-      btn.classList.remove('ani-leave');
-      btn.classList.add('leaved');
-    }, 390);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
 
-    setTimeout(() => btn.classList.add('ending'), 120);
-    setTimeout(() => btn.classList.remove('load'), 1500);
+      setTimeout(function () {
+        btn.classList.remove('ani-leave');
+        btn.classList.add('leaved');
+      }, 390);
 
-    setTimeout(() => {
-      lock = false;
-      isShow = false;
-      btn.classList.remove('leaved', 'ending');
-    }, 2000);
-  };
+      setTimeout(function () {
+        btn.classList.add('ending');
+      }, 120);
 
-  window.addEventListener('scroll', handleScroll);
-  btn.addEventListener('click', handleClick);
-})(); 
-  
+      setTimeout(function () {
+        btn.classList.remove('load');
+      }, 1500);
+
+      setTimeout(function () {
+        lock = false;
+        isShow = false;
+        btn.classList.remove('leaved', 'ending');
+      }, 2000);
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    btn.addEventListener('click', handleClick);
+  });
 </script>
 
 
