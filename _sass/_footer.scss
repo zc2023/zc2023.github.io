@@ -4,6 +4,7 @@
 
 .page__footer {
   @include clearfix;
+  z-index: 0;
   float: left;
   margin-left: 0;
   margin-right: 0;
@@ -55,7 +56,10 @@
 
 .page__footer-copyright {
   font-family: $global-font-family;
-  font-size: $type-size-7;
+  font-size: 12px;      /* 原 $type-size-7 可以改成更小 */
+  line-height: 1;       /* 行高缩小 */
+  padding: 0px 0;       /* 上下内边距缩小 */
+  z-index: 2;
 }
 
 .page__footer-follow {
