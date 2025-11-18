@@ -165,7 +165,7 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 
   async function fetchStars(repo){
     const cacheKey = 'ghstars:' + repo;
-    const cached = cacheGet(cacheKey, 1000*60*60*6); // 6 hours
+    const cached = cacheGet(cacheKey, 1000*60*60*6); /* 6 hours */
     if(cached !== null) return cached;
     try{
       const res = await fetch('https://api.github.com/repos/' + repo, {headers:{'Accept':'application/vnd.github.v3+json'}});
@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.querySelector('.glass-buttons');
 
   window.addEventListener('scroll', function () {
-    if (window.scrollY >= 400) {   // 下滑100px显示
+    if (window.scrollY >= 400) {   /* 下滑100px显示 */ 
       container.classList.add('show');
     } else {
       container.classList.remove('show');

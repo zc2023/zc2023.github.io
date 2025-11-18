@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let lock = false;
   const btn = document.querySelector('.back-to-top');
 
-  // 监听滚动
+
   function handleScroll() {
     if (lock) return;
     if (window.scrollY >= 800) {
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 点击回顶
+
   function handleClick() {
     lock = true;
     btn.classList.add('ani-leave');
