@@ -322,6 +322,16 @@ I am now available on the job market.
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
+
+.center {
+  text-align: center;
+}
+
+.center_box {
+  display: flex;
+  justify-content: center;
+}
+
 </style>
 
 <script>
@@ -345,8 +355,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 ---
 
-<p align="center">
-  <img src="https://count.getloli.com/@zc2023.github.io?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=0.85&pixelated=1&darkmode=auto">
-</p>
+<div class="center_box">
+    <img class="counter" src="https://count.getloli.com/@zc2023.github.io?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=0.85&pixelated=1&darkmode=auto">
+</div>
+
 
 
