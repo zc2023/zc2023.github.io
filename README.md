@@ -11,7 +11,9 @@ Change leftside bar icon styles at `assets/css/academicons.css`
 
 Change website Tab icon at `_includes/head/custom.html`
 
-local run: `bundle exec jekyll serve`
+Local server run: `bundle exec jekyll serve`
+
+change footer at `_includes/footer.html`
 
 # Acknowledgements
 
