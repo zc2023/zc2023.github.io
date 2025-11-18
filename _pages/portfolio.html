@@ -4,6 +4,94 @@ title: "Gallery"
 permalink: /portfolio/
 author_profile: true
 ---
+<div class="glass-buttons">
+  <a href="/" class="glass-btn">Homepage</a>
+  <a href="/portfolio/" class="glass-btn">Gallery</a>
+  <a href="/talks/" class="glass-btn">Personal Posts</a>
+  <a href="https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en" class="glass-btn">Google Scholar Profile</a>
+  <a href="/files/ZhangChengCV2025_9_13.pdf" class="glass-btn">Curriculum Vitae</a>
+</div>
+
+<style>
+/* 容器，固定在顶部，初始隐藏 */
+.glass-buttons {
+  position: fixed;
+  top: 10px;                 /* 顶部距离，可调 */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;             /* 横向排列 */
+  gap: 12px;                 /* 按钮间距 */
+  z-index: 9999;
+  opacity: 0;                /* 初始隐藏 */
+  pointer-events: none;      /* 不可点击 */
+  transition: opacity 0.4s ease;
+}
+
+/* 滑动显示 */
+.glass-buttons.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 单个按钮样式 */
+.glass-btn {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border-radius: 16px;
+  padding: 8px 12px;
+  font-weight: bold;
+  font-size: 17px;
+  align-items: center;      /* 垂直居中 */
+  color: #424242;
+  text-decoration: none !important;
+  display: block;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* 高光边缘 */
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.5),   /* 顶部和边缘高光 */
+    inset 0 -2px 4px rgba(255, 255, 255, 0.25), /* 底部微光 */
+
+    /* 外部阴影 */
+    0 8px 20px rgba(0, 0, 0, 0.20);
+}
+
+/* 鼠标悬停增强立体感 */
+.glass-btn:hover {
+  transform: scale(1.05);
+  box-shadow:
+    inset 0 2px 8px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.3),
+    0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+.center {
+  text-align: center;
+}
+
+.center_box {
+  display: flex;
+  justify-content: center;
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.querySelector('.glass-buttons');
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY >= 400) {   /* 下滑100px显示 */ 
+      container.classList.add('show');
+    } else {
+      container.classList.remove('show');
+    }
+  });
+});
+</script>
+
+
 
 <div style="text-align:center;">
   <h2>Events</h2>

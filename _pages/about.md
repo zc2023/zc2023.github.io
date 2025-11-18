@@ -125,7 +125,12 @@ Research Interests
 a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 
 /* Widen the content column for this page and normalize typography to match resume style */
-.page__content { max-width: 980px; margin-left: auto; margin-right: auto; }
+.page__content {
+  max-width: 1600px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 .page__content h2 { font-size: 1.4rem !important; margin-top: 1.1em; }
 .page__content h3 { font-size: 1.15rem !important; margin-top: 1em; }
 .page__content h4 { font-size: 1.05rem !important; margin-top: 0.6em; }
@@ -273,10 +278,11 @@ I am now available on the job market.
 
 
 <div class="glass-buttons">
+  <a href="/" class="glass-btn">Homepage</a>
   <a href="/portfolio/" class="glass-btn">Gallery</a>
-  <a href="/personal/" class="glass-btn">Personal Posts</a>
-  <a href="https://scholar.google.com/" class="glass-btn">Google Scholar Profile</a>
-  <a href="/cv/" class="glass-btn">Curriculum Vitae</a>
+  <a href="/talks/" class="glass-btn">Personal Posts</a>
+  <a href="https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en" class="glass-btn">Google Scholar Profile</a>
+  <a href="/files/ZhangChengCV2025_9_13.pdf" class="glass-btn">Curriculum Vitae</a>
 </div>
 
 <style>
@@ -302,25 +308,35 @@ I am now available on the job market.
 
 /* 单个按钮样式 */
 .glass-btn {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px) saturate(150%);
   -webkit-backdrop-filter: blur(10px) saturate(150%);
   border-radius: 16px;
   padding: 8px 12px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 17px;
+  align-items: center;      /* 垂直居中 */
   color: #424242;
   text-decoration: none !important;
   display: block;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* 高光边缘 */
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.5),   /* 顶部和边缘高光 */
+    inset 0 -2px 4px rgba(255, 255, 255, 0.25), /* 底部微光 */
+
+    /* 外部阴影 */
+    0 8px 20px rgba(0, 0, 0, 0.20);
 }
 
-/* 鼠标悬停按钮放大效果 */
+/* 鼠标悬停增强立体感 */
 .glass-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
+  box-shadow:
+    inset 0 2px 8px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.3),
+    0 12px 28px rgba(0, 0, 0, 0.3);
 }
 
 .center {
