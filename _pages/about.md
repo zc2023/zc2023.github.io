@@ -270,7 +270,73 @@ Reviewer: NeurIPS 2024, AISTATS 2025, ICML 2025, AAAI 2026, ICLR 2026
 Internship
 ------
 I am now available on the job market.
-change test
+
+
+<div class="glass-buttons">
+  <a href="/portfolio/" class="glass-btn">Gallery</a>
+  <a href="/personal/" class="glass-btn">Personal Posts</a>
+  <a href="https://scholar.google.com/" class="glass-btn">Google Scholar Profile</a>
+  <a href="/cv/" class="glass-btn">Curriculum Vitae</a>
+</div>
+
+<style>
+/* 容器，固定在顶部，初始隐藏 */
+.glass-buttons {
+  position: fixed;
+  top: 10px;                 /* 顶部距离，可调 */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;             /* 横向排列 */
+  gap: 12px;                 /* 按钮间距 */
+  z-index: 9999;
+  opacity: 0;                /* 初始隐藏 */
+  pointer-events: none;      /* 不可点击 */
+  transition: opacity 0.4s ease;
+}
+
+/* 滑动显示 */
+.glass-buttons.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 单个按钮样式 */
+.glass-btn {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border-radius: 16px;
+  padding: 8px 12px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #424242;
+  text-decoration: none !important;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+/* 鼠标悬停按钮放大效果 */
+.glass-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.querySelector('.glass-buttons');
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY >= 400) {   // 下滑100px显示
+      container.classList.add('show');
+    } else {
+      container.classList.remove('show');
+    }
+  });
+});
+</script>
 
 
 ---
