@@ -9,9 +9,9 @@ redirect_from:
 ---
 
 
-I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en). My current research interests are mainly in Multi-modal Large Language Models (MLLMs), embodied AI, and 3D vision.
+I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en). My current research interests are mainly in Multi-modal Large Language Models (MLLMs), embodied AI, and 3D vision. I work closely with [Dingkang Liang](https://dk-liang.github.io/) at HUST VLRLab.
 
-Research Interests
+🔍 Research Interests
 ------
 * 3D Multimodal Large Language Models (3D MLLMs)
 * Embodied AI
@@ -26,6 +26,22 @@ Research Interests
 📝 Publicaitons
 ------
 <span style="font-size: 0.85em; color: #666;">* Equal Contribution, † Corresponding Author</span>
+
+<div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
+  <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <img class="publication-thumb" src="/images/publications/aaai.png" alt="toc3d" />
+  </div>
+  <div>
+    <h4 style="margin-top: 0;">Cook and Clean Together: Teaching Embodied Agents for Parallel Task Execution
+          <a href="" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
+      <a href="" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+      <a href="https://github.com/H-EmbodVis/Grant" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+    </h4>
+    <p style="color: #000; font-style: italic; margin: 5px 0;"> <span style="color: #ff00009d; font-weight: bold;">AAAI 2026 (oral)</span></p>
+    <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Dingkang Liang<sup>*</sup>, <strong style="color: #000;">Cheng Zhang<sup>*</sup></strong>, Xiaopeng Xu, Jianzhong Ju, Zhenbo Luo, Xiang Bai</p>
+    <p style="margin: 10px 0;">Introduces a new task that challenges agents to generate efficient, 3D grounded action schedules guided by operations research principles.</p>
+  </div>
+</div>
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
@@ -218,7 +234,7 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
 
 See full publication list on [Google Scholar ->](https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en)
 
-Research Experience
+📘 Research Experience
 ------
 
 <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 30px; align-items: start;">
@@ -250,7 +266,15 @@ Research Experience
 
 <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
   <div>
-    <p style="margin: 0 0 2px 0; font-weight: bold;">National Scholarship (Top 0.2%, Undergraduate)</p>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">Graduate Academic First-Class Scholarship, 10,000RMB</p>
+    <p style="margin: 0; color: #666; font-size: 0.9em;">Huazhong University of Science and Technology</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Oct 2024</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">National Scholarship (Top 0.2%, Undergraduate), 10,000RMB</p>
     <p style="margin: 0; color: #666; font-size: 0.9em;">Central China Normal University</p>
   </div>
   <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Oct 2023</div>
@@ -266,13 +290,13 @@ Research Experience
 * CET 6: 587, 05/2022
 
 
-Academic Service
+🎓 Academic Service
 ------
 Reviewer: NeurIPS 2024, AISTATS 2025, ICML 2025, AAAI 2026, ICLR 2026
 
 
 
-Internship
+💼 Internship
 ------
 I am now available on the job market.
 
