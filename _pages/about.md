@@ -9,7 +9,54 @@ redirect_from:
 ---
 
 
+
+
 I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en). My current research interests are mainly in Multi-modal Large Language Models (MLLMs), embodied AI, and 3D vision. I work closely with [Dingkang Liang](https://dk-liang.github.io/) at HUST VLRLab.
+
+<div class="windsong-regular gradient-text">
+  Less is more, slow is fast.
+</div>
+
+<style>
+
+
+@import url('https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&display=swap');
+.windsong-regular {
+  font-family: "WindSong";
+  font-weight: 400;
+  font-style: normal;
+  font-style: normal !important;
+  font-size: 40px !important;    /* 强制大小 */
+  display: block !important;
+  text-align: center !important;
+
+}
+
+.windsong-medium {
+  font-family: "WindSong", cursive;
+  font-weight: 500;
+  font-style: normal;
+}
+.gradient-text {
+  background: linear-gradient(90deg, #3b82f6, #9333ea, #3b82f6, #9333ea);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 8s linear infinite;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 100% center;
+  }
+}
+</style>
+
+
 
 🔍 Research Interests
 ------
@@ -283,11 +330,53 @@ See full publication list on [Google Scholar ->](https://scholar.google.com/cita
 
 📖 Educations
 ------
-* 2024.09-2027.06 (expected), Master degree, Huazhong University of Science and Technology. Supervised by Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en).
-* 2024.06, Bachelor of Engineering in Artificial Intelligence, Central China Normal University. Supervised by Prof. [Hai Liu](https://scholar.google.com/citations?user=Tjw7zHEAAAAJ&hl=en).
-* IELTS: 7.5 (Listening-8.0; Speaking-6.0; Reading-8.5; Writing-6.5), 04/2023
-* GRE: 324 (Verbal-155; Quantitative-169; Analytical Writing-3.0), 07/2023
-* CET 6: 587, 05/2022
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">Huazhong University of Science and Technology</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Graduate Student, Pursuing Master’s degree in Software Engineering</p>
+    <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em; color: #555;">
+      <li style="margin: 4px 0;"><strong>Supervised by Prof.</strong> <a href="https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en" style="color: #1976d2; text-decoration: none;">Xiang Bai</a></li>
+    </ul>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Sep 2024 - Current</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">Central China Normal University</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Bachelor of Engineering in Artificial Intelligence</p>
+    <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em; color: #555;">
+      <li style="margin: 4px 0;"><strong>Supervised by Prof.</strong> <a href="https://scholar.google.com/citations?user=Tjw7zHEAAAAJ&hl=en" style="color: #1976d2; text-decoration: none;">Hai Liu</a></li>
+    </ul>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Jun 2024</div>
+</div>
+
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">IELTS: 7.5 </p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Listening-8.0; Speaking-6.0; Reading-8.5; Writing-6.5</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Apr 2023</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">GRE: 324</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Verbal-155; Quantitative-169; Analytical Writing-3.0</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Jul 2023</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">CET 6</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Overall-587</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">May 2022</div>
+</div>
 
 
 🎓 Academic Service
