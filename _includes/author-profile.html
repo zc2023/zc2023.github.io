@@ -8,16 +8,35 @@
 
   <div class="author__avatar">
     {% if author.avatar contains "://" %}
-    	<img src="{{ author.avatar }}" alt="{{ author.name }}">
+      <img src="{{ author.avatar }}" alt="{{ author.name }}">
     {% else %}
-    	<img src="{{ author.avatar | prepend: "/images/" | prepend: base_path }}" class="author__avatar" alt="{{ author.name }}">
+      <img src="{{ author.avatar | prepend: "/images/" | prepend: base_path }}" class="author__avatar" alt="{{ author.name }}">
     {% endif %}
   </div>
 
   <div class="author__content">
-    <h3 class="author__name">{{ author.name }}</h3>
+    <h3 class="author__name"><span class="gradient-text">Cheng Zhang | 张 诚</span></h3>
     {% if author.bio %}<p class="author__bio">{{ author.bio }}</p>{% endif %}
   </div>
+            <style>
+              .gradient-text {
+                background: linear-gradient(90deg, #3b82f6, #9333ea, #3b82f6, #9333ea);
+                background-size: 300% auto;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: gradientFlow 8s linear infinite;
+              }
+
+              @keyframes gradientFlow {
+                0% {
+                  background-position: 0% center;
+                }
+
+                100% {
+                  background-position: 100% center;
+                }
+              }
+            </style>
 
   <div class="author__urls-wrapper">
     <button class="btn btn--inverse">Follow</button>
@@ -37,7 +56,7 @@
       {% if author.keybase %}
         <li><a href="https://keybase.io/{{ author.keybase }}"><i class="fas fa-fw fa-key" aria-hidden="true"></i> Keybase</a></li>
       {% endif %}
-       {% if author.researchgate %}
+      {% if author.researchgate %}
         <li><a href="{{ author.researchgate }}"><i class="fab fa-fw fa-researchgate" aria-hidden="true"></i> ResearchGate</a></li>
       {% endif %}
       {% if author.twitter %}
@@ -118,19 +137,19 @@
 <li>
   <a href="https://huggingface.co/Younai">
     <img src="/images/huggingface_logo.svg" alt="Hugging Face"
-         style="width:15px; height:15px; vertical-align:middle; margin-left:1px; margin-right:5px;">Hugging Face
+        style="width:15px; height:15px; vertical-align:middle; margin-left:1px; margin-right:5px;">Hugging Face
   </a>
 </li>
 <li>
   <a href="https://dblp.org/pid/82/6384-20.html">
     <img src="/images/dblp.png" alt="DBLP"
-         style="width:15px; height:15px; vertical-align:middle; margin-left:1px; margin-right:5px;">DBLP
+        style="width:15px; height:15px; vertical-align:middle; margin-left:1px; margin-right:5px;">DBLP
   </a>
 </li>
 <li>
   <a href="https://blog.csdn.net/Younai2021?spm=1000.2115.3001.5343">
     <img src="/images/csdn.png" alt="CSDN"
-         style="width:14px; height:14px; vertical-align: -2px; margin-left:1px; margin-right:5px;">CSDN
+        style="width:14px; height:14px; vertical-align: -2px; margin-left:1px; margin-right:5px;">CSDN
   </a>
 </li>
 <li style="white-space: nowrap;">
@@ -148,6 +167,4 @@
     </ul>
   </div>
 </div>
-
-
 
