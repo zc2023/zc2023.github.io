@@ -328,6 +328,60 @@ See full publication list on [Google Scholar ->](https://scholar.google.com/cita
 </div>
 
 
+Patents
+------
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于 Transformer 网络的学习专注度监测方法
+    <a href="/files/patents/p1.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，专利号：202211596338.9</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、<strong>张诚</strong>、刘婷婷、张昭理、朱晓倩、宋林森、林丹月、王镜淇</p>
+    
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Nov 2025</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于多模态数据融合的在线学习状态检测方法
+    <a href="/files/patents/p2.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，专利号：202211596371.1</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、林丹月、刘婷婷、张昭理、王镜淇、<strong>张诚</strong>、朱晓倩、宋林森</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Nov 2025</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于特征交互学习网络的学生心理状态检测方法
+    <a href="/files/patents/p3.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，CN116172556A</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、朱晓倩、刘婷婷、张昭理、宋林森、林丹月、王镜淇、<strong>张诚</strong></p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Nov 2025</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于人体姿态估计的动态课堂签到方法
+    <a href="/files/patents/p4.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，CN116311572A</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、王镜淇、刘婷婷、张昭理、<strong>张诚</strong>、朱晓倩、宋林森、林丹月</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Nov 2025</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于双相机多分支网络的虚拟现实教学手势识别方法
+    <a href="/files/patents/p5.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，CN116466816A</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、宋林森、刘婷婷、张昭理、林丹月、王镜淇、<strong>张诚</strong>、朱晓倩</p>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">Nov 2025</div>
+</div>
+
+
 📖 Educations
 ------
 
