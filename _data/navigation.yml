@@ -15,8 +15,8 @@ main:
   # - title: "Blog Posts"
   #   url: /year-archive/
     
-  - title: "Curriculum Vitae"
-    url: /files/ZhangChengCV2025_9_13.pdf
+  - title: "Research Statement"
+    url: /teaching/ 
     
   # - title: "Guide"
   #   url: /markdown/
