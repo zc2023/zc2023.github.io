@@ -17,10 +17,12 @@ change footer at `_includes/footer.html`
 
 
 # Force commit
+```
 git checkout master
 git add --all
 git commit -m "Force sync local to remote"
 git push --force origin master
+```
 
 
 # Acknowledgements
