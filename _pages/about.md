@@ -67,7 +67,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 🔥 News
 ------
-* [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation!
+* [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation! 
 * [2024/4/20] Open personal website.
 
 📝 Publicaitons
@@ -76,6 +76,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <div class="badge">AAAI 2026 (Oral)</div>
     <img class="publication-thumb" src="/images/publications/aaai.png" alt="toc3d" />
   </div>
   <div>
@@ -83,15 +84,16 @@ I'm currently studying at Huazhong University of Science and Technology, under t
           <a href="https://h-embodvis.github.io/GRANT/" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
       <a href="https://arxiv.org/abs/2511.19430" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
       <a href="https://github.com/H-EmbodVis/Grant" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+      <img src="https://img.shields.io/github/stars/H-EmbodVis/Grant?style=social" />
     </h4>
-    <p style="color: #000; font-style: italic; margin: 5px 0;"> <span style="color: #ff00009d; font-weight: bold;">AAAI 2026 (oral)</span></p>
+    <p style="color: #000; font-style: italic; margin: 5px 0;"> <span style="color: #ff00009d; font-weight: bold;">AAAI 2026 Oral (Top~4.5%)</span></p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Dingkang Liang<sup>*</sup>, <strong style="color: #000;">Cheng Zhang<sup>*</sup></strong>, Xiaopeng Xu, Jianzhong Ju, Zhenbo Luo, Xiang Bai</p>
     <p style="margin: 10px 0;">Introduces a new task that challenges agents to generate efficient, 3D grounded action schedules guided by operations research principles.</p>
   </div>
 </div>
-
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+    <div class="badge">ECCV 2024</div>
     <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
   </div>
   <div>
@@ -107,6 +109,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+  <div class="badge">TII 2024</div>
     <img class="publication-thumb" src="/images/publications/MMATrans.png" alt="toc3d" />
   </div>
   <div>
@@ -120,6 +123,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+  <div class="badge">TIP 2023</div>
     <img class="publication-thumb" src="/images/publications/tip23.png" alt="toc3d" />
   </div>
   <div>
@@ -134,6 +138,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+  <div class="badge">CVPR 2023</div>
     <img class="publication-thumb" src="/images/publications/tokenhpe.png" alt="toc3d" />
   </div>
   <div>
@@ -147,6 +152,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+  <div class="badge">TMM 2023</div>
     <img class="publication-thumb" src="/images/publications/transifc.png" alt="toc3d" />
   </div>
   <div>
@@ -160,6 +166,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
+  <div class="badge">ROBIO 2022</div>
     <img class="publication-thumb" src="/images/publications/robio.png" alt="toc3d" />
   </div>
   <div>
@@ -180,8 +187,42 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 .publication-img img { display:block; }
 
 /* Image container: use cover so images are visually uniform */
-.publication-img { width:290px; height:180px; overflow:hidden; border-radius:8px; position:relative; display:flex; align-items:center; justify-content:center; }
-.publication-img img.publication-thumb { width:100%; height:100%; object-fit:cover; object-position:center; }
+.publication-img {
+  width: 290px;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 3px 3px 6px rgba(0,0,0,0.18); /* 阴影生效 */
+}
+
+.publication-img img.publication-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+
+  background: rgba(254, 41, 41, 0.45); /* 半透明 */
+  backdrop-filter: blur(6px); /* 模糊 */
+  -webkit-backdrop-filter: blur(6px); /* 兼容性 */
+  border-radius: 4px;
+}
+
+
 
 /* Compact icon links (small, no heavy background) */
 a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
@@ -206,6 +247,53 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
   .publication-grid { grid-template-columns: 1fr !important; }
   .publication-img { width: 100%; height: 200px; }
   .page__content { padding: 0 1rem; max-width: 100%; }
+}
+
+.paper-box {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-bottom: 1px #efefef solid;
+    padding: 0.5em 0 0em 0;
+    // margin-bottom: -0.5em;
+    .paper-box-image{
+        justify-content: center;
+        display: flex;
+        width: 100%;
+        order: 2;
+        img {
+            max-width: 400px;
+            box-shadow: 3px 3px 6px #888;
+            object-fit: cover;
+        }
+    }
+    
+    .paper-box-text{
+        max-width: 100%;
+        order: 1;
+    }
+    
+    @include breakpoint($medium) {
+        .paper-box-image{
+            justify-content: left;
+            min-width: 200px;
+            max-width: 40%;
+            order: 1;
+        }
+        
+        .paper-box-text{
+            justify-content: left;
+            padding-left: 2em;
+            max-width: 60%;
+            order: 2;
+        }
+
+    }
+
+
+
 }
 </style>
 
@@ -277,6 +365,8 @@ a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
   }
 })();
 </script>
+
+
 
 See full publication list on [Google Scholar ->](https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en)
 
