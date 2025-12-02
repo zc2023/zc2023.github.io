@@ -6,11 +6,12 @@ main:
   - title: "Personal Posts"
     url: /talks/  
 
-  - title: "Google Scholar Profile"
-    url: https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en
 
-  # - title: "Teaching"
-  #   url: /teaching/    
+  # - title: "Google Scholar Profile"
+  #   url: https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en  
+
+  - title: "3D Space"
+    url: /space/   
          
   # - title: "Blog Posts"
   #   url: /year-archive/

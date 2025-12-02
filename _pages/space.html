@@ -1,0 +1,424 @@
+---
+layout: none
+title: "Space"
+permalink: /space/
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    
+
+    <meta charset="UTF-8">
+    <title>3D Space</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: sans-serif; }
+        
+        /* UI 控制层 */
+        #ui-layer {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: #fff;
+            user-select: none;
+        }
+        
+        input[type=range] { width: 200px; cursor: pointer; }
+        label { font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        #time-display { font-size: 12px; margin-top: 5px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+        /* 渲染容器 */
+        #webgl-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        #css3d-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+        /* 3D 场景中的网页内容 */
+        #my-web-content {
+            width: 800px;
+            height: 800px;
+            background: #fff; /* 纯白背景以接收光照对比 */
+            padding: 40px;
+            box-sizing: border-box;
+            /* 稍微加点内阴影增加质感 */
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.05); 
+            overflow-y: auto;
+            pointer-events: auto;
+            border-radius: 4px;
+        }
+        
+        /* 网页内部样式 */
+        h1 { color: #333; margin-top: 0; }
+        p { color: #555; line-height: 1.8; font-size: 16px; }
+        .highlight { color: #e17055; font-weight: bold; }
+        .card {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #0984e3;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <label for="time-slider">☀ 时间控制</label>
+        <input type="range" id="time-slider" min="0" max="100" value="30">
+        <div id="time-display">上午 10:00</div>
+
+        <br>
+            <button onclick="window.location.href='/'"
+            style="padding:10px 20px; background:#0984e3; color:white; border:none; border-radius:4px; cursor:pointer;">
+        Back to Homepage
+    </button>
+    </div>
+
+
+
+    <div id="content-template" style="display: none;">
+        <div id="my-web-content">
+            <h1>Web 3D 沉浸式主页</h1>
+            <p>
+                欢迎来到这个没有边界的数字空间。<br>
+                当前页面悬浮在广阔的海面上，视野直达地平线。
+                这个场景代码完全由Gemini 3 Pro生成，使用了 Three.js 和 CSS3D 技术实现。<br>
+
+            </p>
+            
+            <div class="card">
+                <h3>光影互动</h3>
+                <p>请拖动左上角的滑块调整时间。观察以下细节：</p>
+                <ul>
+                    <li><b>太阳位置</b>：真实的太阳几何体在天空中划过。</li>
+                    <li><b>动态阴影</b>：注意看海面上，这个白色面板投射的影子会随着太阳移动而拉长或旋转。</li>
+                    <li><b>云层渲染</b>：天上的云朵会反射太阳的光芒，日落时会变成粉红色。</li>
+                </ul>
+            </div>
+
+            <p>
+                Created by Cheng Zhang. <br>
+                Date: 2025 Dec 1. Version 1.0.
+            </p>
+
+
+
+        </div>
+    </div>
+
+    <div id="webgl-container"></div>
+    <div id="css3d-container"></div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
+
+        let camera, scene, renderer, cssRenderer;
+        let controls, waterMesh, backingMesh, sunMesh;
+        let dirLight, ambientLight;
+        let clouds = []; // 存储云朵数组
+        let clock = new THREE.Clock();
+
+        // 场景参数
+        const params = {
+            waterLevel: 0,
+            webHeight: 150,
+            sunDistance: 1500, // 太阳距离中心的半径
+        };
+
+        // 颜色定义
+        const Colors = {
+            SkyDay: new THREE.Color(0x70c5ff),     // 晴朗蓝天
+            SkySunset: new THREE.Color(0xed7866),  // 晚霞红
+            SkyNight: new THREE.Color(0x0c0c26),   // 深夜蓝黑
+            
+            SunDay: new THREE.Color(0xffffff),
+            SunSunset: new THREE.Color(0xffaa00),
+            
+            Water: new THREE.Color(0x006994),      // 深海蓝
+        };
+
+        init();
+        animate();
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = Colors.SkyDay;
+            // 关键：不添加 scene.fog，保持视野清晰
+
+            // 1. 相机 (加大 far 参数，看清远处)
+            camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.set(0, 200, 600);
+
+            // 2. 渲染器
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            // 开启阴影
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap; // 软阴影
+            document.getElementById('webgl-container').appendChild(renderer.domElement);
+
+            cssRenderer = new CSS3DRenderer();
+            cssRenderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('css3d-container').appendChild(cssRenderer.domElement);
+
+            // 3. 光照系统
+            // 环境光：模拟天空的漫反射
+            ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            // 主光源 (太阳)：使用 DirectionalLight 模拟远处的太阳光，产生平行阴影
+            dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            dirLight.castShadow = true;
+            
+            // 优化阴影范围，确保能覆盖网页和海面
+            const d = 1000;
+            dirLight.shadow.camera.left = -d;
+            dirLight.shadow.camera.right = d;
+            dirLight.shadow.camera.top = d;
+            dirLight.shadow.camera.bottom = -d;
+            dirLight.shadow.camera.near = 0.5;
+            dirLight.shadow.camera.far = 5000;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            scene.add(dirLight);
+
+            // 4. 太阳实体 (可视化的光球)
+            const sunGeometry = new THREE.SphereGeometry(60, 32, 32);
+            const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffdd00 }); // 发光材质，不受光照影响
+            sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
+            scene.add(sunMesh);
+
+            // 5. 海平面 (巨大)
+            const waterGeometry = new THREE.PlaneGeometry(10000, 10000, 256, 256);
+            waterGeometry.rotateX(-Math.PI / 2);
+            
+            const waterMaterial = new THREE.MeshStandardMaterial({
+                color: Colors.Water,
+                roughness: 0.0,    // 非常光滑，像镜子
+                metalness: 0.3,    // 轻微金属感增加反光
+                flatShading: true, // 低多边形波浪风格
+            });
+
+            waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
+            waterMesh.receiveShadow = true; // 接收阴影
+            scene.add(waterMesh);
+
+            // 6. 云朵 (生成一些随机云)
+            createClouds();
+
+            // 7. 网页实体
+            const contentDiv = document.getElementById('content-template').firstElementChild.cloneNode(true);
+            const cssObject = new CSS3DObject(contentDiv);
+            cssObject.position.set(0, params.webHeight, 0);
+            scene.add(cssObject);
+
+            // 8. 阴影投射板 (Backing Mesh)
+            // 放在网页后面一点点，用来挡光产生阴影
+            const backingGeo = new THREE.PlaneGeometry(800, 600);
+            const backingMat = new THREE.MeshStandardMaterial({ 
+                color: 0x000000,
+                side: THREE.DoubleSide
+            });
+            backingMesh = new THREE.Mesh(backingGeo, backingMat);
+            backingMesh.position.copy(cssObject.position);
+            backingMesh.position.z -= 1; // 微调位置
+            backingMesh.castShadow = true; // 投射阴影
+            backingMesh.material.colorWrite = false; // 隐形
+            scene.add(backingMesh);
+
+            // 9. 控制器
+            controls = new OrbitControls(camera, cssRenderer.domElement);
+            controls.enableDamping = true;
+            controls.maxPolarAngle = Math.PI / 2 - 0.02; // 稍微限制，别看穿水面
+            controls.minDistance = 200;
+            controls.maxDistance = 2000;
+
+            // 事件
+            window.addEventListener('resize', onWindowResize);
+            document.getElementById('time-slider').addEventListener('input', (e) => updateTime(e.target.value));
+
+            // 初始化时间 (早晨)
+            updateTime(30);
+        }
+
+        // 创建简易云朵
+        function createClouds() {
+            const cloudGeo = new THREE.SphereGeometry(1, 16, 16);
+            // 使用 StandardMaterial，这样云朵颜色会受光照影响(日落变红)
+            const cloudMat = new THREE.MeshStandardMaterial({ 
+                color: 0xffffff, 
+                roughness: 0.8,
+                opacity: 0.8,
+                transparent: true
+            });
+
+            for(let i=0; i<15; i++) {
+                const cloudGroup = new THREE.Group();
+                
+                // 每个云朵由 3-6 个球体组成
+                const chunks = 3 + Math.floor(Math.random() * 4);
+                for(let j=0; j<chunks; j++) {
+                    const mesh = new THREE.Mesh(cloudGeo, cloudMat);
+                    // 随机大小和位置偏移
+                    const size = 30 + Math.random() * 40;
+                    mesh.scale.set(size, size * 0.6, size); 
+                    mesh.position.set(
+                        (Math.random() - 0.5) * 50,
+                        (Math.random() - 0.5) * 20,
+                        (Math.random() - 0.5) * 40
+                    );
+                    cloudGroup.add(mesh);
+                }
+
+                // 随机分布在天空中
+                cloudGroup.position.set(
+                    (Math.random() - 0.5) * 4000, // 范围大一点
+                    400 + Math.random() * 400,    // 高度 400-800
+                    (Math.random() - 0.5) * 3000 - 500 // 稍微偏后方
+                );
+                
+                scene.add(cloudGroup);
+                clouds.push(cloudGroup);
+            }
+        }
+
+        // 更新时间逻辑 (0 = 日出, 50 = 正午, 100 = 日落)
+        function updateTime(val) {
+            val = parseFloat(val);
+            const timeDisplay = document.getElementById('time-display');
+            
+            // 映射 0-100 到角度 (0度=日出东方, 90度=正午, 180度=日落西方)
+            // 为了视觉效果，我们设定: 
+            // 0 -> 10度 (日出)
+            // 50 -> 90度 (正午)
+            // 100 -> 170度 (日落)
+            const angleDeg = 10 + (val / 100) * 160; 
+            const angleRad = THREE.MathUtils.degToRad(angleDeg);
+
+            // 计算太阳位置 (余弦对应X轴，正弦对应Y轴)
+            // 注意：cos(0)是1(右边)，我们需要从左边升起，所以取负或者调整相位
+            // 这里：cos(180)= -1 (西), cos(0)= 1 (东). 
+            // 让太阳从 x=负 (东) 升起 -> x=0 -> x=正 (西)
+            const radius = params.sunDistance;
+            const sunX = -Math.cos(angleRad) * radius; 
+            const sunY = Math.sin(angleRad) * radius;
+            const sunZ = -200; // 稍微偏后一点，防止中午阴影完全消失不好看
+
+            // 1. 设置太阳位置
+            dirLight.position.set(sunX, sunY, sunZ);
+            sunMesh.position.set(sunX, sunY, sunZ);
+
+            // 2. 计算颜色混合
+            let skyColor = new THREE.Color();
+            let sunLightColor = new THREE.Color();
+            let ambIntensity = 0.5;
+
+            // 这里的逻辑：val 0-20(日出), 20-80(白天), 80-100(日落)
+            if (val < 20) {
+                // 日出阶段
+                const t = val / 20;
+                skyColor.lerpColors(Colors.SkySunset, Colors.SkyDay, t);
+                sunLightColor.lerpColors(Colors.SunSunset, Colors.SunDay, t);
+                sunMesh.material.color.setHex(0xffaa00); // 太阳看起来是橙色的
+                timeDisplay.innerText = "清晨 / 日出";
+            } else if (val > 80) {
+                // 日落阶段
+                const t = (val - 80) / 20;
+                skyColor.lerpColors(Colors.SkyDay, Colors.SkySunset, t);
+                sunLightColor.lerpColors(Colors.SunDay, Colors.SunSunset, t);
+                sunMesh.material.color.setHex(0xff4500); // 太阳变红
+                
+                // 接近100时，天变暗
+                if(t > 0.5) {
+                    skyColor.lerp(Colors.SkyNight, (t - 0.5) * 2);
+                    ambIntensity = 0.6 * (1 - t);
+                }
+                timeDisplay.innerText = "傍晚 / 日落";
+            } else {
+                // 白天
+                skyColor.copy(Colors.SkyDay);
+                sunLightColor.copy(Colors.SunDay);
+                sunMesh.material.color.setHex(0xffffee); // 太阳亮白
+                ambIntensity = 0.6;
+                timeDisplay.innerText = "白天 / 正午";
+            }
+
+            // 3. 应用颜色
+            scene.background = skyColor;
+            dirLight.color = sunLightColor;
+            ambientLight.color = skyColor; // 环境光跟随天空颜色
+            ambientLight.intensity = ambIntensity;
+
+            // 水面颜色也会受天空影响
+            waterMesh.material.color.copy(Colors.Water).lerp(skyColor, 0.1);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            cssRenderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const t = clock.getElapsedTime();
+
+            // 波浪动画
+            const posAttr = waterMesh.geometry.attributes.position;
+            for(let i=0; i<posAttr.count; i++){
+                const x = posAttr.getX(i);
+                const z = posAttr.getZ(i);
+                // 宽阔平缓的波浪
+                const y = Math.sin(x/100 + t*0.5) * 15 + Math.cos(z/80 + t*0.4) * 15;
+                posAttr.setY(i, y);
+            }
+            posAttr.needsUpdate = true;
+            waterMesh.geometry.computeVertexNormals();
+
+            // 网页浮动
+            const floatY = Math.sin(t) * 5;
+            // 只需要更新 CSS 对象和背后的阴影板
+            // 我们通过 scene 遍历找到它们
+            // 为了性能最好用变量存起来，但这里为了代码结构简单直接用 backingMesh
+            backingMesh.position.y = params.webHeight + floatY;
+            // CSS 对象位置需要手动同步（因为上面没有直接暴露变量到这里，除了初始化）
+            // 重新查找一下
+            scene.traverse((obj) => {
+                if(obj.isCSS3DObject) {
+                    obj.position.y = params.webHeight + floatY;
+                }
+            });
+
+            // 云朵缓慢移动
+            clouds.forEach((cloud, idx) => {
+                cloud.position.x += 0.2 * (idx % 2 === 0 ? 1 : -1);
+                // 简单的循环
+                if(cloud.position.x > 2000) cloud.position.x = -2000;
+                if(cloud.position.x < -2000) cloud.position.x = 2000;
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+            cssRenderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
