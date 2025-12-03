@@ -11,7 +11,7 @@ redirect_from:
 
 
 
-I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en). My current research interests are mainly in Multi-modal Large Language Models (MLLMs), embodied AI, and 3D vision. I work closely with [Dingkang Liang](https://dk-liang.github.io/) at HUST VLRLab.
+I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en) ([IEEE Fellow](https://mp.weixin.qq.com/s/U9_vbKV15dzJyxy5S72Q8A)). My current research interests are mainly in Multi-modal Large Language Models (MLLMs), embodied AI, and 3D vision. I work closely with [Dingkang Liang](https://dk-liang.github.io/) at HUST VLRLab.
 
 <div class="windsong-regular gradient-text">
   Less is more, slow is fast.
@@ -84,6 +84,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
           <a href="https://h-embodvis.github.io/GRANT/" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
       <a href="https://arxiv.org/abs/2511.19430" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
       <a href="https://github.com/H-EmbodVis/Grant" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+      <a href="/Mypages/aaai_share.html" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i></a>
       <img src="https://img.shields.io/github/stars/H-EmbodVis/Grant?style=social" />
     </h4>
     <p style="color: #000; font-style: italic; margin: 5px 0;"> <span style="color: #ff00009d; font-weight: bold;">AAAI 2026 Oral (Top~4.5%)</span></p>

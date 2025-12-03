@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotes</title>
+    <style>
+        /* CSS 重置与基础设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            /* 关键：设置 body 高度为 100% 视口高度，并使用 flex 列布局 */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 顶部导航栏样式 --- */
+        .top-header {
+            width: 100%;
+            padding: 15px 30px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* 确保它始终位于顶部 (虽然在当前 flex 布局下自然就是这样，但加上更保险) */
+            z-index: 100;
+        }
+
+        /* 返回按钮样式 (使用 <a> 标签模拟按钮) */
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 600;
+            padding: 8px 16px;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        /* 按钮悬停效果 */
+        .back-home-btn:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        /* 在按钮文字前添加一个小箭头图标 */
+        .back-home-btn::before {
+            content: "←";
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        /* --- 主要内容居中区域样式 --- */
+        .main-container {
+            /* 关键：flex: 1 让这个容器占据除去头部以外的所有剩余空间 */
+            flex: 1; 
+            
+            /* 关键：使用 flexbox 将内部内容水平和垂直居中 */
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center;     /* 垂直居中 */
+            padding: 20px;
+        }
+
+        /* 内容卡片样式 (可选，只是为了让内容看起来更聚拢) */
+        .content-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: left; /* 让卡片内的文本居中对齐 */
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .content-card h1 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+    .meta {
+      color: #334155;
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    .meta a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .meta a:hover { text-decoration: underline; }
+
+    .content-card p { margin: 0; color: #475569; }
+
+    @media (max-width: 480px) {
+      .content-card { padding: 18px; border-radius: 10px; }
+      .content-card h1 { font-size: 18px; }
+    }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <a href="/" class="back-home-btn">Homepage</a>
+    </header>
+
+    <main class="main-container">
+        <div class="content-card">
+            <h1>Promotions</h1>
+
+<div class="meta">
+[2025/12/1] 🎉🎉🎉 Our paper has been promoted by 雷军
+<a href="https://weibo.com/1749127163/QgqA8u2OP" target="_blank" rel="noopener noreferrer">[Link]</a>
+<br>
+[2025/11] Our paper has been promoted by “小米技术” 
+<a href="https://mp.weixin.qq.com/s/1QqsyNTs1XY8ZLN8cjaiJg?scene=1&click_id=9" target="_blank" rel="noopener noreferrer">[Link]</a>
+<br>
+[2025/11] Our paper has been promoted by “具身智能之心”
+<a href="https://mp.weixin.qq.com/s/I40zjL_xdAR8N6-mNto7yA" target="_blank" rel="noopener noreferrer">[Link]</a>
+<br>
+[2025/11] Our paper has been promoted by “极市平台”
+<a href="https://mp.weixin.qq.com/s/-Udv8wHE3TXPCPKeBeoS1A" target="_blank" rel="noopener noreferrer">[Link]</a>
+<br>
+[2025/11] Our paper has been promoted by “我爱计算机视觉”
+<a href="https://mp.weixin.qq.com/s/OOROlW0w3AQWZm_SRk3Rxg" target="_blank" rel="noopener noreferrer">[Link]</a>
+</div>
+
+        </div>
+    </main>
+
+</body>
+</html>
