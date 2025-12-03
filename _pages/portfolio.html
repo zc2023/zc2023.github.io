@@ -232,6 +232,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+<!-- Item 3 -->
+<div style="text-align:center;">
+  <div style="
+    width:100%;
+    height:200px;
+    overflow:hidden;
+    border-radius:12px;
+    transition: transform .3s ease, box-shadow .3s ease;
+  "
+  onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)'"
+  onmouseout="this.style.transform='none'; this.style.boxShadow='none'"
+  onclick="openImage('/images/HUST/autumn.jpg')">
+    <img src="/images/HUST/autumn.jpg" alt="caption" style="width:100%; height:100%; object-fit:cover; cursor:pointer;">
+  </div>
+  <div style="margin-top:10px; font-size:15px;">Ginkgo in late autumn, HUST East Unit 3 NO.55, Dec 3 2025</div>
+</div>
+
+<!-- Item 3 -->
+<div style="text-align:center;">
+  <div style="
+    width:100%;
+    height:200px;
+    overflow:hidden;
+    border-radius:12px;
+    transition: transform .3s ease, box-shadow .3s ease;
+  "
+  onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)'"
+  onmouseout="this.style.transform='none'; this.style.boxShadow='none'"
+  onclick="openImage('/images/HUST/gingko.jpg')">
+    <img src="/images/HUST/gingko.jpg" alt="caption" style="width:100%; height:100%; object-fit:cover; cursor:pointer;">
+  </div>
+  <div style="margin-top:10px; font-size:15px;">Ginkgo in late autumn, HUST East Unit 3 NO.55, Dec 3 2025</div>
+</div>
+
+
 
   <!-- Item 3 -->
   <div style="text-align:center;">
@@ -389,6 +424,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 </div>
+
+
+
+<!-- Popup container -->
+<div id="img-popup" style="
+  display:none;
+  position:fixed;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  background:white;
+  padding:10px;
+  border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  z-index:9999;
+
+  /* 让外层盒子根据图片自动撑开 */
+  max-width:80vw;
+  max-height:80vh;
+">
+  <img id="popup-img" src="" style="
+    /* 图片缩放限制，保持比例 */
+    max-width:75vw;
+    max-height:75vh;
+    width:auto;
+    height:auto;
+    border-radius:8px;
+    display:block;
+  ">
+</div>
+
+<!-- Background mask -->
+<div id="popup-mask" style="
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.4);
+  z-index:9998;
+" onclick="closePopup()"></div>
+
+<script>
+function openImage(src){
+  document.getElementById('popup-img').src = src;
+  document.getElementById('img-popup').style.display = 'block';
+  document.getElementById('popup-mask').style.display = 'block';
+}
+
+function closePopup(){
+  document.getElementById('img-popup').style.display = 'none';
+  document.getElementById('popup-mask').style.display = 'none';
+}
+</script>
+
 
 
 
