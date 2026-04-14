@@ -67,6 +67,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 🔥 News
 ------
+* [2026/4/14] 🤖 Introduced [Claude Code](https://claude.ai/code) for homepage maintenance.
 * [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation! 
 * [2024/4/20] Open personal website.
 
