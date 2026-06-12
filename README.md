@@ -20,7 +20,7 @@ change footer at `_includes/footer.html`
 ```
 git checkout master
 git add --all
-git commit -m "Force sync local to remote"
+git commit -m "Force sync local to remote update 2026/6/12"
 git push --force origin master
 ```
 

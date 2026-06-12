@@ -1,0 +1,96 @@
+- title: AAAI 2026 Singapore
+  items:
+    - src: /images/singapore/aaai_opening.jpg
+      alt: AAAI 2026 conference opening in Singapore
+      caption: AAAI 2026 Conference Opening, Singapore, January 22, 2026
+    - src: /images/singapore/gardens1.jpg
+      alt: Gardens by the Bay in Singapore
+      caption: Gardens by the Bay, Singapore
+    - src: /images/singapore/gardens2.jpg
+      alt: Supertree Grove at Gardens by the Bay in Singapore
+      caption: Gardens by the Bay, Singapore
+    - src: /images/singapore/merlion.jpg
+      alt: Merlion Park in Singapore
+      caption: Merlion Park, Singapore
+    - src: /images/singapore/monet.jpg
+      alt: Monet painting at the National Gallery Singapore
+      caption_html: >-
+        A painting by Monet, from the <a href="https://www.nationalgallery.sg/sg/en/about/media-centre/Encounter-captivating-French-Impressionist-works-and-their-enduring-relevance-at-National-Gallery-Singapore-s-blockbuster-exhibition-Into-the-Modern-Impressionism-from-the-Museum-of-Fine-Arts-Boston.html" target="_blank" rel="noopener">Into the Modern: Impressionism from the Museum of Fine Arts, Boston</a> exhibition at the National Gallery Singapore
+    - src: /images/singapore/moonset.jpg
+      alt: Moonset photographed from the flight to Singapore
+      caption: Moonset, photographed on the flight to Singapore, January 21, 2026
+    - src: /images/singapore/oral.jpg
+      alt: Oral presentation at Singapore EXPO
+      caption: Oral presentation, Singapore EXPO, January 24, 2026
+    - src: /images/singapore/reception.jpg
+      alt: AAAI 2026 opening reception at Singapore Zoo
+      caption: AAAI 2026 Opening Reception, Singapore Zoo, January 21, 2026
+    - src: /images/singapore/xiaomi.jpg
+      alt: Xiaomi exhibition display promoting the work at Singapore EXPO
+      caption: Our work is promoted by Xiaomi at exhibition Hall 3, Singapore EXPO
+
+- title: Events
+  items:
+    - src: /images/HUST/28B28BFC3FE106C046A45D30C5E50CF5.jpg
+      alt: ICDAR 2026 conference banquet indoor scene on the Yangtze River cruise
+      caption: ICDAR 2026 conference banquet (indoor), Yangtze river cruise
+    - src: /images/HUST/930D265997F3E002E2CDCE10F66A4BC4.jpg
+      alt: ICDAR 2026 conference banquet observation deck on the Yangtze River cruise
+      caption: ICDAR 2026 conference banquet (observation deck), Yangtze river cruise
+    - src: /images/HUST/C033CD39B4C3C198FD8BE31F8FA03331.jpg
+      alt: Oskar Jezior piano concert at Qintai Concert Hall in Wuhan
+      caption_html: >-
+        <a href="https://space.bilibili.com/566258416?spm_id_from=333.337.0.0" target="_blank" rel="noopener">Oskar Jezior</a>'s piano concert, Qintai Concert Hall, Wuhan, Aug 2025
+
+- title: Pudding 🍮
+  items:
+    - src: /images/HUST/E6016BE134A5A91E847F52B65AEA3EB6.jpg
+      alt: Pudding crouching in the sink
+      caption: Crouching in the sink
+    - src: /images/HUST/953896650D48A7718C360062BA5E2BE7.jpg
+      alt: Pudding with a mix of fear and curiosity
+      caption: A mix of fear and curiosity, Pudding
+    - src: /images/HUST/6EB17B8E91C723916B40ED7FF61B18D7.jpg
+      alt: Pudding looking intently at the camera
+      caption: A deep, penetrating look, Pudding
+    - src: /images/cat720.jpeg
+      alt: Pudding in a Buddha-like pose
+      caption: Buddha-like, Pudding
+
+- title: HUST Campus
+  items:
+    - src: /images/HUST/autumn.jpg
+      alt: Ginkgo in late autumn at HUST East Unit 3 No. 55
+      caption: Ginkgo in late autumn, HUST East Unit 3 NO.55, Dec 3 2025
+    - src: /images/HUST/gingko.jpg
+      alt: Ginkgo trees in late autumn at HUST East Unit 3 No. 55
+      caption: Ginkgo in late autumn, HUST East Unit 3 NO.55, Dec 3 2025
+    - src: /images/HUST/068EE3B261E9AEC70C9D48ABDDC104E5.jpg
+      alt: Sunset glow at the middle playground
+      caption: Sunset glow, Middle playground
+    - src: /images/HUST/13FCB676384DFB8F2442BE552E56AB74.jpg
+      alt: Sunset near West 6 student dormitory
+      caption: Sunset, West 6 student dormitory, where the first chapter of my graduate life quietly unfolded.
+    - src: /images/HUST/31E94F12BA294F9D48E7D44F58762E86.jpg
+      alt: Twilight over the west playground
+      caption: The fabulous splendor of twilight, West playground
+    - src: /images/HUST/6368F248C36DF06B6ADB8664C77293B8.jpg
+      alt: South Teaching Building after rain
+      caption_html: >-
+        After the rain at the east entrance of South Teaching Building 1, with a touch of that Makoto Shinkai atmosphere (<a href="https://en.wikipedia.org/wiki/Weathering_with_You" target="_blank" rel="noopener">Weathering with You</a>)
+    - src: /images/HUST/761F5789BD3C693FBA17217EBC7C2AD2.jpg
+      alt: Ginkgo trees near the South Teaching Building
+      caption: Ginkgo trees in late autumn near the South Teaching Building, Nov 2025
+    - src: /images/HUST/A18BBE0F6EF7D3BD39D7500067813D80.jpg
+      alt: Zuiwan Pavilion on HUST campus
+      caption: Scene, Zuiwan Pavilion. Yes, the campus carries a faintly artistic, garden-like ambience, even though it is supposed to be a STEM campus.
+    - src: /images/HUST/A681A04EEC737ECA6D41E1B6E1462500.jpg
+      alt: Soviet-style sculpture in Youth Park at midnight
+      caption_html: >-
+        An interestingly shaped Soviet-style sculpture, a bit like the <a href="https://cnc.fandom.com/wiki/Psychic_beacon" target="_blank" rel="noopener">Psychic Beacon</a>, issuing its silent command: "BE A PAPER PUBLISHING MACHINE!!". orz, :), Youth park, Midnight
+    - src: /images/HUST/DFB6F10689DDE2D0D92219139E6B1E7D.jpg
+      alt: Forest on HUST campus
+      caption: The forest in campus. HUST is renowned as "the forest university"
+    - src: /images/HUST/F8A5C8BF504744BCE3BE442F1FD3BF4F.jpg
+      alt: Sunset afterglow over South Teaching Building 1 near VLRLab
+      caption: The afterglow of the sunset over South Teaching Building 1, near the northeast corner where the VLRLab sits.

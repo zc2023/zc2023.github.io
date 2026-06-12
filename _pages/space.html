@@ -10,9 +10,23 @@ permalink: /space/
     
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>3D Space</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #000; font-family: sans-serif; }
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.32);
+            --accent: #0984e3;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
         
         /* UI 控制层 */
         #ui-layer {
@@ -20,23 +34,109 @@ permalink: /space/
             top: 20px;
             left: 20px;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.2);
+            width: min(260px, calc(100vw - 40px));
+            background: var(--glass-bg);
             padding: 15px;
             border-radius: 8px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             color: #fff;
             user-select: none;
         }
         
-        input[type=range] { width: 200px; cursor: pointer; }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: var(--accent); }
         label { font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
         #time-display { font-size: 12px; margin-top: 5px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .control-button {
+            min-height: 36px;
+            padding: 9px 10px;
+            background: rgba(9, 132, 227, 0.95);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 650;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(0, 32, 72, 0.18);
+        }
+
+        .control-button.secondary {
+            background: rgba(18, 75, 128, 0.58);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+        }
+
+        .control-button:focus-visible,
+        input[type=range]:focus-visible {
+            outline: 2px solid rgba(255, 255, 255, 0.9);
+            outline-offset: 2px;
+        }
+
+        .control-button[aria-pressed="true"] {
+            background: rgba(18, 75, 128, 0.9);
+        }
 
         /* 渲染容器 */
         #webgl-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         #css3d-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+        #loading-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 200;
+            display: grid;
+            place-items: center;
+            background: #020710;
+            color: #fff;
+            transition: opacity 500ms ease, visibility 500ms ease;
+        }
+
+        #loading-layer.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-panel {
+            width: min(320px, calc(100vw - 48px));
+            padding: 22px;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+        }
+
+        .loader-track {
+            height: 3px;
+            margin-top: 14px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.18);
+            border-radius: 999px;
+        }
+
+        .loader-bar {
+            width: 42%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(255,255,255,0.18), #7ec8ff, rgba(255,255,255,0.18));
+            animation: loading-sweep 1.2s ease-in-out infinite;
+        }
+
+        #loading-title { font-size: 14px; font-weight: 700; }
+        #loading-detail { margin-top: 8px; font-size: 12px; opacity: 0.72; }
+
+        @keyframes loading-sweep {
+            0% { transform: translateX(-105%); }
+            100% { transform: translateX(245%); }
+        }
 
         /* 3D 场景中的网页内容 */
         #my-web-content {
@@ -63,20 +163,58 @@ permalink: /space/
             margin: 20px 0;
             border-left: 5px solid #0984e3;
         }
+
+        @media (max-width: 720px) {
+            #ui-layer {
+                top: auto;
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+                width: auto;
+                padding: 12px;
+            }
+
+            .control-row {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                margin-top: 12px;
+            }
+
+            .control-button {
+                min-height: 34px;
+                padding: 8px 6px;
+                font-size: 12px;
+            }
+
+            #my-web-content {
+                padding: 30px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .loader-bar { animation: none; transform: none; width: 100%; }
+        }
     </style>
 </head>
 <body>
 
     <div id="ui-layer">
-        <label for="time-slider">☀ 时间控制</label>
+        <label for="time-slider">时间控制</label>
         <input type="range" id="time-slider" min="0" max="100" value="30">
         <div id="time-display">上午 10:00</div>
 
-        <br>
-            <button onclick="window.location.href='/'"
-            style="padding:10px 20px; background:#0984e3; color:white; border:none; border-radius:4px; cursor:pointer;">
-        Back to Homepage
-    </button>
+        <div class="control-row">
+            <button class="control-button secondary" id="reset-view" type="button">重置</button>
+            <button class="control-button secondary" id="motion-toggle" type="button" aria-pressed="false">暂停</button>
+            <button class="control-button" type="button" onclick="window.location.href='/'">首页</button>
+        </div>
+    </div>
+
+    <div id="loading-layer" role="status" aria-live="polite">
+        <div class="loader-panel">
+            <div id="loading-title">正在进入空间</div>
+            <div id="loading-detail">准备海面、天空和漂浮界面</div>
+            <div class="loader-track"><div class="loader-bar"></div></div>
+        </div>
     </div>
 
 
@@ -86,24 +224,26 @@ permalink: /space/
             <h1>Web 3D 沉浸式主页</h1>
             <p>
                 欢迎来到这个没有边界的数字空间。<br>
-                当前页面悬浮在广阔的海面上，视野直达地平线。
-                这个场景代码完全由Gemini 3 Pro生成，使用了 Three.js 和 CSS3D 技术实现。<br>
+                当前页面像一块轻薄的界面面板悬浮在广阔海面上，天空、太阳、云层和水面会随着时间连续变化。
+                这个场景使用 Three.js、CSS3D、真实水面法线、程序化云层和响应式交互实现。<br>
 
             </p>
             
             <div class="card">
-                <h3>光影互动</h3>
-                <p>请拖动左上角的滑块调整时间。观察以下细节：</p>
+                <h3>空间互动</h3>
+                <p>拖动时间滑块，或使用左上角的控制按钮观察场景变化：</p>
                 <ul>
-                    <li><b>太阳位置</b>：真实的太阳几何体在天空中划过。</li>
-                    <li><b>动态阴影</b>：注意看海面上，这个白色面板投射的影子会随着太阳移动而拉长或旋转。</li>
-                    <li><b>云层渲染</b>：天上的云朵会反射太阳的光芒，日落时会变成粉红色。</li>
+                    <li><b>连续昼夜</b>：太阳位置、天空散射、曝光和雾气会平滑过渡。</li>
+                    <li><b>真实海面</b>：水面使用动态法线和太阳方向生成波光与反射。</li>
+                    <li><b>软边云层</b>：云会缓慢漂移，并随日出、正午、日落改变色调。</li>
+                    <li><b>漂浮界面</b>：面板带有薄边框、柔和接触阴影和轻微反射。</li>
+                    <li><b>体验控制</b>：可以重置视角、暂停动效，移动端也会自动调整布局。</li>
                 </ul>
             </div>
 
             <p>
                 Created by Cheng Zhang. <br>
-                Date: 2025 Dec 1. Version 1.0.
+                Date: 2025 Dec 1. Version 3.0.
             </p>
 
 
@@ -127,18 +267,29 @@ permalink: /space/
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
+        import { Sky } from 'three/addons/objects/Sky.js';
+        import { Water } from 'three/addons/objects/Water.js';
 
         let camera, scene, renderer, cssRenderer;
-        let controls, waterMesh, backingMesh, sunMesh;
+        let controls, waterMesh, backingMesh, sunMesh, sunHalo, sky;
         let dirLight, ambientLight;
+        let webObject, panelFrame, contactShadow, panelReflection;
         let clouds = []; // 存储云朵数组
         let clock = new THREE.Clock();
+        let loadingManager, loadingLayer, motionToggleButton;
+        let motionPaused = false;
+        let isInteracting = false;
+        let cameraHome, targetHome;
+        let currentPanelScale = 1;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // 场景参数
         const params = {
             waterLevel: 0,
             webHeight: 150,
             sunDistance: 1500, // 太阳距离中心的半径
+            panelWidth: 840,
+            panelHeight: 840,
         };
 
         // 颜色定义
@@ -151,23 +302,45 @@ permalink: /space/
             SunSunset: new THREE.Color(0xffaa00),
             
             Water: new THREE.Color(0x006994),      // 深海蓝
+            PanelWarm: new THREE.Color(0xfff6e6),
+            PanelCool: new THREE.Color(0xd8ecff),
         };
 
-        init();
-        animate();
+        try {
+            init();
+            animate();
+        } catch (error) {
+            showLoadError(error);
+        }
 
         function init() {
+            loadingLayer = document.getElementById('loading-layer');
+            motionToggleButton = document.getElementById('motion-toggle');
+            loadingManager = new THREE.LoadingManager();
+            loadingManager.onLoad = hideLoadingLayer;
+            loadingManager.onError = () => {
+                document.getElementById('loading-detail').innerText = '部分远程纹理加载失败，已使用基础渲染';
+                window.setTimeout(hideLoadingLayer, 900);
+            };
+
             scene = new THREE.Scene();
             scene.background = Colors.SkyDay;
-            // 关键：不添加 scene.fog，保持视野清晰
+            scene.fog = new THREE.FogExp2(0xb8ddff, 0.00012);
 
             // 1. 相机 (加大 far 参数，看清远处)
             camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 10000);
-            camera.position.set(0, 200, 600);
+            currentPanelScale = getPanelScale();
+            cameraHome = new THREE.Vector3(0, isMobileViewport() ? 380 : 260, isMobileViewport() ? 1800 : 1100);
+            targetHome = new THREE.Vector3(0, params.webHeight + 40, 0);
+            camera.position.copy(cameraHome);
 
             // 2. 渲染器
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 0.78;
             // 开启阴影
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap; // 软阴影
@@ -200,121 +373,361 @@ permalink: /space/
 
             // 4. 太阳实体 (可视化的光球)
             const sunGeometry = new THREE.SphereGeometry(60, 32, 32);
-            const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffdd00 }); // 发光材质，不受光照影响
+            const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffdd00, transparent: true }); // 发光材质，不受光照影响
             sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
             scene.add(sunMesh);
+            createSunHalo();
 
-            // 5. 海平面 (巨大)
-            const waterGeometry = new THREE.PlaneGeometry(10000, 10000, 256, 256);
-            waterGeometry.rotateX(-Math.PI / 2);
-            
-            const waterMaterial = new THREE.MeshStandardMaterial({
-                color: Colors.Water,
-                roughness: 0.0,    // 非常光滑，像镜子
-                metalness: 0.3,    // 轻微金属感增加反光
-                flatShading: true, // 低多边形波浪风格
-            });
-
-            waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
-            waterMesh.receiveShadow = true; // 接收阴影
-            scene.add(waterMesh);
+            // 5. 真实天空和海平面
+            createSky();
+            createWater();
 
             // 6. 云朵 (生成一些随机云)
             createClouds();
 
             // 7. 网页实体
             const contentDiv = document.getElementById('content-template').firstElementChild.cloneNode(true);
-            const cssObject = new CSS3DObject(contentDiv);
-            cssObject.position.set(0, params.webHeight, 0);
-            scene.add(cssObject);
+            webObject = new CSS3DObject(contentDiv);
+            webObject.position.set(0, params.webHeight, 0);
+            webObject.scale.setScalar(currentPanelScale);
+            scene.add(webObject);
+            createPanelPhysicalShell(webObject.position);
 
             // 8. 阴影投射板 (Backing Mesh)
             // 放在网页后面一点点，用来挡光产生阴影
-            const backingGeo = new THREE.PlaneGeometry(800, 600);
+            const backingGeo = new THREE.PlaneGeometry(params.panelWidth, params.panelHeight);
             const backingMat = new THREE.MeshStandardMaterial({ 
                 color: 0x000000,
                 side: THREE.DoubleSide
             });
             backingMesh = new THREE.Mesh(backingGeo, backingMat);
-            backingMesh.position.copy(cssObject.position);
+            backingMesh.position.copy(webObject.position);
+            backingMesh.scale.setScalar(currentPanelScale);
             backingMesh.position.z -= 1; // 微调位置
-            backingMesh.castShadow = true; // 投射阴影
+            backingMesh.castShadow = false; // 改用柔和接触阴影，避免水面出现硬矩形投影
             backingMesh.material.colorWrite = false; // 隐形
             scene.add(backingMesh);
 
             // 9. 控制器
             controls = new OrbitControls(camera, cssRenderer.domElement);
             controls.enableDamping = true;
+            controls.dampingFactor = 0.055;
+            controls.target.copy(targetHome);
             controls.maxPolarAngle = Math.PI / 2 - 0.02; // 稍微限制，别看穿水面
-            controls.minDistance = 200;
-            controls.maxDistance = 2000;
+            controls.minDistance = isMobileViewport() ? 900 : 350;
+            controls.maxDistance = 2800;
+            controls.addEventListener('start', () => { isInteracting = true; });
+            controls.addEventListener('end', () => { isInteracting = false; });
 
             // 事件
             window.addEventListener('resize', onWindowResize);
             document.getElementById('time-slider').addEventListener('input', (e) => updateTime(e.target.value));
+            document.getElementById('reset-view').addEventListener('click', resetView);
+            motionToggleButton.addEventListener('click', toggleMotion);
+
+            if (prefersReducedMotion) {
+                setMotionPaused(true);
+            }
 
             // 初始化时间 (早晨)
             updateTime(30);
         }
 
-        // 创建简易云朵
-        function createClouds() {
-            const cloudGeo = new THREE.SphereGeometry(1, 16, 16);
-            // 使用 StandardMaterial，这样云朵颜色会受光照影响(日落变红)
-            const cloudMat = new THREE.MeshStandardMaterial({ 
-                color: 0xffffff, 
-                roughness: 0.8,
-                opacity: 0.8,
-                transparent: true
+        function isMobileViewport() {
+            return window.innerWidth <= 720;
+        }
+
+        function getPanelScale() {
+            return isMobileViewport() ? 0.68 : 1;
+        }
+
+        function applyResponsiveSceneSizing() {
+            currentPanelScale = getPanelScale();
+            cameraHome.set(0, isMobileViewport() ? 380 : 260, isMobileViewport() ? 1800 : 1100);
+            controls.minDistance = isMobileViewport() ? 900 : 350;
+
+            if (webObject) webObject.scale.setScalar(currentPanelScale);
+            if (panelFrame) panelFrame.scale.setScalar(currentPanelScale);
+            if (backingMesh) backingMesh.scale.setScalar(currentPanelScale);
+            if (contactShadow) contactShadow.scale.setScalar(currentPanelScale);
+            if (panelReflection) panelReflection.scale.setScalar(currentPanelScale);
+        }
+
+        function hideLoadingLayer() {
+            window.setTimeout(() => {
+                loadingLayer.classList.add('is-hidden');
+            }, 250);
+        }
+
+        function showLoadError(error) {
+            console.error(error);
+            const title = document.getElementById('loading-title');
+            const detail = document.getElementById('loading-detail');
+            title.innerText = '空间暂时无法渲染';
+            detail.innerText = '当前浏览器或设备未开启 WebGL';
+            document.body.style.background = '#020710';
+        }
+
+        function resetView() {
+            camera.position.copy(cameraHome);
+            controls.target.copy(targetHome);
+            controls.update();
+        }
+
+        function setMotionPaused(paused) {
+            motionPaused = paused;
+            motionToggleButton.setAttribute('aria-pressed', String(paused));
+            motionToggleButton.innerText = paused ? '继续' : '暂停';
+        }
+
+        function toggleMotion() {
+            setMotionPaused(!motionPaused);
+        }
+
+        function createPanelPhysicalShell(position) {
+            panelFrame = new THREE.Group();
+            panelFrame.position.copy(position);
+            panelFrame.scale.setScalar(currentPanelScale);
+
+            const backMat = new THREE.MeshStandardMaterial({
+                color: 0xf8f5ef,
+                roughness: 0.55,
+                metalness: 0.02
+            });
+            const edgeMat = new THREE.MeshStandardMaterial({
+                color: 0xecf3f8,
+                roughness: 0.35,
+                metalness: 0.08
             });
 
-            for(let i=0; i<15; i++) {
-                const cloudGroup = new THREE.Group();
-                
-                // 每个云朵由 3-6 个球体组成
-                const chunks = 3 + Math.floor(Math.random() * 4);
-                for(let j=0; j<chunks; j++) {
-                    const mesh = new THREE.Mesh(cloudGeo, cloudMat);
-                    // 随机大小和位置偏移
-                    const size = 30 + Math.random() * 40;
-                    mesh.scale.set(size, size * 0.6, size); 
-                    mesh.position.set(
-                        (Math.random() - 0.5) * 50,
-                        (Math.random() - 0.5) * 20,
-                        (Math.random() - 0.5) * 40
-                    );
-                    cloudGroup.add(mesh);
-                }
+            const backPlate = new THREE.Mesh(
+                new THREE.BoxGeometry(params.panelWidth + 28, params.panelHeight + 28, 22),
+                backMat
+            );
+            backPlate.position.z = -18;
+            backPlate.visible = false;
+            backPlate.castShadow = false;
+            backPlate.receiveShadow = true;
+            panelFrame.add(backPlate);
 
-                // 随机分布在天空中
-                cloudGroup.position.set(
-                    (Math.random() - 0.5) * 4000, // 范围大一点
-                    400 + Math.random() * 400,    // 高度 400-800
-                    (Math.random() - 0.5) * 3000 - 500 // 稍微偏后方
+            const sideThickness = 10;
+            const edgeDepth = 18;
+            const horizontalEdge = new THREE.BoxGeometry(params.panelWidth + 24, sideThickness, edgeDepth);
+            const verticalEdge = new THREE.BoxGeometry(sideThickness, params.panelHeight + 24, edgeDepth);
+            const edgePositions = [
+                [0, params.panelHeight / 2 + 12, -2, horizontalEdge],
+                [0, -params.panelHeight / 2 - 12, -2, horizontalEdge],
+                [-params.panelWidth / 2 - 12, 0, -2, verticalEdge],
+                [params.panelWidth / 2 + 12, 0, -2, verticalEdge],
+            ];
+
+            edgePositions.forEach(([x, y, z, geometry]) => {
+                const edge = new THREE.Mesh(geometry, edgeMat);
+                edge.position.set(x, y, z);
+                edge.castShadow = true;
+                edge.receiveShadow = true;
+                panelFrame.add(edge);
+            });
+
+            scene.add(panelFrame);
+
+            const shadowTexture = createRadialTexture([
+                [0, 'rgba(0, 0, 0, 0.34)'],
+                [0.45, 'rgba(0, 0, 0, 0.16)'],
+                [1, 'rgba(0, 0, 0, 0)']
+            ]);
+            const shadowMat = new THREE.MeshBasicMaterial({
+                map: shadowTexture,
+                transparent: true,
+                depthWrite: false
+            });
+            contactShadow = new THREE.Mesh(new THREE.PlaneGeometry(760, 360), shadowMat);
+            contactShadow.rotation.x = -Math.PI / 2;
+            contactShadow.position.set(position.x, params.waterLevel + 2, position.z + 12);
+            contactShadow.renderOrder = 2;
+            scene.add(contactShadow);
+
+            const reflectionTexture = createRadialTexture([
+                [0, 'rgba(255, 255, 255, 0.22)'],
+                [0.35, 'rgba(218, 235, 255, 0.12)'],
+                [1, 'rgba(255, 255, 255, 0)']
+            ]);
+            const reflectionMat = new THREE.MeshBasicMaterial({
+                map: reflectionTexture,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending
+            });
+            panelReflection = new THREE.Mesh(new THREE.PlaneGeometry(520, 280), reflectionMat);
+            panelReflection.rotation.x = -Math.PI / 2;
+            panelReflection.position.set(position.x, params.waterLevel + 3, position.z + 130);
+            panelReflection.renderOrder = 3;
+            scene.add(panelReflection);
+        }
+
+        function createSky() {
+            sky = new Sky();
+            sky.scale.setScalar(10000);
+            scene.add(sky);
+
+            const skyUniforms = sky.material.uniforms;
+            skyUniforms.turbidity.value = 8;
+            skyUniforms.rayleigh.value = 2.2;
+            skyUniforms.mieCoefficient.value = 0.004;
+            skyUniforms.mieDirectionalG.value = 0.82;
+        }
+
+        function createWater() {
+            const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+            const waterNormals = new THREE.TextureLoader(loadingManager).load(
+                'https://threejs.org/examples/textures/waternormals.jpg',
+                (texture) => {
+                    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                }
+            );
+
+            waterMesh = new Water(waterGeometry, {
+                textureWidth: 1024,
+                textureHeight: 1024,
+                waterNormals,
+                sunDirection: new THREE.Vector3(),
+                sunColor: 0xffffff,
+                waterColor: 0x0b4f6c,
+                distortionScale: 2.4,
+                fog: Boolean(scene.fog)
+            });
+            waterMesh.rotation.x = -Math.PI / 2;
+            waterMesh.position.y = params.waterLevel;
+            waterMesh.receiveShadow = true;
+            scene.add(waterMesh);
+        }
+
+        function createSunHalo() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+            gradient.addColorStop(0, 'rgba(255, 245, 195, 0.95)');
+            gradient.addColorStop(0.18, 'rgba(255, 210, 120, 0.55)');
+            gradient.addColorStop(0.42, 'rgba(255, 135, 76, 0.20)');
+            gradient.addColorStop(1, 'rgba(255, 135, 76, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 256, 256);
+
+            const haloTexture = new THREE.CanvasTexture(canvas);
+            haloTexture.colorSpace = THREE.SRGBColorSpace;
+            const haloMaterial = new THREE.SpriteMaterial({
+                map: haloTexture,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending
+            });
+
+            sunHalo = new THREE.Sprite(haloMaterial);
+            sunHalo.scale.set(520, 520, 1);
+            scene.add(sunHalo);
+        }
+
+        function createRadialTexture(stops) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+            stops.forEach(([offset, color]) => gradient.addColorStop(offset, color));
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 512, 512);
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.colorSpace = THREE.SRGBColorSpace;
+            return texture;
+        }
+
+        function createCloudTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.filter = 'blur(18px)';
+
+            const blobs = [
+                [150, 142, 110, 48, 0.78],
+                [240, 116, 142, 62, 0.88],
+                [330, 142, 124, 52, 0.74],
+                [220, 158, 220, 54, 0.48],
+                [290, 92, 78, 36, 0.44],
+            ];
+
+            blobs.forEach(([x, y, rx, ry, alpha]) => {
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, Math.max(rx, ry));
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
+                gradient.addColorStop(0.58, `rgba(255, 255, 255, ${alpha * 0.45})`);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            ctx.filter = 'none';
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.colorSpace = THREE.SRGBColorSpace;
+            return texture;
+        }
+
+        // 创建软边云层
+        function createClouds() {
+            const cloudTexture = createCloudTexture();
+
+            for(let i = 0; i < 22; i++) {
+                const material = new THREE.SpriteMaterial({
+                    map: cloudTexture,
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.34 + Math.random() * 0.32,
+                    depthWrite: false
+                });
+                const cloud = new THREE.Sprite(material);
+                const scale = 360 + Math.random() * 580;
+                cloud.scale.set(scale, scale * (0.26 + Math.random() * 0.12), 1);
+                cloud.position.set(
+                    (Math.random() - 0.5) * 5200,
+                    430 + Math.random() * 520,
+                    (Math.random() - 0.5) * 3400 - 820
                 );
-                
-                scene.add(cloudGroup);
-                clouds.push(cloudGroup);
+                cloud.renderOrder = 1;
+                cloud.userData = {
+                    speed: 0.08 + Math.random() * 0.18,
+                    baseOpacity: material.opacity,
+                    baseY: cloud.position.y,
+                    phase: Math.random() * Math.PI * 2,
+                };
+
+                scene.add(cloud);
+                clouds.push(cloud);
             }
         }
 
-        // 更新时间逻辑 (0 = 日出, 50 = 正午, 100 = 日落)
+        function clamp01(value) {
+            return Math.min(1, Math.max(0, value));
+        }
+
+        function smoothstep(edge0, edge1, value) {
+            const t = clamp01((value - edge0) / (edge1 - edge0));
+            return t * t * (3 - 2 * t);
+        }
+
+        // 更新时间逻辑 (0 = 清晨, 50 = 正午, 100 = 黄昏)
         function updateTime(val) {
             val = parseFloat(val);
             const timeDisplay = document.getElementById('time-display');
             
-            // 映射 0-100 到角度 (0度=日出东方, 90度=正午, 180度=日落西方)
-            // 为了视觉效果，我们设定: 
-            // 0 -> 10度 (日出)
-            // 50 -> 90度 (正午)
-            // 100 -> 170度 (日落)
-            const angleDeg = 10 + (val / 100) * 160; 
+            // 让太阳略微从地平线下升起/落下，地平线附近的暖色会更自然。
+            const dayProgress = val / 100;
+            const angleDeg = -4 + dayProgress * 188; 
             const angleRad = THREE.MathUtils.degToRad(angleDeg);
 
-            // 计算太阳位置 (余弦对应X轴，正弦对应Y轴)
-            // 注意：cos(0)是1(右边)，我们需要从左边升起，所以取负或者调整相位
-            // 这里：cos(180)= -1 (西), cos(0)= 1 (东). 
-            // 让太阳从 x=负 (东) 升起 -> x=0 -> x=正 (西)
             const radius = params.sunDistance;
             const sunX = -Math.cos(angleRad) * radius; 
             const sunY = Math.sin(angleRad) * radius;
@@ -323,97 +736,153 @@ permalink: /space/
             // 1. 设置太阳位置
             dirLight.position.set(sunX, sunY, sunZ);
             sunMesh.position.set(sunX, sunY, sunZ);
+            sunHalo.position.copy(sunMesh.position);
 
-            // 2. 计算颜色混合
-            let skyColor = new THREE.Color();
-            let sunLightColor = new THREE.Color();
-            let ambIntensity = 0.5;
+            const sunElevation = clamp01(Math.sin(angleRad));
+            const horizonAmount = 1 - smoothstep(0.16, 0.66, sunElevation);
+            const duskAmount = smoothstep(0.82, 1, dayProgress);
+            const dawnAmount = 1 - smoothstep(0, 0.18, dayProgress);
+            const warmAmount = Math.max(horizonAmount, dawnAmount * 0.55, duskAmount * 0.75);
+            const nightAmount = Math.max(
+                1 - smoothstep(0, 0.09, dayProgress),
+                smoothstep(0.94, 1, dayProgress)
+            );
 
-            // 这里的逻辑：val 0-20(日出), 20-80(白天), 80-100(日落)
-            if (val < 20) {
-                // 日出阶段
-                const t = val / 20;
-                skyColor.lerpColors(Colors.SkySunset, Colors.SkyDay, t);
-                sunLightColor.lerpColors(Colors.SunSunset, Colors.SunDay, t);
-                sunMesh.material.color.setHex(0xffaa00); // 太阳看起来是橙色的
-                timeDisplay.innerText = "清晨 / 日出";
-            } else if (val > 80) {
-                // 日落阶段
-                const t = (val - 80) / 20;
-                skyColor.lerpColors(Colors.SkyDay, Colors.SkySunset, t);
-                sunLightColor.lerpColors(Colors.SunDay, Colors.SunSunset, t);
-                sunMesh.material.color.setHex(0xff4500); // 太阳变红
-                
-                // 接近100时，天变暗
-                if(t > 0.5) {
-                    skyColor.lerp(Colors.SkyNight, (t - 0.5) * 2);
-                    ambIntensity = 0.6 * (1 - t);
-                }
-                timeDisplay.innerText = "傍晚 / 日落";
-            } else {
-                // 白天
-                skyColor.copy(Colors.SkyDay);
-                sunLightColor.copy(Colors.SunDay);
-                sunMesh.material.color.setHex(0xffffee); // 太阳亮白
-                ambIntensity = 0.6;
-                timeDisplay.innerText = "白天 / 正午";
-            }
+            const warmSky = new THREE.Color(dayProgress < 0.5 ? 0xffb270 : 0xff715e);
+            const skyColor = Colors.SkyDay.clone()
+                .lerp(warmSky, warmAmount * 0.78)
+                .lerp(Colors.SkyNight, nightAmount * 0.72);
+            const sunLightColor = Colors.SunDay.clone().lerp(Colors.SunSunset, warmAmount);
+            const ambIntensity = 0.18 + 0.5 * smoothstep(0.04, 0.48, sunElevation) * (1 - nightAmount * 0.7);
+            const exposure = 0.52 + 0.34 * smoothstep(0.05, 0.55, sunElevation) - nightAmount * 0.16;
+            const haloScale = 440 + 360 * warmAmount;
+            const sunOpacity = sunY < 0 ? 0.22 : 1 - nightAmount * 0.35;
+            const hour = Math.round(5.5 + dayProgress * 14);
+
+            sunMesh.material.color.copy(sunLightColor);
+            sunMesh.material.opacity = sunOpacity;
+            timeDisplay.innerText = `${hour}:00 / ${dayProgress < 0.22 ? '清晨' : dayProgress > 0.78 ? '傍晚' : '白天'}`;
 
             // 3. 应用颜色
             scene.background = skyColor;
+            scene.fog.color.copy(skyColor).lerp(Colors.Water, 0.16 + horizonAmount * 0.16);
+            scene.fog.density = 0.00008 + horizonAmount * 0.0001 + nightAmount * 0.00004;
+            renderer.toneMappingExposure = exposure;
             dirLight.color = sunLightColor;
+            dirLight.intensity = 0.35 + 1.05 * smoothstep(0.02, 0.52, sunElevation);
             ambientLight.color = skyColor; // 环境光跟随天空颜色
             ambientLight.intensity = ambIntensity;
+            sunHalo.scale.set(haloScale, haloScale, 1);
+            sunHalo.material.opacity = sunOpacity * (0.42 + warmAmount * 0.58);
 
-            // 水面颜色也会受天空影响
-            waterMesh.material.color.copy(Colors.Water).lerp(skyColor, 0.1);
+            if (sky) {
+                const uniforms = sky.material.uniforms;
+                uniforms.sunPosition.value.copy(sunMesh.position);
+                uniforms.rayleigh.value = 1.15 + 1.25 * (1 - nightAmount);
+                uniforms.turbidity.value = 6.8 + warmAmount * 6.2;
+                uniforms.mieCoefficient.value = 0.003 + warmAmount * 0.006;
+            }
+
+            if (waterMesh) {
+                waterMesh.material.uniforms.sunDirection.value.copy(dirLight.position).normalize();
+                waterMesh.material.uniforms.sunColor.value.copy(sunLightColor);
+                waterMesh.material.uniforms.waterColor.value.copy(Colors.Water).lerp(skyColor, 0.12 + warmAmount * 0.12);
+                waterMesh.material.uniforms.distortionScale.value = 2.4 + 0.55 * smoothstep(0.18, 0.62, sunElevation);
+            }
+
+            clouds.forEach((cloud) => {
+                cloud.material.color.copy(new THREE.Color(0xffffff).lerp(sunLightColor, warmAmount * 0.36).lerp(skyColor, nightAmount * 0.42));
+                cloud.material.opacity = cloud.userData.baseOpacity * (0.74 + sunElevation * 0.28) * (1 - nightAmount * 0.42);
+            });
+
+            if (panelFrame) {
+                const panelColor = Colors.PanelCool.clone().lerp(Colors.PanelWarm, warmAmount * 0.85);
+                panelFrame.children.forEach((child) => {
+                    child.material.color.copy(panelColor);
+                    child.material.emissive = skyColor.clone().multiplyScalar(nightAmount * 0.12);
+                });
+            }
+
+            if (contactShadow) {
+                contactShadow.material.opacity = 0.42 + 0.2 * smoothstep(0.12, 0.58, sunElevation);
+            }
+
+            if (panelReflection) {
+                panelReflection.material.opacity = 0.34 + 0.22 * smoothstep(0.18, 0.62, sunElevation);
+            }
         }
 
         function onWindowResize() {
+            applyResponsiveSceneSizing();
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             cssRenderer.setSize(window.innerWidth, window.innerHeight);
         }
 
         function animate() {
             requestAnimationFrame(animate);
 
-            const t = clock.getElapsedTime();
+            const delta = clock.getDelta();
+            const t = clock.elapsedTime;
+            const motionScale = motionPaused ? 0 : 1;
 
-            // 波浪动画
-            const posAttr = waterMesh.geometry.attributes.position;
-            for(let i=0; i<posAttr.count; i++){
-                const x = posAttr.getX(i);
-                const z = posAttr.getZ(i);
-                // 宽阔平缓的波浪
-                const y = Math.sin(x/100 + t*0.5) * 15 + Math.cos(z/80 + t*0.4) * 15;
-                posAttr.setY(i, y);
+            // Water shader 自带法线扰动，推进 time 即可得到连续波光。
+            if (waterMesh) {
+                waterMesh.material.uniforms.time.value += delta * 0.62 * motionScale;
             }
-            posAttr.needsUpdate = true;
-            waterMesh.geometry.computeVertexNormals();
 
             // 网页浮动
-            const floatY = Math.sin(t) * 5;
-            // 只需要更新 CSS 对象和背后的阴影板
-            // 我们通过 scene 遍历找到它们
-            // 为了性能最好用变量存起来，但这里为了代码结构简单直接用 backingMesh
+            const floatY = Math.sin(t) * 5 * motionScale;
             backingMesh.position.y = params.webHeight + floatY;
-            // CSS 对象位置需要手动同步（因为上面没有直接暴露变量到这里，除了初始化）
-            // 重新查找一下
-            scene.traverse((obj) => {
-                if(obj.isCSS3DObject) {
-                    obj.position.y = params.webHeight + floatY;
-                }
-            });
+            webObject.position.y = params.webHeight + floatY;
+            panelFrame.position.y = params.webHeight + floatY;
+
+            if (contactShadow) {
+                const shadowPulse = 1 + Math.sin(t * 0.8) * 0.025;
+                contactShadow.scale.set(
+                    currentPanelScale * shadowPulse,
+                    currentPanelScale * (0.92 + Math.cos(t * 0.7) * 0.035),
+                    1
+                );
+                contactShadow.position.x = webObject.position.x + Math.sin(t * 0.35) * 10;
+                contactShadow.position.z = webObject.position.z + 16 + Math.cos(t * 0.4) * 8;
+            }
+
+            if (panelReflection) {
+                panelReflection.position.x = webObject.position.x + Math.sin(t * 0.3) * 12;
+                panelReflection.position.z = webObject.position.z + 135 + Math.cos(t * 0.35) * 12;
+                panelReflection.scale.set(
+                    currentPanelScale * (1 + Math.sin(t * 0.6) * 0.04),
+                    currentPanelScale * (1 + Math.cos(t * 0.55) * 0.08),
+                    1
+                );
+            }
 
             // 云朵缓慢移动
             clouds.forEach((cloud, idx) => {
-                cloud.position.x += 0.2 * (idx % 2 === 0 ? 1 : -1);
+                cloud.position.x += cloud.userData.speed * (idx % 2 === 0 ? 1 : -1) * motionScale;
+                cloud.position.y = cloud.userData.baseY + Math.sin(t * 0.18 + cloud.userData.phase) * 16 * motionScale;
                 // 简单的循环
-                if(cloud.position.x > 2000) cloud.position.x = -2000;
-                if(cloud.position.x < -2000) cloud.position.x = 2000;
+                if(cloud.position.x > 2600) cloud.position.x = -2600;
+                if(cloud.position.x < -2600) cloud.position.x = 2600;
             });
+
+            if (!motionPaused && !isInteracting) {
+                const driftTarget = cameraHome.clone().add(new THREE.Vector3(
+                    Math.sin(t * 0.09) * 42,
+                    Math.sin(t * 0.13) * 16,
+                    Math.cos(t * 0.08) * 38
+                ));
+                const focusTarget = targetHome.clone().add(new THREE.Vector3(
+                    Math.sin(t * 0.07) * 14,
+                    Math.cos(t * 0.06) * 10,
+                    0
+                ));
+                camera.position.lerp(driftTarget, 0.012);
+                controls.target.lerp(focusTarget, 0.012);
+            }
 
             controls.update();
             renderer.render(scene, camera);

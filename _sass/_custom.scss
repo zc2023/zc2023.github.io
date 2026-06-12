@@ -1,0 +1,420 @@
+/* ==========================================================================
+   Site-specific components
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&display=swap");
+
+.windsong-regular {
+  display: block !important;
+  font-family: "WindSong", cursive;
+  font-size: 40px !important;
+  font-style: normal !important;
+  font-weight: 400;
+  text-align: center !important;
+}
+
+.gradient-text {
+  animation: gradientFlow 8s linear infinite;
+  background: linear-gradient(90deg, #3b82f6, #9333ea, #3b82f6, #9333ea);
+  background-clip: text;
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% center; }
+  100% { background-position: 100% center; }
+}
+
+.liquid-glass-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.masthead {
+  position: sticky;
+  top: 12px;
+  z-index: 100;
+  margin: 0 auto;
+  background: transparent;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+.masthead__inner-wrap {
+  position: relative;
+  isolation: isolate;
+  width: min(1120px, calc(100vw - 28px));
+  margin: 10px auto 0;
+  padding: 0.72rem 1rem;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.58) 46%, rgba(255, 255, 255, 0.38)),
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.88), transparent 34%),
+    radial-gradient(circle at 92% 12%, rgba(82, 173, 200, 0.16), transparent 30%);
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 0 22px rgba(255, 255, 255, 0.32),
+    0 16px 42px rgba(18, 31, 45, 0.18);
+  backdrop-filter: blur(32px) saturate(185%) contrast(108%) brightness(1.04);
+  -webkit-backdrop-filter: blur(32px) saturate(185%) contrast(108%) brightness(1.04);
+}
+
+.masthead__inner-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.12) 28%, rgba(255, 255, 255, 0.28) 64%, rgba(255, 255, 255, 0.08)),
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.52), transparent 32%),
+    rgba(255, 255, 255, 0.18);
+  filter: url("#masthead-liquid-glass") brightness(1.04);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  opacity: 0.9;
+}
+
+.masthead__inner-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 23px;
+  box-shadow:
+    inset 2px 2px 2px rgba(255, 255, 255, 0.72),
+    inset -2px -2px 3px rgba(255, 255, 255, 0.38),
+    inset 0 -10px 18px -18px rgba(18, 31, 45, 0.52);
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.54), transparent 20%),
+    radial-gradient(ellipse at 76% 0%, rgba(255, 255, 255, 0.34), transparent 38%);
+  opacity: 0.82;
+}
+
+.masthead__menu {
+  position: relative;
+  z-index: 2;
+}
+
+.masthead__menu,
+.greedy-nav {
+  background: transparent;
+}
+
+.greedy-nav button.hidden {
+  display: none;
+}
+
+.greedy-nav button {
+  background: rgba(82, 173, 200, 0.72);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+}
+
+.masthead.is-scrolled .masthead__inner-wrap {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.5) 48%, rgba(255, 255, 255, 0.34)),
+    radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.78), transparent 34%),
+    radial-gradient(circle at 92% 12%, rgba(82, 173, 200, 0.14), transparent 28%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 22px rgba(255, 255, 255, 0.26),
+    0 18px 46px rgba(18, 31, 45, 0.22);
+}
+
+.sidebar.sticky {
+  top: 6.5em;
+}
+
+.floating-nav {
+  position: fixed;
+  top: 92px;
+  left: 50%;
+  z-index: 9999;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: min(920px, calc(100vw - 24px));
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity 0.4s ease;
+}
+
+.floating-nav.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.floating-nav__link {
+  display: block;
+  padding: 8px 12px;
+  color: #424242;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none !important;
+  background: rgba(255, 255, 255, 0.68);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.20);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-nav__link:hover {
+  color: #222;
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 2px 8px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.3),
+    0 12px 28px rgba(0, 0, 0, 0.26);
+}
+
+.page__content {
+  max-width: 1600px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.page__content h2 { font-size: 1.4rem !important; margin-top: 1.1em; }
+.page__content h3 { font-size: 1.15rem !important; margin-top: 1em; }
+.page__content h4 { font-size: 1.05rem !important; margin-top: 0.6em; }
+.page__content p,
+.page__content li,
+.page__content dd {
+  color: #333;
+  font-size: 0.95rem !important;
+  line-height: 1.5;
+}
+
+.publication-grid {
+  display: grid;
+  grid-template-columns: minmax(210px, 260px) minmax(0, 1fr) !important;
+  gap: 22px !important;
+  align-items: stretch !important;
+  grid-auto-rows: auto;
+  max-width: 1120px;
+  margin: 18px 0 !important;
+  padding: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 252, 253, 0.92));
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  box-shadow: 0 8px 22px rgba(24, 43, 58, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.publication-grid:hover {
+  border-color: rgba(82, 173, 200, 0.26);
+  box-shadow: 0 14px 30px rgba(24, 43, 58, 0.13);
+  transform: translateY(-2px);
+}
+
+.publication-grid h4 {
+  margin: 0 0 8px !important;
+  color: #1f2933;
+  font-size: 1.02rem !important;
+  font-weight: 700;
+  line-height: 1.38;
+}
+
+.publication-grid h4 a[title],
+.publication-grid h4 .github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  margin-left: 4px;
+  color: #1976d2 !important;
+  vertical-align: middle;
+  text-decoration: none !important;
+  background: rgba(25, 118, 210, 0.08);
+  border: 1px solid rgba(25, 118, 210, 0.12);
+  border-radius: 999px;
+}
+
+.publication-grid h4 a[title]:hover,
+.publication-grid h4 .github-link:hover {
+  color: #0f4d8f !important;
+  background: rgba(25, 118, 210, 0.15);
+  border-color: rgba(25, 118, 210, 0.24);
+}
+
+.publication-grid h4 img {
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.publication-grid p {
+  margin: 6px 0 !important;
+  color: #4b5563 !important;
+  font-size: 0.9rem !important;
+  line-height: 1.55;
+}
+
+.publication-grid h4 + p {
+  color: #1f2933 !important;
+  font-style: normal !important;
+  font-weight: 650;
+}
+
+.publication-grid h4 + p span {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255, 236, 236, 0.9);
+  border: 1px solid rgba(255, 0, 0, 0.12);
+  border-radius: 999px;
+}
+
+.publication-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  max-width: 260px;
+  height: 165px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.publication-img img,
+.publication-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  padding: 3px 8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  background: rgba(214, 48, 49, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.github-link i { margin-right: 4px; }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.gallery-card {
+  text-align: center;
+}
+
+.gallery-card__media {
+  box-sizing: border-box;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  padding: 7px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-card__media:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+}
+
+.gallery-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 7px;
+  object-fit: cover;
+}
+
+.gallery-card__caption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.center { text-align: center; }
+
+.center_box {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .publication-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .publication-img {
+    width: 100% !important;
+    max-width: none;
+    height: 200px;
+  }
+
+  .page__content {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .masthead {
+    top: 8px;
+  }
+
+  .masthead__inner-wrap {
+    width: calc(100vw - 18px);
+    margin-top: 8px;
+    padding: 0.62rem 0.8rem;
+    border-radius: 20px;
+  }
+
+  .masthead__inner-wrap::before {
+    border-radius: 19px;
+  }
+
+  .floating-nav {
+    top: 84px;
+    gap: 6px;
+  }
+
+  .floating-nav__link {
+    padding: 7px 9px;
+    font-size: 0.72rem;
+  }
+}

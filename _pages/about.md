@@ -17,47 +17,6 @@ I'm currently studying at Huazhong University of Science and Technology, under t
   Less is more, slow is fast.
 </div>
 
-<style>
-
-
-@import url('https://fonts.googleapis.com/css2?family=WindSong:wght@400;500&display=swap');
-.windsong-regular {
-  font-family: "WindSong";
-  font-weight: 400;
-  font-style: normal;
-  font-style: normal !important;
-  font-size: 40px !important;    /* 强制大小 */
-  display: block !important;
-  text-align: center !important;
-
-}
-
-.windsong-medium {
-  font-family: "WindSong", cursive;
-  font-weight: 500;
-  font-style: normal;
-}
-.gradient-text {
-  background: linear-gradient(90deg, #3b82f6, #9333ea, #3b82f6, #9333ea);
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientFlow 8s linear infinite;
-}
-
-@keyframes gradientFlow {
-  0% {
-    background-position: 0% center;
-  }
-
-  100% {
-    background-position: 100% center;
-  }
-}
-</style>
-
-
-
 🔍 Research Interests
 ------
 * 3D Multimodal Large Language Models (3D MLLMs)
@@ -71,20 +30,20 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 * [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation! 
 * [2024/4/20] Open personal website.
 
-📝 Publicaitons
+📝 Publications
 ------
 <span style="font-size: 0.85em; color: #666;">* Equal Contribution, † Corresponding Author</span>
 
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <div class="badge">AAAI 2026 (Oral)</div>
-    <img class="publication-thumb" src="/images/publications/aaai.png" alt="toc3d" />
+    <img class="publication-thumb" src="/images/publications/aaai.png" alt="GRANT AAAI 2026 paper thumbnail" />
   </div>
   <div>
     <h4 style="margin-top: 0;">Cook and Clean Together: Teaching Embodied Agents for Parallel Task Execution
           <a href="https://h-embodvis.github.io/GRANT/" title="Project" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-globe" aria-hidden="true"></i></a>
       <a href="https://arxiv.org/abs/2511.19430" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-      <a href="https://github.com/H-EmbodVis/Grant" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+      <a href="https://github.com/H-EmbodVis/Grant" class="github-link" data-repo="H-EmbodVis/Grant" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
       <a href="/Mypages/aaai_share.html" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i></a>
       <img src="https://img.shields.io/github/stars/H-EmbodVis/Grant?style=social" />
     </h4>
@@ -96,12 +55,12 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
     <div class="badge">ECCV 2024</div>
-    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="toc3d" />
+    <img class="publication-thumb" src="/images/publications/toc3d.png" alt="ToC3D ECCV 2024 paper thumbnail" />
   </div>
   <div>
     <h4 style="margin-top: 0;">Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression
       <a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/06320.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
-      <a href="https://github.com/DYZhang09/ToC3D" class="github-link" data-repo="chenfengxu714/StreamDiffusionV2" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
+      <a href="https://github.com/DYZhang09/ToC3D" class="github-link" data-repo="DYZhang09/ToC3D" title="GitHub" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fab fa-github" aria-hidden="true"></i> </a>
     </h4>
     <p style="color: #000; font-style: italic; margin: 5px 0;"> ECCV 2024</p>
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, <strong style="color: #000;">Cheng Zhang</strong>, Jingdong Wang, Xiang Bai</p>
@@ -112,7 +71,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
   <div class="badge">TII 2024</div>
-    <img class="publication-thumb" src="/images/publications/MMATrans.png" alt="toc3d" />
+    <img class="publication-thumb" src="/images/publications/MMATrans.png" alt="MMATrans paper thumbnail" />
   </div>
   <div>
     <h4 style="margin-top: 0;">MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers
@@ -126,7 +85,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
   <div class="badge">TIP 2023</div>
-    <img class="publication-thumb" src="/images/publications/tip23.png" alt="toc3d" />
+    <img class="publication-thumb" src="/images/publications/tip23.png" alt="Head pose estimation paper thumbnail" />
   </div>
   <div>
     <h4 style="margin-top: 0;">Orientation Cues-aware Facial Relationship Representation for Head Pose Estimation via Transformer
@@ -141,7 +100,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
   <div class="badge">CVPR 2023</div>
-    <img class="publication-thumb" src="/images/publications/tokenhpe.png" alt="toc3d" />
+    <img class="publication-thumb" src="/images/publications/tokenhpe.png" alt="TokenHPE CVPR 2023 paper thumbnail" />
   </div>
   <div>
     <h4 style="margin-top: 0;">TokenHPE: Learning Orientation Tokens for Efficient Head Pose Estimation via Transformers
@@ -155,7 +114,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
   <div class="badge">TMM 2023</div>
-    <img class="publication-thumb" src="/images/publications/transifc.png" alt="toc3d" />
+    <img class="publication-thumb" src="/images/publications/transifc.png" alt="TransIFC paper thumbnail" />
   </div>
   <div>
     <h4 style="margin-top: 0;">TransIFC: Invariant Cues-aware Feature Concentration Learning for Efficient Fine-grained Bird Image Classification
@@ -169,7 +128,7 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 <div class="publication-grid" style="display: grid; grid-template-columns: minmax(220px,290px) 1fr; gap: 20px; margin-bottom: 30px; align-items: start;">
   <div class="publication-img" style="text-align: center; display:flex; align-items:center; justify-content:center;">
   <div class="badge">ROBIO 2022</div>
-    <img class="publication-thumb" src="/images/publications/robio.png" alt="toc3d" />
+    <img class="publication-thumb" src="/images/publications/robio.png" alt="ROBIO 2022 paper thumbnail" />
   </div>
   <div>
     <h4 style="margin-top: 0;">Affinity Relation-aware Fine-grained Bird Image Recognition for Robot Vision Tracking via Transformers
@@ -179,150 +138,6 @@ I'm currently studying at Huazhong University of Science and Technology, under t
     <p style="color: #666; margin: 5px 0; font-size: 0.9em;">Hai Liu, <strong style="color: #000;">Cheng Zhang<sup>†</sup></strong>, Bochen Xie, Tingting Liu, Qingsong Xu, You-Fu Li<sup>†</sup></p>
   </div>
 </div>
-
-<style>
-.gh-stars{font-weight:600; margin-left:6px; color:#333; font-size:0.95em}
-.github-link i{margin-right:4px}
-
-/* Publication layout tweaks */
-.publication-grid { grid-auto-rows: auto; }
-.publication-img img { display:block; }
-
-/* Image container: use cover so images are visually uniform */
-.publication-img {
-  width: 290px;
-  height: 180px;
-  overflow: hidden;
-  border-radius: 4px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 3px 3px 6px rgba(0,0,0,0.18); /* 阴影生效 */
-}
-
-.publication-img img.publication-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.badge {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  padding: 2px 6px;
-  font-size: 12px;
-  font-weight: bold;
-  color: white;
-
-  background: rgba(254, 41, 41, 0.45); /* 半透明 */
-  backdrop-filter: blur(6px); /* 模糊 */
-  -webkit-backdrop-filter: blur(6px); /* 兼容性 */
-  border-radius: 4px;
-}
-
-
-
-/* Compact icon links (small, no heavy background) */
-a[title]{ color: #1976d2; text-decoration: none; font-size: 0.95em; }
-
-/* Widen the content column for this page and normalize typography to match resume style */
-.page__content {
-  max-width: 1600px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-.page__content h2 { font-size: 1.4rem !important; margin-top: 1.1em; }
-.page__content h3 { font-size: 1.15rem !important; margin-top: 1em; }
-.page__content h4 { font-size: 1.05rem !important; margin-top: 0.6em; }
-.page__content p, .page__content li, .page__content dd { font-size: 0.95rem !important; color: #333; line-height: 1.5; }
-
-/* Research/Honors grid helper classes (used below) */
-.research-grid, .honors-grid { display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: start; margin-bottom: 12px; }
-.research-grid .meta, .honors-grid .meta { text-align: right; white-space: nowrap; font-size: 0.9em; color: #666; }
-
-@media (max-width: 900px) {
-  .publication-grid { grid-template-columns: 1fr !important; }
-  .publication-img { width: 100%; height: 200px; }
-  .page__content { padding: 0 1rem; max-width: 100%; }
-}
-
-</style>
-
-<script>
-/*
-  Robust GitHub star fetcher with localStorage caching.
-  - Caches results 6 hours to avoid hitting unauthenticated rate limits
-  - Fills all elements with class 'gh-stars' (reads data-repo attribute)
-  - Falls back to a stale cached value or '–' on errors
-*/
-(async function(){
-  function cacheGet(key, maxAgeMs){
-    try{
-      const raw = localStorage.getItem(key);
-      if(!raw) return null;
-      const obj = JSON.parse(raw);
-      if(Date.now() - obj.t > maxAgeMs) { localStorage.removeItem(key); return null; }
-      return obj.v;
-    }catch(e){ return null; }
-  }
-  function cacheSet(key, value){
-    try{ localStorage.setItem(key, JSON.stringify({t: Date.now(), v: value})); }catch(e){}
-  }
-
-  async function fetchStars(repo){
-    const cacheKey = 'ghstars:' + repo;
-    const cached = cacheGet(cacheKey, 1000*60*60*6); /* 6 hours */
-    if(cached !== null) return cached;
-    try{
-      const res = await fetch('https://api.github.com/repos/' + repo, {headers:{'Accept':'application/vnd.github.v3+json'}});
-      if(!res.ok) {
-        const stale = cacheGet(cacheKey, Number.MAX_SAFE_INTEGER);
-        return stale !== null ? stale : '–';
-      }
-      const j = await res.json();
-      const count = (j.stargazers_count || 0).toLocaleString();
-      cacheSet(cacheKey, count);
-      return count;
-    }catch(e){
-      const stale = cacheGet(cacheKey, Number.MAX_SAFE_INTEGER);
-      return stale !== null ? stale : '–';
-    }
-  }
-
-  function render(el, text){ if(!el) return; el.textContent = '★ ' + text; }
-
-  function run(){
-    const els = document.querySelectorAll('.gh-stars');
-    if(!els || els.length === 0) return;
-    const repoMap = {};
-    els.forEach(el => {
-      const repo = el.dataset.repo;
-      if(repo) {
-        if(!repoMap[repo]) repoMap[repo] = [];
-        repoMap[repo].push(el);
-      }
-    });
-    Object.keys(repoMap).forEach(async repo => {
-      repoMap[repo].forEach(el => { el.textContent = '★ …'; });
-      const count = await fetchStars(repo);
-      repoMap[repo].forEach(el => render(el, count));
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-})();
-</script>
-
-
 
 See full publication list on [Google Scholar ->](https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en)
 
@@ -399,7 +214,7 @@ Patents
 <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
   <div>
     <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于特征交互学习网络的学生心理状态检测方法
-    <a href="/files/patents/p3.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    </p>
     <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，CN116172556A</p>
     <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、朱晓倩、刘婷婷、张昭理、宋林森、林丹月、王镜淇、<strong>张诚</strong></p>
   </div>
@@ -409,7 +224,7 @@ Patents
 <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
   <div>
     <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于人体姿态估计的动态课堂签到方法
-    <a href="/files/patents/p4.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    </p>
     <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，CN116311572A</p>
     <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、王镜淇、刘婷婷、张昭理、<strong>张诚</strong>、朱晓倩、宋林森、林丹月</p>
   </div>
@@ -419,7 +234,7 @@ Patents
 <div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 8px; align-items: start;">
   <div>
     <p style="margin: 0 0 2px 0; font-weight: bold;">一种基于双相机多分支网络的虚拟现实教学手势识别方法
-    <a href="/files/patents/p5.pdf" title="PDF" style="color: #1976d2; text-decoration: none; font-size: 0.95em;"><i class="fas fa-file-pdf" aria-hidden="true"></i></a></p>
+    </p>
     <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">国家发明专利，中国，CN116466816A</p>
     <p style="margin: 0 0 2px 0; color: #666; font-size: 0.9em;">刘海、宋林森、刘婷婷、张昭理、林丹月、王镜淇、<strong>张诚</strong>、朱晓倩</p>
   </div>
@@ -489,92 +304,7 @@ Reviewer: NeurIPS 2024, AISTATS 2025, ICML 2025, AAAI 2026, ICLR 2026, CVPR 2026
 I am now available on the job market.
 
 
-<div class="glass-buttons">
-  <a href="/" class="glass-btn">Homepage</a>
-  <a href="/portfolio/" class="glass-btn">Gallery</a>
-  <a href="/talks/" class="glass-btn">Personal Posts</a>
-  <a href="https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en" class="glass-btn">Google Scholar Profile</a>
-  <a href="/files/ZhangChengCV2025_9_13.pdf" class="glass-btn">Curriculum Vitae</a>
-</div>
-
-<style>
-/* 容器，固定在顶部，初始隐藏 */
-.glass-buttons {
-  position: fixed;
-  top: 10px;                 /* 顶部距离，可调 */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;             /* 横向排列 */
-  gap: 12px;                 /* 按钮间距 */
-  z-index: 9999;
-  opacity: 0;                /* 初始隐藏 */
-  pointer-events: none;      /* 不可点击 */
-  transition: opacity 0.4s ease;
-}
-
-/* 滑动显示 */
-.glass-buttons.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* 单个按钮样式 */
-.glass-btn {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px) saturate(150%);
-  -webkit-backdrop-filter: blur(10px) saturate(150%);
-  border-radius: 16px;
-  padding: 8px 12px;
-  font-weight: bold;
-  font-size: 17px;
-  align-items: center;      /* 垂直居中 */
-  color: #424242;
-  text-decoration: none !important;
-  display: block;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* 高光边缘 */
-  box-shadow:
-    inset 0 2px 6px rgba(255, 255, 255, 0.5),   /* 顶部和边缘高光 */
-    inset 0 -2px 4px rgba(255, 255, 255, 0.25), /* 底部微光 */
-
-    /* 外部阴影 */
-    0 8px 20px rgba(0, 0, 0, 0.20);
-}
-
-/* 鼠标悬停增强立体感 */
-.glass-btn:hover {
-  transform: scale(1.05);
-  box-shadow:
-    inset 0 2px 8px rgba(255, 255, 255, 0.6),
-    inset 0 -2px 5px rgba(255, 255, 255, 0.3),
-    0 12px 28px rgba(0, 0, 0, 0.3);
-}
-
-.center {
-  text-align: center;
-}
-
-.center_box {
-  display: flex;
-  justify-content: center;
-}
-
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const container = document.querySelector('.glass-buttons');
-
-  window.addEventListener('scroll', function () {
-    if (window.scrollY >= 400) {   /* 下滑100px显示 */ 
-      container.classList.add('show');
-    } else {
-      container.classList.remove('show');
-    }
-  });
-});
-</script>
+{% include floating-nav.html %}
 
 
 ---
@@ -586,6 +316,4 @@ document.addEventListener("DOMContentLoaded", function () {
 <div class="center_box">
     <img class="counter" src="https://count.getloli.com/@zc2023.github.io?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=0.85&pixelated=1&darkmode=auto">
 </div>
-
-
 
