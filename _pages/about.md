@@ -26,6 +26,8 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 
 🔥 News
 ------
+* [2026/6/27] Optimized the homepage interface.
+* [2026/5/20] Started my research internship at Huawei HiSilicon Lingxi Lab.
 * [2026/4/14] 🤖 Introduced [Claude Code](https://claude.ai/code) for homepage maintenance.
 * [2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation! 
 * [2024/4/20] Open personal website.
@@ -140,6 +142,22 @@ I'm currently studying at Huazhong University of Science and Technology, under t
 </div>
 
 See full publication list on [Google Scholar ->](https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en)
+
+
+
+💼 Internship
+------
+<div style="display: grid; grid-template-columns: 1fr auto; gap: 15px; margin-bottom: 12px; align-items: start;">
+  <div>
+    <p style="margin: 0 0 2px 0; font-weight: bold;">Lingxi Lab, HiSilicon Semiconductor Business Department, Huawei</p>
+    <p style="margin: 0 0 2px 0; color: #666; font-style: italic; font-size: 0.9em;">Research Intern</p>
+    <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 0.9em; color: #555;">
+      <li style="margin: 4px 0;"><strong>Project:</strong> Implicit spatial reasoning for autonomous-driving VLA based on Qwen3-VL.</li>
+    </ul>
+  </div>
+  <div style="text-align: right; white-space: nowrap; font-size: 0.9em; color: #666;">May 20, 2026 - Present</div>
+</div>
+
 
 📘 Research Experience
 ------
@@ -295,13 +313,11 @@ Patents
 
 🎓 Academic Service
 ------
-Reviewer: NeurIPS 2024, AISTATS 2025, ICML 2025, AAAI 2026, ICLR 2026, CVPR 2026, ECCV 2026
+Reviewer: NeurIPS 2024/2026, AISTATS 2025, ICML 2025/2026, AAAI 2026/2027, ICLR 2026, CVPR 2026, ECCV 2026
 
 
 
-💼 Internship
-------
-I am now available on the job market.
+
 
 
 {% include floating-nav.html %}
@@ -316,4 +332,3 @@ I am now available on the job market.
 <div class="center_box">
     <img class="counter" src="https://count.getloli.com/@zc2023.github.io?name=zc2023.github.io&theme=moebooru&padding=7&offset=0&align=center&scale=0.85&pixelated=1&darkmode=auto">
 </div>
-

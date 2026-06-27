@@ -11,6 +11,7 @@ permalink: /space/
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
     <title>3D Space</title>
     <style>
         :root {
@@ -138,60 +139,325 @@ permalink: /space/
             100% { transform: translateX(245%); }
         }
 
-        /* 3D 场景中的网页内容 */
-        #my-web-content {
-            width: 800px;
-            height: 800px;
-            background: #fff; /* 纯白背景以接收光照对比 */
-            padding: 40px;
-            box-sizing: border-box;
-            /* 稍微加点内阴影增加质感 */
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.05); 
-            overflow-y: auto;
+        .space-door {
+            position: relative;
+            width: 148px;
+            height: 222px;
+            border: 0;
+            padding: 0;
+            color: #1d2d3c;
+            background: transparent;
+            cursor: pointer;
             pointer-events: auto;
-            border-radius: 4px;
+            transform-origin: 50% 100%;
+            filter: drop-shadow(0 16px 22px rgba(0, 20, 38, 0.28));
+            transition: filter 420ms ease;
+            user-select: none;
+            perspective: 680px;
         }
-        
-        /* 网页内部样式 */
-        h1 { color: #333; margin-top: 0; }
-        p { color: #555; line-height: 1.8; font-size: 16px; }
-        .highlight { color: #e17055; font-weight: bold; }
-        .card {
-            background: #f1f2f6;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            border-left: 5px solid #0984e3;
+
+        .space-door:hover,
+        .space-door:focus-visible {
+            filter:
+                drop-shadow(0 16px 22px rgba(0, 20, 38, 0.28))
+                drop-shadow(0 0 18px var(--door-light));
+            outline: none;
+        }
+
+        .space-door__inner {
+            position: absolute;
+            inset: 0;
+            transform-style: preserve-3d;
+        }
+
+        .space-door__frame {
+            position: absolute;
+            inset: 0;
+            border: 10px solid rgba(238, 216, 172, 0.98);
+            border-radius: 4px;
+            background:
+                linear-gradient(90deg, rgba(82, 56, 30, 0.26), transparent 18%, rgba(255,255,255,0.18) 52%, rgba(72, 44, 22, 0.20)),
+                linear-gradient(135deg, #f8e5b7, #b9884e);
+            box-shadow:
+                inset 0 0 0 2px rgba(72, 44, 22, 0.28),
+                inset 0 -18px 24px rgba(60, 30, 12, 0.18),
+                0 0 0 1px rgba(255,255,255,0.28),
+                0 0 16px rgba(126, 200, 255, 0.14);
+            transform: translateZ(18px);
+            transform-style: preserve-3d;
+        }
+
+        .space-door__back {
+            position: absolute;
+            inset: 0;
+            border-radius: 4px;
+            background: linear-gradient(135deg, rgba(58, 36, 18, 0.84), rgba(149, 98, 44, 0.74));
+            transform: translateZ(-64px);
+            box-shadow: inset 0 0 0 10px rgba(45, 29, 14, 0.72);
+        }
+
+        .space-door__frame::before,
+        .space-door__frame::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            bottom: 4px;
+            width: 34px;
+            background: linear-gradient(90deg, #6f4926, #d7aa64);
+            transform-style: preserve-3d;
+        }
+
+        .space-door__frame::before {
+            left: -36px;
+            transform: rotateY(90deg);
+            transform-origin: right center;
+        }
+
+        .space-door__frame::after {
+            right: -36px;
+            transform: rotateY(-90deg);
+            transform-origin: left center;
+        }
+
+        .space-door__threshold {
+            position: absolute;
+            left: -10px;
+            right: -10px;
+            bottom: -12px;
+            height: 18px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, #ffe0a1, #7b5128);
+            box-shadow: 0 5px 12px rgba(0, 20, 38, 0.28);
+            transform: rotateX(72deg) translateZ(24px);
+            transform-origin: top center;
+        }
+
+        .space-door__top-depth {
+            position: absolute;
+            left: -10px;
+            right: -10px;
+            top: -12px;
+            height: 22px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, #f7d893, #7d5228);
+            transform: rotateX(-72deg) translateZ(24px);
+            transform-origin: bottom center;
+        }
+
+        .space-door__portal {
+            position: absolute;
+            inset: 24px 24px 18px;
+            overflow: hidden;
+            border-radius: 3px;
+            background:
+                radial-gradient(circle at 50% 42%, rgba(255,255,245,1), rgba(100,235,255,0.92) 18%, rgba(122,80,255,0.72) 42%, rgba(13,16,54,1) 78%),
+                conic-gradient(from 20deg, rgba(255,255,255,0.36), rgba(74,220,255,0.86), rgba(255,104,220,0.68), rgba(255,255,255,0.30));
+            box-shadow:
+                inset 0 0 24px rgba(255,255,255,0.86),
+                inset 0 0 58px rgba(77, 180, 255, 0.76),
+                0 0 34px rgba(117, 213, 255, 0.58);
+            transform: translateZ(30px);
+            opacity: 0.96;
+            transition: opacity 500ms ease, filter 500ms ease, box-shadow 500ms ease;
+            z-index: 1;
+        }
+
+        .space-door:hover .space-door__portal,
+        .space-door:focus-visible .space-door__portal {
+            opacity: 1;
+            filter: saturate(1.35) brightness(1.18);
+            box-shadow:
+                inset 0 0 28px rgba(255,255,255,0.94),
+                inset 0 0 72px rgba(77, 180, 255, 0.92),
+                0 0 46px rgba(117, 213, 255, 0.78);
+        }
+
+        .space-door__portal::before,
+        .space-door__portal::after {
+            content: "";
+            position: absolute;
+            inset: -35%;
+            background:
+                radial-gradient(circle at 18% 28%, rgba(255,255,255,0.92) 0 1px, transparent 2px),
+                radial-gradient(circle at 72% 62%, rgba(255,244,177,0.82) 0 1px, transparent 2px),
+                radial-gradient(circle at 46% 76%, rgba(158,235,255,0.86) 0 1px, transparent 2px);
+            background-size: 46px 42px, 58px 54px, 68px 64px;
+            animation: portal-drift 12s linear infinite;
+            opacity: 0.8;
+        }
+
+        .space-door__portal::after {
+            background:
+                radial-gradient(ellipse at center, transparent 0 28%, rgba(255,255,255,0.24) 29%, transparent 33%),
+                conic-gradient(from 0deg, transparent, rgba(255,255,255,0.22), transparent, rgba(122,220,255,0.26), transparent);
+            animation: portal-spin 8s linear infinite;
+            opacity: 0.56;
+        }
+
+        .space-door__light {
+            position: absolute;
+            inset: 20px 22px 16px;
+            border-radius: 2px;
+            background:
+                radial-gradient(circle at 50% 48%, rgba(255,255,225,0.92), rgba(255,210,125,0.36) 34%, rgba(96,190,255,0.16) 62%, rgba(96,190,255,0) 100%);
+            opacity: 0;
+            transform: translateZ(32px);
+            transition: opacity 720ms ease;
+        }
+
+        .space-door:hover .space-door__light,
+        .space-door:focus-visible .space-door__light {
+            opacity: 1;
+        }
+
+        .space-door__panel {
+            position: absolute;
+            inset: 26px 26px 18px;
+            border-radius: 3px;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.24), transparent 18%, rgba(0,0,0,0.08) 21%, transparent 24%, rgba(255,255,255,0.12) 62%, transparent),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 1px, rgba(0,0,0,0.05) 1px 3px, transparent 3px 18px),
+                linear-gradient(180deg, var(--door-light), var(--door-color));
+            box-shadow:
+                inset 0 0 0 2px rgba(255,255,255,0.38),
+                inset 10px 0 18px rgba(255,255,255,0.15),
+                inset -12px 0 16px rgba(0, 0, 0, 0.18),
+                0 0 0 1px rgba(0,0,0,0.16);
+            transform-origin: left center;
+            transform: translateZ(34px);
+            transition: transform 900ms cubic-bezier(.2,.7,.18,1), box-shadow 720ms ease;
+            transform-style: preserve-3d;
+        }
+
+        .space-door:hover .space-door__panel,
+        .space-door:focus-visible .space-door__panel {
+            transform: translateZ(34px) rotateY(-86deg);
+            box-shadow:
+                inset 0 0 0 2px rgba(255,255,255,0.5),
+                inset 10px 0 18px rgba(255,255,255,0.18),
+                inset -16px 0 22px rgba(0, 0, 0, 0.22),
+                14px 0 24px rgba(255, 224, 150, 0.34);
+        }
+
+        .space-door__panel-edge {
+            position: absolute;
+            top: 0;
+            right: -24px;
+            width: 24px;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(42, 24, 12, 0.55), rgba(255,255,255,0.18));
+            transform: rotateY(90deg);
+            transform-origin: left center;
+        }
+
+        .space-door__panel::before,
+        .space-door__panel::after {
+            content: "";
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: rgba(255,255,255,0.45);
+            box-shadow: 0 34px 0 rgba(255,255,255,0.24);
+        }
+
+        .space-door__panel::before { top: 52px; }
+        .space-door__panel::after { bottom: 52px; }
+
+        .space-door__knob {
+            position: absolute;
+            right: 10px;
+            top: 92px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 32%, #fff3b0, #f6b94d 55%, #9b681d);
+            box-shadow: 0 0 10px rgba(255, 208, 106, 0.52);
+            transform: translateZ(44px);
+        }
+
+        .space-door__sign {
+            position: absolute;
+            left: 50%;
+            top: -50px;
+            width: 122px;
+            padding: 6px 8px 7px;
+            border-radius: 4px;
+            background: rgba(255, 249, 225, 0.94);
+            border: 1px solid rgba(92, 58, 24, 0.28);
+            box-shadow: 0 6px 14px rgba(0, 24, 48, 0.14);
+            text-align: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 8;
+            transform: translateX(-50%) translateZ(56px);
+        }
+
+        .space-door__title {
+            display: block;
+            font-size: 15px;
+            line-height: 1.05;
+            font-weight: 800;
+        }
+
+        .space-door__subtitle {
+            display: block;
+            margin-top: 3px;
+            font-size: 9px;
+            line-height: 1.1;
+            color: rgba(29, 45, 60, 0.68);
+            font-weight: 650;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
+
+        @keyframes portal-drift {
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            100% { transform: translate3d(46px, -42px, 0) scale(1.04); }
+        }
+
+        @keyframes portal-spin {
+            0% { transform: rotate(0deg) scale(0.95); }
+            100% { transform: rotate(360deg) scale(0.95); }
         }
 
         @media (max-width: 720px) {
             #ui-layer {
                 top: auto;
-                left: 12px;
-                right: 12px;
-                bottom: 12px;
+                left: 10px;
+                right: 10px;
+                bottom: calc(10px + env(safe-area-inset-bottom));
                 width: auto;
-                padding: 12px;
+                padding: 10px;
+                border-radius: 7px;
+            }
+
+            label {
+                font-size: 12px;
+                margin-bottom: 4px;
+            }
+
+            #time-display {
+                font-size: 11px;
             }
 
             .control-row {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
-                margin-top: 12px;
+                gap: 6px;
+                margin-top: 9px;
             }
 
             .control-button {
-                min-height: 34px;
+                min-height: 32px;
                 padding: 8px 6px;
-                font-size: 12px;
-            }
-
-            #my-web-content {
-                padding: 30px;
+                font-size: 11px;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
             .loader-bar { animation: none; transform: none; width: 100%; }
+            .space-door__portal::before,
+            .space-door__portal::after { animation: none; }
         }
     </style>
 </head>
@@ -217,40 +483,6 @@ permalink: /space/
         </div>
     </div>
 
-
-
-    <div id="content-template" style="display: none;">
-        <div id="my-web-content">
-            <h1>Web 3D 沉浸式主页</h1>
-            <p>
-                欢迎来到这个没有边界的数字空间。<br>
-                当前页面像一块轻薄的界面面板悬浮在广阔海面上，天空、太阳、云层和水面会随着时间连续变化。
-                这个场景使用 Three.js、CSS3D、真实水面法线、程序化云层和响应式交互实现。<br>
-
-            </p>
-            
-            <div class="card">
-                <h3>空间互动</h3>
-                <p>拖动时间滑块，或使用左上角的控制按钮观察场景变化：</p>
-                <ul>
-                    <li><b>连续昼夜</b>：太阳位置、天空散射、曝光和雾气会平滑过渡。</li>
-                    <li><b>真实海面</b>：水面使用动态法线和太阳方向生成波光与反射。</li>
-                    <li><b>软边云层</b>：云会缓慢漂移，并随日出、正午、日落改变色调。</li>
-                    <li><b>漂浮界面</b>：面板带有薄边框、柔和接触阴影和轻微反射。</li>
-                    <li><b>体验控制</b>：可以重置视角、暂停动效，移动端也会自动调整布局。</li>
-                </ul>
-            </div>
-
-            <p>
-                Created by Cheng Zhang. <br>
-                Date: 2025 Dec 1. Version 3.0.
-            </p>
-
-
-
-        </div>
-    </div>
-
     <div id="webgl-container"></div>
     <div id="css3d-container"></div>
 
@@ -271,9 +503,10 @@ permalink: /space/
         import { Water } from 'three/addons/objects/Water.js';
 
         let camera, scene, renderer, cssRenderer;
-        let controls, waterMesh, backingMesh, sunMesh, sunHalo, sky;
+        let controls, waterMesh, backingMesh, sunMesh, sunHalo, sunCorona, sky;
         let dirLight, ambientLight;
         let webObject, panelFrame, contactShadow, panelReflection;
+        let doorGroup, floatingDoors = [];
         let clouds = []; // 存储云朵数组
         let clock = new THREE.Clock();
         let loadingManager, loadingLayer, motionToggleButton;
@@ -281,6 +514,7 @@ permalink: /space/
         let isInteracting = false;
         let cameraHome, targetHome;
         let currentPanelScale = 1;
+        let doorPointerStart = null;
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // 场景参数
@@ -290,6 +524,9 @@ permalink: /space/
             sunDistance: 1500, // 太阳距离中心的半径
             panelWidth: 840,
             panelHeight: 840,
+            doorScale: 0.62,
+            doorHeight: 222,
+            doorWaterInset: 48,
         };
 
         // 颜色定义
@@ -330,8 +567,8 @@ permalink: /space/
             // 1. 相机 (加大 far 参数，看清远处)
             camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 10000);
             currentPanelScale = getPanelScale();
-            cameraHome = new THREE.Vector3(0, isMobileViewport() ? 380 : 260, isMobileViewport() ? 1800 : 1100);
-            targetHome = new THREE.Vector3(0, params.webHeight + 40, 0);
+            cameraHome = new THREE.Vector3(0, isMobileViewport() ? 330 : 260, isMobileViewport() ? 1560 : 1100);
+            targetHome = new THREE.Vector3(0, isMobileViewport() ? 120 : 155, isMobileViewport() ? 760 : 560);
             camera.position.copy(cameraHome);
 
             // 2. 渲染器
@@ -348,6 +585,7 @@ permalink: /space/
 
             cssRenderer = new CSS3DRenderer();
             cssRenderer.setSize(window.innerWidth, window.innerHeight);
+            cssRenderer.domElement.style.pointerEvents = 'auto';
             document.getElementById('css3d-container').appendChild(cssRenderer.domElement);
 
             // 3. 光照系统
@@ -371,12 +609,8 @@ permalink: /space/
             dirLight.shadow.mapSize.height = 2048;
             scene.add(dirLight);
 
-            // 4. 太阳实体 (可视化的光球)
-            const sunGeometry = new THREE.SphereGeometry(60, 32, 32);
-            const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffdd00, transparent: true }); // 发光材质，不受光照影响
-            sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
-            scene.add(sunMesh);
-            createSunHalo();
+            // 4. 太阳实体：用面向镜头的太阳盘和多层光晕模拟真实太阳观感
+            createSunVisuals();
 
             // 5. 真实天空和海平面
             createSky();
@@ -385,42 +619,24 @@ permalink: /space/
             // 6. 云朵 (生成一些随机云)
             createClouds();
 
-            // 7. 网页实体
-            const contentDiv = document.getElementById('content-template').firstElementChild.cloneNode(true);
-            webObject = new CSS3DObject(contentDiv);
-            webObject.position.set(0, params.webHeight, 0);
-            webObject.scale.setScalar(currentPanelScale);
-            scene.add(webObject);
-            createPanelPhysicalShell(webObject.position);
+            // 7. 浮在水面上的导航门。
+            createFloatingDoors();
 
-            // 8. 阴影投射板 (Backing Mesh)
-            // 放在网页后面一点点，用来挡光产生阴影
-            const backingGeo = new THREE.PlaneGeometry(params.panelWidth, params.panelHeight);
-            const backingMat = new THREE.MeshStandardMaterial({ 
-                color: 0x000000,
-                side: THREE.DoubleSide
-            });
-            backingMesh = new THREE.Mesh(backingGeo, backingMat);
-            backingMesh.position.copy(webObject.position);
-            backingMesh.scale.setScalar(currentPanelScale);
-            backingMesh.position.z -= 1; // 微调位置
-            backingMesh.castShadow = false; // 改用柔和接触阴影，避免水面出现硬矩形投影
-            backingMesh.material.colorWrite = false; // 隐形
-            scene.add(backingMesh);
-
-            // 9. 控制器
+            // 8. 控制器
             controls = new OrbitControls(camera, cssRenderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.055;
             controls.target.copy(targetHome);
             controls.maxPolarAngle = Math.PI / 2 - 0.02; // 稍微限制，别看穿水面
-            controls.minDistance = isMobileViewport() ? 900 : 350;
+            controls.minDistance = isMobileViewport() ? 760 : 350;
             controls.maxDistance = 2800;
             controls.addEventListener('start', () => { isInteracting = true; });
             controls.addEventListener('end', () => { isInteracting = false; });
 
             // 事件
             window.addEventListener('resize', onWindowResize);
+            window.addEventListener('pointerdown', onGlobalPointerDown, true);
+            window.addEventListener('pointerup', onGlobalPointerUp, true);
             document.getElementById('time-slider').addEventListener('input', (e) => updateTime(e.target.value));
             document.getElementById('reset-view').addEventListener('click', resetView);
             motionToggleButton.addEventListener('click', toggleMotion);
@@ -441,16 +657,22 @@ permalink: /space/
             return isMobileViewport() ? 0.68 : 1;
         }
 
+        function getDoorScale() {
+            return isMobileViewport() ? 0.52 : params.doorScale;
+        }
+
         function applyResponsiveSceneSizing() {
             currentPanelScale = getPanelScale();
-            cameraHome.set(0, isMobileViewport() ? 380 : 260, isMobileViewport() ? 1800 : 1100);
-            controls.minDistance = isMobileViewport() ? 900 : 350;
+            cameraHome.set(0, isMobileViewport() ? 330 : 260, isMobileViewport() ? 1560 : 1100);
+            targetHome.set(0, isMobileViewport() ? 120 : 155, isMobileViewport() ? 760 : 560);
+            controls.minDistance = isMobileViewport() ? 760 : 350;
 
             if (webObject) webObject.scale.setScalar(currentPanelScale);
             if (panelFrame) panelFrame.scale.setScalar(currentPanelScale);
             if (backingMesh) backingMesh.scale.setScalar(currentPanelScale);
             if (contactShadow) contactShadow.scale.setScalar(currentPanelScale);
             if (panelReflection) panelReflection.scale.setScalar(currentPanelScale);
+            positionFloatingDoors();
         }
 
         function hideLoadingLayer() {
@@ -482,6 +704,30 @@ permalink: /space/
 
         function toggleMotion() {
             setMotionPaused(!motionPaused);
+        }
+
+        function onGlobalPointerDown(event) {
+            const door = getDoorFromPoint(event.clientX, event.clientY);
+            doorPointerStart = door ? { x: event.clientX, y: event.clientY, href: door.dataset.href } : null;
+        }
+
+        function onGlobalPointerUp(event) {
+            if (!doorPointerStart) return;
+
+            const dx = event.clientX - doorPointerStart.x;
+            const dy = event.clientY - doorPointerStart.y;
+            const door = getDoorFromPoint(event.clientX, event.clientY);
+            const href = door?.dataset.href || doorPointerStart.href;
+            doorPointerStart = null;
+
+            if (dx * dx + dy * dy > 64 || !href) return;
+            event.preventDefault();
+            window.location.href = href;
+        }
+
+        function getDoorFromPoint(x, y) {
+            const element = document.elementFromPoint(x, y);
+            return element ? element.closest('.space-door') : null;
         }
 
         function createPanelPhysicalShell(position) {
@@ -565,6 +811,126 @@ permalink: /space/
             scene.add(panelReflection);
         }
 
+        function createFloatingDoors() {
+            doorGroup = new THREE.Group();
+            scene.add(doorGroup);
+
+            const doorSpecs = [
+                {
+                    label: 'Research',
+                    subtitle: 'Statement',
+                    href: '/teaching/',
+                    color: '#3f7f90',
+                    light: '#82c9bd',
+                    desktop: { x: -250, z: 650, rotY: 0 },
+                    mobile: { x: -116, z: 910, rotY: 0 }
+                },
+                {
+                    label: 'Gallery',
+                    subtitle: 'Visual notes',
+                    href: '/portfolio/',
+                    color: '#8e6f45',
+                    light: '#e4c276',
+                    desktop: { x: -82, z: 650, rotY: 0 },
+                    mobile: { x: -39, z: 910, rotY: 0 }
+                },
+                {
+                    label: 'Posts',
+                    subtitle: 'Personal',
+                    href: '/talks/',
+                    color: '#735e94',
+                    light: '#b5a3e8',
+                    desktop: { x: 82, z: 650, rotY: 0 },
+                    mobile: { x: 39, z: 910, rotY: 0 }
+                },
+                {
+                    label: 'Home',
+                    subtitle: 'Main site',
+                    href: '/',
+                    color: '#4f6f9f',
+                    light: '#93b9f0',
+                    desktop: { x: 250, z: 650, rotY: 0 },
+                    mobile: { x: 116, z: 910, rotY: 0 }
+                },
+            ];
+
+            doorSpecs.forEach((spec, index) => {
+                const door = createFloatingDoor(spec, index);
+                doorGroup.add(door);
+                floatingDoors.push(door);
+            });
+            positionFloatingDoors();
+        }
+
+        function positionFloatingDoors() {
+            floatingDoors.forEach((door) => {
+                const layout = isMobileViewport() ? door.userData.mobile : door.userData.desktop;
+                const doorScale = getDoorScale();
+                const centerY = params.doorHeight * doorScale / 2 - params.doorWaterInset;
+                door.position.set(layout.x, centerY, layout.z);
+                door.rotation.y = layout.rotY;
+                door.userData.baseY = centerY;
+                door.children.forEach((child) => child.scale.setScalar(doorScale));
+            });
+        }
+
+        function createFloatingDoor(spec, index) {
+            const group = new THREE.Group();
+            group.userData = {
+                href: spec.href,
+                label: spec.label,
+                desktop: spec.desktop,
+                mobile: spec.mobile,
+                baseY: spec.desktop.y,
+                phase: index * 0.86,
+            };
+
+            const doorElement = createDoorElement(spec);
+            const doorObject = new CSS3DObject(doorElement);
+            doorObject.position.set(0, 0, 0);
+            doorObject.scale.setScalar(getDoorScale());
+            doorObject.userData.href = spec.href;
+            group.add(doorObject);
+
+            return group;
+        }
+
+        function createDoorElement(spec) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'space-door';
+            button.setAttribute('aria-label', `Open ${spec.label}`);
+            button.dataset.href = spec.href;
+            button.style.setProperty('--door-color', spec.color);
+            button.style.setProperty('--door-light', spec.light);
+
+            button.innerHTML = `
+                <span class="space-door__inner">
+                    <span class="space-door__sign">
+                        <span class="space-door__title">${spec.label}</span>
+                        <span class="space-door__subtitle">${spec.subtitle}</span>
+                    </span>
+                    <span class="space-door__back"></span>
+                    <span class="space-door__frame"></span>
+                    <span class="space-door__top-depth"></span>
+                    <span class="space-door__threshold"></span>
+                    <span class="space-door__portal"></span>
+                    <span class="space-door__light"></span>
+                    <span class="space-door__panel">
+                        <span class="space-door__panel-edge"></span>
+                        <span class="space-door__knob"></span>
+                    </span>
+                </span>
+            `;
+
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+
+            return button;
+        }
+
         function createSky() {
             sky = new Sky();
             sky.scale.setScalar(10000);
@@ -602,7 +968,68 @@ permalink: /space/
             scene.add(waterMesh);
         }
 
-        function createSunHalo() {
+        function createSunVisuals() {
+            const sunDiskTexture = createSunDiskTexture();
+            const diskMaterial = new THREE.SpriteMaterial({
+                map: sunDiskTexture,
+                color: 0xffffff,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending
+            });
+
+            sunMesh = new THREE.Sprite(diskMaterial);
+            sunMesh.scale.set(112, 112, 1);
+            scene.add(sunMesh);
+
+            const haloTexture = createSunHaloTexture();
+            const haloMaterial = new THREE.SpriteMaterial({
+                map: haloTexture,
+                color: 0xffffff,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending
+            });
+
+            sunHalo = new THREE.Sprite(haloMaterial);
+            sunHalo.scale.set(520, 520, 1);
+            scene.add(sunHalo);
+
+            const coronaTexture = createSunCoronaTexture();
+            const coronaMaterial = new THREE.SpriteMaterial({
+                map: coronaTexture,
+                color: 0xffffff,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending
+            });
+
+            sunCorona = new THREE.Sprite(coronaMaterial);
+            sunCorona.scale.set(880, 880, 1);
+            scene.add(sunCorona);
+        }
+
+        function createSunDiskTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            const disk = ctx.createRadialGradient(128, 128, 0, 128, 128, 92);
+            disk.addColorStop(0, 'rgba(255, 255, 248, 1)');
+            disk.addColorStop(0.44, 'rgba(255, 246, 202, 1)');
+            disk.addColorStop(0.72, 'rgba(255, 212, 116, 0.96)');
+            disk.addColorStop(0.9, 'rgba(255, 168, 72, 0.48)');
+            disk.addColorStop(1, 'rgba(255, 168, 72, 0)');
+            ctx.fillStyle = disk;
+            ctx.fillRect(0, 0, 256, 256);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.colorSpace = THREE.SRGBColorSpace;
+            return texture;
+        }
+
+        function createSunHaloTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 256;
             canvas.height = 256;
@@ -617,16 +1044,25 @@ permalink: /space/
 
             const haloTexture = new THREE.CanvasTexture(canvas);
             haloTexture.colorSpace = THREE.SRGBColorSpace;
-            const haloMaterial = new THREE.SpriteMaterial({
-                map: haloTexture,
-                transparent: true,
-                depthWrite: false,
-                blending: THREE.AdditiveBlending
-            });
+            return haloTexture;
+        }
 
-            sunHalo = new THREE.Sprite(haloMaterial);
-            sunHalo.scale.set(520, 520, 1);
-            scene.add(sunHalo);
+        function createSunCoronaTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(256, 256, 18, 256, 256, 256);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.18)');
+            gradient.addColorStop(0.2, 'rgba(255, 225, 150, 0.13)');
+            gradient.addColorStop(0.48, 'rgba(255, 158, 88, 0.08)');
+            gradient.addColorStop(1, 'rgba(255, 158, 88, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 512, 512);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.colorSpace = THREE.SRGBColorSpace;
+            return texture;
         }
 
         function createRadialTexture(stops) {
@@ -737,6 +1173,7 @@ permalink: /space/
             dirLight.position.set(sunX, sunY, sunZ);
             sunMesh.position.set(sunX, sunY, sunZ);
             sunHalo.position.copy(sunMesh.position);
+            sunCorona.position.copy(sunMesh.position);
 
             const sunElevation = clamp01(Math.sin(angleRad));
             const horizonAmount = 1 - smoothstep(0.16, 0.66, sunElevation);
@@ -756,6 +1193,8 @@ permalink: /space/
             const ambIntensity = 0.18 + 0.5 * smoothstep(0.04, 0.48, sunElevation) * (1 - nightAmount * 0.7);
             const exposure = 0.52 + 0.34 * smoothstep(0.05, 0.55, sunElevation) - nightAmount * 0.16;
             const haloScale = 440 + 360 * warmAmount;
+            const diskScale = 92 + 34 * warmAmount + 18 * horizonAmount;
+            const coronaScale = 760 + 360 * warmAmount + 120 * horizonAmount;
             const sunOpacity = sunY < 0 ? 0.22 : 1 - nightAmount * 0.35;
             const hour = Math.round(5.5 + dayProgress * 14);
 
@@ -772,8 +1211,13 @@ permalink: /space/
             dirLight.intensity = 0.35 + 1.05 * smoothstep(0.02, 0.52, sunElevation);
             ambientLight.color = skyColor; // 环境光跟随天空颜色
             ambientLight.intensity = ambIntensity;
+            sunMesh.scale.set(diskScale, diskScale, 1);
             sunHalo.scale.set(haloScale, haloScale, 1);
             sunHalo.material.opacity = sunOpacity * (0.42 + warmAmount * 0.58);
+            sunHalo.material.color.copy(sunLightColor);
+            sunCorona.scale.set(coronaScale, coronaScale, 1);
+            sunCorona.material.opacity = sunOpacity * (0.12 + warmAmount * 0.18);
+            sunCorona.material.color.copy(sunLightColor);
 
             if (sky) {
                 const uniforms = sky.material.uniforms;
@@ -833,12 +1277,6 @@ permalink: /space/
                 waterMesh.material.uniforms.time.value += delta * 0.62 * motionScale;
             }
 
-            // 网页浮动
-            const floatY = Math.sin(t) * 5 * motionScale;
-            backingMesh.position.y = params.webHeight + floatY;
-            webObject.position.y = params.webHeight + floatY;
-            panelFrame.position.y = params.webHeight + floatY;
-
             if (contactShadow) {
                 const shadowPulse = 1 + Math.sin(t * 0.8) * 0.025;
                 contactShadow.scale.set(
@@ -860,6 +1298,11 @@ permalink: /space/
                 );
             }
 
+            floatingDoors.forEach((door) => {
+                door.position.y = door.userData.baseY;
+                door.rotation.z = 0;
+            });
+
             // 云朵缓慢移动
             clouds.forEach((cloud, idx) => {
                 cloud.position.x += cloud.userData.speed * (idx % 2 === 0 ? 1 : -1) * motionScale;
@@ -868,21 +1311,6 @@ permalink: /space/
                 if(cloud.position.x > 2600) cloud.position.x = -2600;
                 if(cloud.position.x < -2600) cloud.position.x = 2600;
             });
-
-            if (!motionPaused && !isInteracting) {
-                const driftTarget = cameraHome.clone().add(new THREE.Vector3(
-                    Math.sin(t * 0.09) * 42,
-                    Math.sin(t * 0.13) * 16,
-                    Math.cos(t * 0.08) * 38
-                ));
-                const focusTarget = targetHome.clone().add(new THREE.Vector3(
-                    Math.sin(t * 0.07) * 14,
-                    Math.cos(t * 0.06) * 10,
-                    0
-                ));
-                camera.position.lerp(driftTarget, 0.012);
-                controls.target.lerp(focusTarget, 0.012);
-            }
 
             controls.update();
             renderer.render(scene, camera);

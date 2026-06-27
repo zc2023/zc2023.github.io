@@ -16,7 +16,9 @@ author_profile: true
     {% for item in section.items %}
       <figure class="gallery-card">
         <div class="gallery-card__media">
-          <img src="{{ item.src }}" alt="{{ item.alt | default: item.caption | escape }}" loading="lazy">
+          <a class="gallery-card__link" href="{{ item.src }}" title="{{ item.alt | default: item.caption | strip_html | escape }}" aria-label="View larger image">
+            <img src="{{ item.src }}" alt="{{ item.alt | default: item.caption | escape }}" loading="lazy">
+          </a>
         </div>
         <figcaption class="gallery-card__caption">
           {% if item.caption_html %}

@@ -52,15 +52,18 @@
   padding: 0.72rem 1rem;
   overflow: hidden;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.58) 46%, rgba(255, 255, 255, 0.38)),
+    linear-gradient(100deg, rgba(96, 180, 224, 0.28), rgba(255, 255, 255, 0.11) 34%, rgba(205, 154, 236, 0.22) 68%, rgba(255, 203, 140, 0.18)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.6) 46%, rgba(255, 255, 255, 0.42)),
     radial-gradient(circle at 12% 0%, rgba(255, 255, 255, 0.88), transparent 34%),
-    radial-gradient(circle at 92% 12%, rgba(82, 173, 200, 0.16), transparent 30%);
-  border: 1px solid rgba(255, 255, 255, 0.76);
+    radial-gradient(circle at 92% 12%, rgba(82, 173, 200, 0.22), transparent 30%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 24px;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(96, 180, 224, 0.26),
     inset 0 0 22px rgba(255, 255, 255, 0.32),
+    0 0 0 1px rgba(96, 180, 224, 0.22),
+    0 0 0 2px rgba(255, 255, 255, 0.26),
     0 16px 42px rgba(18, 31, 45, 0.18);
   backdrop-filter: blur(32px) saturate(185%) contrast(108%) brightness(1.04);
   -webkit-backdrop-filter: blur(32px) saturate(185%) contrast(108%) brightness(1.04);
@@ -91,13 +94,15 @@
   pointer-events: none;
   border-radius: 23px;
   box-shadow:
-    inset 2px 2px 2px rgba(255, 255, 255, 0.72),
-    inset -2px -2px 3px rgba(255, 255, 255, 0.38),
+    inset 2px 2px 2px rgba(255, 255, 255, 0.78),
+    inset -2px -2px 3px rgba(255, 255, 255, 0.42),
+    inset 0 -1px 0 rgba(96, 180, 224, 0.32),
     inset 0 -10px 18px -18px rgba(18, 31, 45, 0.52);
   background:
+    linear-gradient(90deg, rgba(96, 180, 224, 0.28), transparent 22%, rgba(205, 154, 236, 0.22) 76%, rgba(255, 203, 140, 0.18)),
     linear-gradient(100deg, rgba(255, 255, 255, 0.54), transparent 20%),
     radial-gradient(ellipse at 76% 0%, rgba(255, 255, 255, 0.34), transparent 38%);
-  opacity: 0.82;
+  opacity: 0.9;
 }
 
 .masthead__menu {
@@ -108,6 +113,125 @@
 .masthead__menu,
 .greedy-nav {
   background: transparent;
+}
+
+.greedy-nav {
+  --indicator-x: 0px;
+  --indicator-y: 0px;
+  --indicator-width: 0px;
+  --indicator-height: 0px;
+  --indicator-pointer-x: 50%;
+  --indicator-pointer-y: 100%;
+}
+
+.greedy-nav .visible-links {
+  position: relative;
+  z-index: 2;
+}
+
+.greedy-nav .visible-links a {
+  position: relative;
+  z-index: 2;
+  margin: 0 0.28rem;
+  padding: 0.5rem 0.86rem;
+  color: rgba(34, 48, 62, 0.86);
+  border-radius: 999px;
+  transition:
+    color 180ms ease,
+    text-shadow 180ms ease,
+    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.greedy-nav .visible-links a::before {
+  display: none;
+}
+
+.greedy-nav .visible-links a:hover,
+.greedy-nav .visible-links a:focus-visible,
+.greedy-nav .visible-links a.is-glass-active {
+  color: rgba(11, 28, 45, 0.98);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
+  transform: translateY(-1px);
+}
+
+.greedy-nav .visible-links a:focus-visible {
+  outline: 2px solid rgba(64, 166, 220, 0.54);
+  outline-offset: 5px;
+}
+
+.masthead-glass-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: var(--indicator-width);
+  height: var(--indicator-height);
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.95), transparent 28%),
+    radial-gradient(circle at 82% 88%, rgba(88, 184, 229, 0.34), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.38) 42%, rgba(255, 255, 255, 0.18));
+  box-shadow:
+    0 0 0 1px rgba(42, 136, 205, 0.32),
+    0 0 0 2px rgba(255, 255, 255, 0.24),
+    0 8px 20px rgba(18, 31, 45, 0.14),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.88),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.26),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+    inset 0 -10px 16px rgba(96, 180, 224, 0.12);
+  transform: translate3d(var(--indicator-x), var(--indicator-y), 0) scale(0.97);
+  backdrop-filter: blur(18px) saturate(185%) contrast(110%);
+  -webkit-backdrop-filter: blur(18px) saturate(185%) contrast(110%);
+  transition:
+    opacity 160ms ease,
+    width 330ms cubic-bezier(0.19, 1, 0.22, 1),
+    height 330ms cubic-bezier(0.19, 1, 0.22, 1),
+    transform 330ms cubic-bezier(0.19, 1, 0.22, 1),
+    box-shadow 220ms ease;
+  will-change: width, height, transform, opacity;
+}
+
+.masthead-glass-indicator::before {
+  content: "";
+  position: absolute;
+  left: var(--indicator-pointer-x);
+  top: calc(var(--indicator-pointer-y) + 9px);
+  width: max(78px, calc(var(--indicator-width) * 0.72));
+  height: 42px;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at center, rgba(75, 185, 235, 0.62), rgba(202, 151, 238, 0.36) 38%, rgba(255, 203, 140, 0.2) 62%, transparent 78%);
+  opacity: 0.78;
+  transform: translate(-50%, -50%);
+  filter: blur(9px) saturate(1.32);
+  transition:
+    left 80ms linear,
+    top 80ms linear,
+    opacity 180ms ease;
+}
+
+.masthead-glass-indicator::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.66), transparent 26%, rgba(255, 255, 255, 0.16) 58%, rgba(255, 255, 255, 0.44)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), transparent 42%, rgba(65, 160, 220, 0.08));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -1px 0 rgba(57, 150, 212, 0.24);
+  filter: url("#masthead-liquid-glass") saturate(1.08) brightness(1.03);
+  opacity: 0.86;
+}
+
+.greedy-nav.is-indicator-active .masthead-glass-indicator {
+  opacity: 1;
+  transform: translate3d(var(--indicator-x), var(--indicator-y), 0) scale(1);
 }
 
 .greedy-nav button.hidden {
@@ -137,11 +261,11 @@
 }
 
 .floating-nav {
+  display: none !important;
   position: fixed;
   top: 92px;
   left: 50%;
   z-index: 9999;
-  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
@@ -355,12 +479,89 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
 }
 
+.gallery-card__link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: zoom-in;
+}
+
 .gallery-card__media img {
   display: block;
   width: 100%;
   height: 100%;
   border-radius: 7px;
   object-fit: cover;
+}
+
+.mfp-gallery .mfp-image-holder .mfp-content {
+  max-width: 94vw;
+}
+
+.mfp-gallery img.mfp-img {
+  width: auto;
+  height: auto;
+  max-width: 94vw;
+  max-height: 86vh;
+  object-fit: contain;
+}
+
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.78);
+  opacity: 0;
+  visibility: hidden;
+  cursor: zoom-out;
+  transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.gallery-lightbox.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gallery-lightbox__image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+
+.gallery-lightbox__close {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  color: #fff;
+  font-size: 32px;
+  line-height: 1;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.gallery-lightbox__close:hover,
+.gallery-lightbox__close:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+body.gallery-lightbox-open {
+  overflow: hidden;
 }
 
 .gallery-card__caption {
@@ -408,6 +609,28 @@
     border-radius: 19px;
   }
 
+  .masthead__menu {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .masthead__menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .greedy-nav {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .greedy-nav .visible-links a {
+    margin: 0 0.18rem;
+    padding: 0.44rem 0.72rem;
+    font-size: 0.9rem;
+  }
+
   .floating-nav {
     top: 84px;
     gap: 6px;
@@ -416,5 +639,9 @@
   .floating-nav__link {
     padding: 7px 9px;
     font-size: 0.72rem;
+  }
+
+  .author__follow-button {
+    display: none;
   }
 }
