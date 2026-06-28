@@ -1,0 +1,30 @@
+{% assign publications = include.items | default: site.data.home.publications %}
+{% for publication in publications %}
+<div class="publication-grid">
+  <div class="publication-img">
+    <div class="badge">{{ publication.label }}</div>
+    <img class="publication-thumb" src="{{ publication.image }}" alt="{{ publication.alt }}" />
+  </div>
+  <div>
+    <h4>{{ publication.title }}
+      {% for link in publication.links %}
+        <a href="{{ link.url }}"{% if link.class %} class="{{ link.class }}"{% endif %}{% if link.repo %} data-repo="{{ link.repo }}"{% endif %} title="{{ link.title }}"><i class="{{ link.icon }}" aria-hidden="true"></i></a>
+      {% endfor %}
+      {% if publication.badge_image %}
+        <img src="{{ publication.badge_image }}" alt="" />
+      {% endif %}
+    </h4>
+    <p>
+      {% if publication.venue_highlight %}
+        <span class="publication-venue-highlight">{{ publication.venue }}</span>
+      {% else %}
+        {{ publication.venue }}
+      {% endif %}
+    </p>
+    <p>{{ publication.authors_html }}</p>
+    {% if publication.description %}
+      <p>{{ publication.description }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}

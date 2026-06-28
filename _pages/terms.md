@@ -4,8 +4,6 @@ title: "Terms and Privacy Policy"
 modified: 2026-06-12
 ---
 
-{% include base_path %}
-
 ## Privacy Policy
 
 This is a personal academic website maintained by Cheng Zhang.

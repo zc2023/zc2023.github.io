@@ -235,3 +235,37 @@
     }
   }
 }
+
+.author__urls .author__icon-orcid {
+  color: #a5cd39;
+  margin-left: 1px;
+  margin-right: 3px;
+}
+
+.author__urls .author__icon-image {
+  width: 14px;
+  height: 14px;
+  margin-left: 1px;
+  margin-right: 5px;
+  vertical-align: -2px;
+}
+
+.author__urls .author__icon-image--large {
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+}
+
+.author__cv {
+  white-space: nowrap;
+}
+
+.author__cv-icon {
+  color: #494e52;
+  margin-left: 1px;
+  margin-right: 3px;
+}
+
+.author__urls .author__cv-link {
+  display: inline;
+}

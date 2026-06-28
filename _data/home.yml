@@ -1,0 +1,178 @@
+research_interests:
+  - 3D Multimodal Large Language Models (3D MLLMs)
+  - Embodied AI
+  - 3D Vision
+
+news:
+  - "[2026/6/27] Optimized the homepage interface."
+  - "[2026/5/20] Started my research internship at Huawei HiSilicon Lingxi Lab."
+  - "[2026/4/14] 🤖 Introduced [Claude Code](https://claude.ai/code) for homepage maintenance."
+  - "[2025/11/8] 🎉 One paper is accepted by AAAI2026 as oral presentation!"
+  - "[2024/4/20] Open personal website."
+
+publications:
+  - label: "AAAI 2026 (Oral)"
+    image: "/images/publications/aaai.png"
+    alt: "GRANT AAAI 2026 paper thumbnail"
+    title: "Cook and Clean Together: Teaching Embodied Agents for Parallel Task Execution"
+    links:
+      - title: "Project"
+        url: "https://h-embodvis.github.io/GRANT/"
+        icon: "fas fa-globe"
+      - title: "PDF"
+        url: "https://arxiv.org/abs/2511.19430"
+        icon: "fas fa-file-pdf"
+      - title: "GitHub"
+        url: "https://github.com/H-EmbodVis/Grant"
+        icon: "fab fa-github"
+        class: "github-link"
+        repo: "H-EmbodVis/Grant"
+      - title: "PDF"
+        url: "/Mypages/aaai_share.html"
+        icon: "fas fa-bullhorn"
+    badge_image: "https://img.shields.io/github/stars/H-EmbodVis/Grant?style=social"
+    venue: "AAAI 2026 Oral (Top~4.5%)"
+    venue_highlight: true
+    authors_html: "Dingkang Liang<sup>*</sup>, <strong>Cheng Zhang<sup>*</sup></strong>, Xiaopeng Xu, Jianzhong Ju, Zhenbo Luo, Xiang Bai"
+    description: "Introduces a new task that challenges agents to generate efficient, 3D grounded action schedules guided by operations research principles."
+  - label: "ECCV 2024"
+    image: "/images/publications/toc3d.png"
+    alt: "ToC3D ECCV 2024 paper thumbnail"
+    title: "Make Your ViT-Based Multi-view 3D Detectors Faster via Token Compression"
+    links:
+      - title: "PDF"
+        url: "https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/06320.pdf"
+        icon: "fas fa-file-pdf"
+      - title: "GitHub"
+        url: "https://github.com/DYZhang09/ToC3D"
+        icon: "fab fa-github"
+        class: "github-link"
+        repo: "DYZhang09/ToC3D"
+    venue: "ECCV 2024"
+    authors_html: "Dingyuan Zhang, Dingkang Liang, Zichang Tan, Xiaoqing Ye, <strong>Cheng Zhang</strong>, Jingdong Wang, Xiang Bai"
+    description: "An efficient sparse query-based multi-view 3D detector for autonomous driving."
+  - label: "TII 2024"
+    image: "/images/publications/MMATrans.png"
+    alt: "MMATrans paper thumbnail"
+    title: "MMATrans: Muscle Movement Aware Representation Learning for Facial Expression Recognition via Transformers"
+    links:
+      - title: "PDF"
+        url: "https://ieeexplore.ieee.org/document/10636220"
+        icon: "fas fa-file-pdf"
+    venue: "IEEE Transactions on Industrial Informatics (TII), 2024"
+    authors_html: "Hai Liu, Qiyun Zhou, <strong>Cheng Zhang</strong>, Junyan Zhu, Tingting Liu, Zhaoli Zhang, You-Fu Li"
+  - label: "TIP 2023"
+    image: "/images/publications/tip23.png"
+    alt: "Head pose estimation paper thumbnail"
+    title: "Orientation Cues-aware Facial Relationship Representation for Head Pose Estimation via Transformer"
+    links:
+      - title: "PDF"
+        url: "https://ieeexplore.ieee.org/document/10318055"
+        icon: "fas fa-file-pdf"
+    venue: "IEEE Transactions on Image Processing (TIP), 2023"
+    authors_html: "Hai Liu, <strong>Cheng Zhang<sup>†</sup></strong>, Yongjian Deng, Tingting Liu, Zhaoli Zhang, You-Fu Li<sup>†</sup>"
+  - label: "CVPR 2023"
+    image: "/images/publications/tokenhpe.png"
+    alt: "TokenHPE CVPR 2023 paper thumbnail"
+    title: "TokenHPE: Learning Orientation Tokens for Efficient Head Pose Estimation via Transformers"
+    links:
+      - title: "PDF"
+        url: "https://openaccess.thecvf.com/content/CVPR2023/html/Zhang_TokenHPE_Learning_Orientation_Tokens_for_Efficient_Head_Pose_Estimation_via_CVPR_2023_paper.html"
+        icon: "fas fa-file-pdf"
+    venue: "CVPR 2023"
+    authors_html: "<strong>Cheng Zhang</strong>, Hai Liu, Yongjian Deng, Bochen Xie, Youfu Li"
+  - label: "TMM 2023"
+    image: "/images/publications/transifc.png"
+    alt: "TransIFC paper thumbnail"
+    title: "TransIFC: Invariant Cues-aware Feature Concentration Learning for Efficient Fine-grained Bird Image Classification"
+    links:
+      - title: "PDF"
+        url: "https://ieeexplore.ieee.org/abstract/document/10023961"
+        icon: "fas fa-file-pdf"
+    venue: "IEEE Transactions on Multimedia (TMM), 2023"
+    authors_html: "Hai Liu, <strong>Cheng Zhang<sup>†</sup></strong>, Yongjian Deng, Bochen Xie, Tingting Liu, Zhaoli Zhang, You-Fu Li<sup>†</sup>"
+  - label: "ROBIO 2022"
+    image: "/images/publications/robio.png"
+    alt: "ROBIO 2022 paper thumbnail"
+    title: "Affinity Relation-aware Fine-grained Bird Image Recognition for Robot Vision Tracking via Transformers"
+    links:
+      - title: "PDF"
+        url: "https://ieeexplore.ieee.org/abstract/document/10011861"
+        icon: "fas fa-file-pdf"
+    venue: "IEEE International Conference on Robotics and Biomimetics (ROBIO), 2022"
+    authors_html: "Hai Liu, <strong>Cheng Zhang<sup>†</sup></strong>, Bochen Xie, Tingting Liu, Qingsong Xu, You-Fu Li<sup>†</sup>"
+
+internship:
+  - title_html: "Lingxi Lab, HiSilicon Semiconductor Business Department, Huawei"
+    subtitle_html: "Research Intern"
+    date: "May 20, 2026 - Present"
+    details:
+      - '<strong>Project:</strong> Implicit spatial reasoning for autonomous-driving VLA based on Qwen3-VL.'
+
+research_experience:
+  - title_html: "VLRLab, Huazhong University of Science and Technology, Wuhan"
+    subtitle_html: "Member"
+    date: "Sep 2024 - Current"
+    spacing: "roomy"
+    details:
+      - '<strong>Advisor:</strong> <a href="https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en">Xiang Bai</a>'
+      - "<strong>Research Topics:</strong> 3D Multimodal Large Language Models, Embodied AI"
+  - title_html: "National Engineering Research Center for E-Learning, Central China Normal University, Wuhan"
+    subtitle_html: "Research Assistant"
+    date: "Sep 2022 - Jun 2024"
+    details:
+      - '<strong>Advisor:</strong> <a href="https://scholar.google.com/citations?user=Tjw7zHEAAAAJ&hl=en">Hai Liu</a>'
+      - "<strong>Research Topics:</strong> Head Pose Estimation, Fine-grained Image Classification, Facial Expression Recognition"
+
+honors:
+  - title_html: "Graduate Academic First-Class Scholarship, 10,000RMB"
+    subtitle_html: "Huazhong University of Science and Technology"
+    date: "Oct 2024"
+  - title_html: "National Scholarship (Top 0.2%, Undergraduate), 10,000RMB"
+    subtitle_html: "Central China Normal University"
+    date: "Oct 2023"
+
+patents:
+  - title_html: '一种基于 Transformer 网络的学习专注度监测方法 <a href="/files/patents/p1.pdf" title="PDF"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>'
+    subtitle_html: "国家发明专利，中国，专利号：202211596338.9"
+    body_html: "刘海、<strong>张诚</strong>、刘婷婷、张昭理、朱晓倩、宋林森、林丹月、王镜淇"
+    date: "Nov 2025"
+  - title_html: '一种基于多模态数据融合的在线学习状态检测方法 <a href="/files/patents/p2.pdf" title="PDF"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>'
+    subtitle_html: "国家发明专利，中国，专利号：202211596371.1"
+    body_html: "刘海、林丹月、刘婷婷、张昭理、王镜淇、<strong>张诚</strong>、朱晓倩、宋林森"
+    date: "Nov 2025"
+  - title_html: "一种基于特征交互学习网络的学生心理状态检测方法"
+    subtitle_html: "国家发明专利，中国，CN116172556A"
+    body_html: "刘海、朱晓倩、刘婷婷、张昭理、宋林森、林丹月、王镜淇、<strong>张诚</strong>"
+    date: "Nov 2025"
+  - title_html: "一种基于人体姿态估计的动态课堂签到方法"
+    subtitle_html: "国家发明专利，中国，CN116311572A"
+    body_html: "刘海、王镜淇、刘婷婷、张昭理、<strong>张诚</strong>、朱晓倩、宋林森、林丹月"
+    date: "Nov 2025"
+  - title_html: "一种基于双相机多分支网络的虚拟现实教学手势识别方法"
+    subtitle_html: "国家发明专利，中国，CN116466816A"
+    body_html: "刘海、宋林森、刘婷婷、张昭理、林丹月、王镜淇、<strong>张诚</strong>、朱晓倩"
+    date: "Nov 2025"
+
+education:
+  - title_html: "Huazhong University of Science and Technology"
+    subtitle_html: "Graduate Student, Pursuing Master’s degree in Software Engineering"
+    date: "Sep 2024 - Current"
+    details:
+      - '<strong>Supervised by Prof.</strong> <a href="https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en">Xiang Bai</a>'
+  - title_html: "Central China Normal University"
+    subtitle_html: "Bachelor of Engineering in Artificial Intelligence"
+    date: "Jun 2024"
+    details:
+      - '<strong>Supervised by Prof.</strong> <a href="https://scholar.google.com/citations?user=Tjw7zHEAAAAJ&hl=en">Hai Liu</a>'
+  - title_html: "IELTS: 7.5"
+    subtitle_html: "Listening-8.0; Speaking-6.0; Reading-8.5; Writing-6.5"
+    date: "Apr 2023"
+  - title_html: "GRE: 324"
+    subtitle_html: "Verbal-155; Quantitative-169; Analytical Writing-3.0"
+    date: "Jul 2023"
+  - title_html: "CET 6"
+    subtitle_html: "Overall-587"
+    date: "May 2022"
+
+academic_service: "Reviewer: NeurIPS 2024/2026, AISTATS 2025, ICML 2025/2026, AAAI 2026/2027, ICLR 2026, CVPR 2026, ECCV 2026"

@@ -1,0 +1,23 @@
+{% assign entries = include.items %}
+{% for entry in entries %}
+{% assign spacing = entry.spacing | default: include.spacing | default: "default" %}
+<div class="home-entry home-entry--{{ spacing }}{% if include.compact %} home-entry--compact{% endif %}">
+  <div>
+    <p class="home-entry__title">{{ entry.title_html }}</p>
+    {% if entry.subtitle_html %}
+      <p class="home-entry__subtitle">{{ entry.subtitle_html }}</p>
+    {% endif %}
+    {% if entry.body_html %}
+      <p class="home-entry__body">{{ entry.body_html }}</p>
+    {% endif %}
+    {% if entry.details %}
+      <ul class="home-entry__details">
+        {% for detail in entry.details %}
+          <li>{{ detail }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  <div class="home-entry__date">{{ entry.date }}</div>
+</div>
+{% endfor %}

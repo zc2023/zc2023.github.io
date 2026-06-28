@@ -9,13 +9,10 @@ layout: compress
   <head>
     {% include head.html %}
     {% include head/custom.html %}
-      <!-- 其他 meta / css -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   </head>
 
   <body>
 
-    {% include browser-upgrade.html %}
     {% include masthead.html %}
 
     {{ content }}
@@ -27,7 +24,6 @@ layout: compress
       </footer>
     </div>
 
-    <!-- {% include scripts.html %} -->
     <script src="{{ base_path }}/assets/js/site.js"></script>
   </body>
 </html>

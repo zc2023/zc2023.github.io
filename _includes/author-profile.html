@@ -1,8 +1,6 @@
 {% include base_path %}
 
-{% if page.author and site.data.authors[page.author] %}
-  {% assign author = site.data.authors[page.author] %}{% else %}{% assign author = site.author %}
-{% endif %}
+{% assign author = site.author %}
 
 <div itemscope itemtype="http://schema.org/Person">
 
@@ -18,34 +16,15 @@
     <h3 class="author__name"><span class="gradient-text">Cheng Zhang | 张 诚</span></h3>
     {% if author.bio %}<p class="author__bio">{{ author.bio }}</p>{% endif %}
   </div>
-            <style>
-              .gradient-text {
-                background: linear-gradient(90deg, #3b82f6, #9333ea, #3b82f6, #9333ea);
-                background-size: 300% auto;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: gradientFlow 8s linear infinite;
-              }
-
-              @keyframes gradientFlow {
-                0% {
-                  background-position: 0% center;
-                }
-
-                100% {
-                  background-position: 100% center;
-                }
-              }
-            </style>
 
   <div class="author__urls-wrapper">
     <button class="btn btn--inverse author__follow-button">Follow</button>
     <ul class="author__urls social-icons">
       {% if author.location %}
-        <li><i class="fas fa-fw fa-location-dot" aria-hidden="true"></i> {{ author.location }}</li>
+        <li><i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> {{ author.location }}</li>
       {% endif %}
       {% if author.employer %}
-        <li><i class="fas fa-fw fa-building-columns" aria-hidden="true"></i> {{ author.employer }}</li>
+        <li><i class="fas fa-fw fa-university" aria-hidden="true"></i> {{ author.employer }}</li>
       {% endif %}
       {% if author.uri %}
         <li><a href="{{ author.uri }}"><i class="fas fa-fw fa-link" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].website_label | default: "Website" }}</a></li>
@@ -53,103 +32,31 @@
       {% if author.email %}
         <li><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> czhang2024@hust.edu.cn</li>
       {% endif %}
-      {% if author.keybase %}
-        <li><a href="https://keybase.io/{{ author.keybase }}"><i class="fas fa-fw fa-key" aria-hidden="true"></i> Keybase</a></li>
-      {% endif %}
-      {% if author.researchgate %}
-        <li><a href="{{ author.researchgate }}"><i class="fab fa-fw fa-researchgate" aria-hidden="true"></i> ResearchGate</a></li>
-      {% endif %}
-      {% if author.twitter %}
-        <li><a href="https://twitter.com/{{ author.twitter }}"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
-      {% endif %}
-      {% if author.facebook %}
-        <li><a href="https://www.facebook.com/{{ author.facebook }}"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
-      {% endif %}
-      {% if author.google_plus %}
-        <li><a href="https://plus.google.com/+{{ author.google_plus }}"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i> Google+</a></li>
-      {% endif %}
-      {% if author.linkedin %}
-        <li><a href="https://www.linkedin.com/in/{{ author.linkedin }}"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
-      {% endif %}
-      {% if author.xing %}
-        <li><a href="https://www.xing.com/profile/{{ author.xing }}"><i class="fab fa-fw fa-xing-square" aria-hidden="true"></i> XING</a></li>
-      {% endif %}
-      {% if author.instagram %}
-        <li><a href="https://instagram.com/{{ author.instagram }}"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
-      {% endif %}
-      {% if author.tumblr %}
-        <li><a href="https://{{ author.tumblr }}.tumblr.com"><i class="fab fa-fw fa-tumblr-square" aria-hidden="true"></i> Tumblr</a></li>
-      {% endif %}
-      {% if author.bitbucket %}
-        <li><a href="https://bitbucket.org/{{ author.bitbucket }}"><i class="fab fa-fw fa-bitbucket" aria-hidden="true"></i> Bitbucket</a></li>
-      {% endif %}
       {% if author.github %}
         <li><a href="https://github.com/{{ author.github }}"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Github</a></li>
-      {% endif %}
-      {% if author.stackoverflow %}
-        <li><a href="https://www.stackoverflow.com/users/{{ author.stackoverflow }}"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stackoverflow</a></li>
-      {% endif %}
-      {% if author.lastfm %}
-        <li><a href="https://lastfm.com/user/{{ author.lastfm }}"><i class="fab fa-fw fa-lastfm-square" aria-hidden="true"></i> Last.fm</a></li>
-      {% endif %}
-      {% if author.dribbble %}
-        <li><a href="https://dribbble.com/{{ author.dribbble }}"><i class="fab fa-fw fa-dribbble-square" aria-hidden="true"></i> Dribbble</a></li>
-      {% endif %}
-      {% if author.pinterest %}
-        <li><a href="https://www.pinterest.com/{{ author.pinterest }}"><i class="fab fa-fw fa-pinterest" aria-hidden="true"></i> Pinterest</a></li>
-      {% endif %}
-      {% if author.foursquare %}
-        <li><a href="https://foursquare.com/{{ author.foursquare }}"><i class="fab fa-fw fa-foursquare" aria-hidden="true"></i> Foursquare</a></li>
-      {% endif %}
-      {% if author.steam %}
-        <li><a href="https://steamcommunity.com/id/{{ author.steam }}"><i class="fab fa-fw fa-steam-square" aria-hidden="true"></i> Steam</a></li>
-      {% endif %}
-      {% if author.youtube %}
-        <li><a href="https://www.youtube.com/user/{{ author.youtube }}"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
-      {% endif %}
-      {% if author.soundcloud %}
-        <li><a href="https://soundcloud.com/{{ author.soundcloud }}"><i class="fab fa-fw fa-soundcloud" aria-hidden="true"></i> Soundcloud</a></li>
-      {% endif %}
-      {% if author.weibo %}
-        <li><a href="https://www.weibo.com/{{ author.weibo }}"><i class="fab fa-fw fa-weibo" aria-hidden="true"></i> Weibo</a></li>
-      {% endif %}
-      {% if author.flickr %}
-        <li><a href="https://www.flickr.com/{{ author.flickr }}"><i class="fab fa-fw fa-flickr" aria-hidden="true"></i> Flickr</a></li>
-      {% endif %}
-      {% if author.codepen %}
-        <li><a href="https://codepen.io/{{ author.codepen }}"><i class="fab fa-fw fa-codepen" aria-hidden="true"></i> CodePen</a></li>
-      {% endif %}
-      {% if author.vine %}
-        <li><a href="https://vine.co/u/{{ author.vine }}"><i class="fab fa-fw fa-vine" aria-hidden="true"></i> Vine</a></li>
       {% endif %}
       {% if author.googlescholar %}
         <li><a href="{{ author.googlescholar }}"><i class="fas fa-fw fa-graduation-cap"></i> Google Scholar</a></li>
       {% endif %}
-      {% if author.pubmed %}
-        <li><a href="{{ author.pubmed }}"><i class="ai ai-pubmed-square ai-fw"></i> PubMed</a></li>
-      {% endif %}
       {% if author.orcid %}
-        <!-- <li><a href="{{ author.orcid }}"><i class="ai ai-orcid ai-fw"></i> ORCID</a></li> -->
-        <!-- <li><a href="{{ author.orcid }}"><i class="ai ai-orcid ai-fw" color="#A7CE3A"></i> ORCID</a></li> -->
-        <li><a href="{{ author.orcid }}"><i class="fa-brands fa-orcid" style="color: #a5cd39; margin-left:1px; margin-right:3px;"></i>  ORCID</a></li>
+        <li><a href="{{ author.orcid }}"><i class="ai ai-orcid ai-fw author__icon-orcid"></i> ORCID</a></li>
       {% endif %}
-        <!-- <li><a href="https://dblp.org/pid/82/6384-20.html"><i class="ai ai-dblp ai-fw"></i> DBLP</a></li> -->
 <li>
   <a href="https://huggingface.co/Younai">
     <img src="/images/huggingface_logo.svg" alt="Hugging Face"
-        style="width:15px; height:15px; vertical-align:middle; margin-left:1px; margin-right:5px;">Hugging Face
+        class="author__icon-image author__icon-image--large">Hugging Face
   </a>
 </li>
 <li>
   <a href="https://dblp.org/pid/82/6384-20.html">
     <img src="/images/dblp.png" alt="DBLP"
-        style="width:15px; height:15px; vertical-align:middle; margin-left:1px; margin-right:5px;">DBLP
+        class="author__icon-image author__icon-image--large">DBLP
   </a>
 </li>
 <li>
   <a href="https://blog.csdn.net/Younai2021?spm=1000.2115.3001.5343">
     <img src="/images/csdn.png" alt="CSDN"
-        style="width:14px; height:14px; vertical-align: -2px; margin-left:1px; margin-right:5px;">CSDN
+        class="author__icon-image">CSDN
   </a>
 </li>
 
@@ -157,35 +64,27 @@
 <li>
   <a href="https://substack.com/@twilight233388?">
     <img src="/images/substack.png" alt="Substack"
-        style="width:14px; height:14px; vertical-align: -2px; margin-left:1px; margin-right:5px;">Substack
+        class="author__icon-image">Substack
   </a>
 </li>
 <li>
   <a href="https://pypi.org/user/czhang/">
     <img src="/images/pypi.png" alt="PyPI"
-        style="width:14px; height:14px; vertical-align: -2px; margin-left:1px; margin-right:5px;">PyPI
+        class="author__icon-image">PyPI
   </a>
 </li>
 
 <li>
   <a href="https://bsky.app/profile/younai2021.bsky.social">
     <img src="/images/bluesky.webp" alt="Bluesky"
-        style="width:14px; height:14px; vertical-align: -2px; margin-left:1px; margin-right:5px;">Bluesky
+        class="author__icon-image">Bluesky
   </a>
 </li>
 
-<li style="white-space: nowrap;">
-<i class="fa-solid fa-circle-user" style="color: #494e52; margin-left:1px; margin-right:3px;"></i>
-  CV (<a href="/files/ZhangChengCV2025_9_13.pdf" style="display:inline;">English</a>|<a href="/files/zhangchengCV_cn2025_11_20.pdf" style="display:inline;"> 中文)</a>
+<li class="author__cv">
+<i class="fas fa-user-circle author__cv-icon"></i>
+  CV (<a href="/files/ZhangChengCV2025_9_13.pdf" class="author__cv-link">English</a>|<a href="/files/zhangchengCV_cn2025_11_20.pdf" class="author__cv-link"> 中文)</a>
 </li>
-
-        <!-- <li><a href="files/ZhangChengCV2025_9_13.pdf"><i class="ai ai-cv ai-fw"></i> Résumé</a></li> -->
-      {% if author.impactstory %}
-        <li><a href="{{ author.impactstory }}"><i class="ai ai-impactstory ai-fw"></i> Impactstory</a></li>
-      {% endif %}
-      {% if author.wikipedia %}
-        <li><a href="https://en.wikipedia.org/wiki/User:{{ author.wikipedia }}"><i class="fab fa-fw fa-wikipedia-w" aria-hidden="true"></i> Wikipedia</a></li>
-{% endif %}
     </ul>
   </div>
 </div>

@@ -175,15 +175,112 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function () {
-      initMasthead();
-      initMastheadGlassIndicator();
-      initGalleryPreview();
-    });
-  } else {
+  function initBackToTop() {
+    var button = document.querySelector(".back-to-top");
+    if (!button) return;
+
+    var isShown = false;
+    var isLocked = false;
+
+    function handleScroll() {
+      if (isLocked) return;
+
+      if (window.scrollY >= 800) {
+        if (!isShown) {
+          button.classList.add("show");
+          isShown = true;
+        }
+      } else if (isShown) {
+        button.classList.remove("show");
+        isShown = false;
+      }
+    }
+
+    function handleClick() {
+      isLocked = true;
+      button.classList.add("ani-leave");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      window.setTimeout(function () {
+        button.classList.remove("ani-leave");
+        button.classList.add("leaved");
+      }, 390);
+
+      window.setTimeout(function () {
+        button.classList.add("ending");
+      }, 120);
+
+      window.setTimeout(function () {
+        button.classList.remove("show");
+      }, 1500);
+
+      window.setTimeout(function () {
+        isLocked = false;
+        isShown = false;
+        button.classList.remove("leaved", "ending");
+      }, 2000);
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    button.addEventListener("click", handleClick);
+    handleScroll();
+  }
+
+  function initDeferredVisitors() {
+    function runWhenIdle(callback) {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(callback, { timeout: 2500 });
+        return;
+      }
+
+      window.setTimeout(callback, 1200);
+    }
+
+    function loadCounterImages() {
+      var counters = Array.prototype.slice.call(document.querySelectorAll("img.counter[data-deferred-src]"));
+
+      counters.forEach(function (image) {
+        image.src = image.getAttribute("data-deferred-src");
+        image.removeAttribute("data-deferred-src");
+      });
+    }
+
+    function loadClustrMaps() {
+      var placeholder = document.querySelector("script#clustrmaps[data-deferred-src]");
+      if (!placeholder) return;
+
+      var script = document.createElement("script");
+      script.id = placeholder.id;
+      script.async = true;
+      script.src = placeholder.getAttribute("data-deferred-src");
+      placeholder.replaceWith(script);
+    }
+
+    function loadVisitors() {
+      runWhenIdle(function () {
+        loadCounterImages();
+        loadClustrMaps();
+      });
+    }
+
+    if (document.readyState === "complete") {
+      loadVisitors();
+    } else {
+      window.addEventListener("load", loadVisitors, { once: true });
+    }
+  }
+
+  function initSite() {
     initMasthead();
     initMastheadGlassIndicator();
     initGalleryPreview();
+    initBackToTop();
+    initDeferredVisitors();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSite);
+  } else {
+    initSite();
   }
 })();
