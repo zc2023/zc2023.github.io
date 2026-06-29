@@ -1,0 +1,2560 @@
+---
+layout: none
+title: "Solar System"
+permalink: /solar-system/
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Solar System</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --panel: rgba(8, 14, 28, 0.68);
+      --panel-border: rgba(185, 217, 255, 0.24);
+      --text: #f7fbff;
+      --muted: rgba(226, 236, 249, 0.72);
+      --accent: #72d4ff;
+      --warm: #ffd37a;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #02040a;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+    }
+
+    .hud {
+      position: fixed;
+      z-index: 5;
+      left: 24px;
+      top: 24px;
+      width: min(350px, calc(100vw - 48px));
+      padding: 18px;
+      color: var(--text);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(8, 14, 28, 0.82), rgba(10, 29, 44, 0.58));
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .hud-toggle {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      display: none;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .hud__eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hud h1 {
+      margin: 0;
+      font-size: clamp(25px, 4vw, 42px);
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+
+    .hud__grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .metric {
+      display: grid;
+      gap: 3px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.13);
+    }
+
+    .metric:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .metric strong {
+      min-width: 0;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .controls {
+      position: fixed;
+      z-index: 5;
+      right: 24px;
+      bottom: 24px;
+      display: grid;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: rgba(8, 14, 28, 0.58);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .immersive-button {
+      height: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 5px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .immersive-button:hover,
+    .immersive-button:focus-visible,
+    .immersive-button[aria-pressed="true"] {
+      outline: none;
+      color: #09121f;
+      background: var(--accent);
+    }
+
+    .control-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(48px, 1fr));
+      gap: 10px;
+    }
+
+    .zoom-control {
+      display: grid;
+      gap: 6px;
+      width: 164px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .zoom-control input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .zoom-control__value {
+      color: var(--text);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .time-controls {
+      position: fixed;
+      z-index: 5;
+      left: 24px;
+      bottom: 24px;
+      display: grid;
+      grid-template-columns: minmax(180px, 380px) auto;
+      gap: 12px;
+      align-items: end;
+      width: min(430px, calc(100vw - 420px));
+      padding: 14px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(8, 14, 28, 0.6);
+      box-shadow: 0 18px 58px rgba(0, 0, 0, 0.3);
+      transform: none;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .time-controls label {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .time-control__head {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .time-scale {
+      display: inline-flex;
+      gap: 4px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .time-scale button {
+      height: 26px;
+      min-width: 46px;
+      padding: 0 9px;
+      border: 0;
+      border-radius: 4px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .time-scale button:hover,
+    .time-scale button:focus-visible {
+      outline: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .time-scale button[aria-pressed="true"] {
+      color: #09121f;
+      background: var(--accent);
+    }
+
+    .time-controls input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .time-slider-hint {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: rgba(226, 236, 249, 0.58);
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1;
+    }
+
+    .time-slider-hint span {
+      min-width: 0;
+      white-space: nowrap;
+    }
+
+    .time-controls__value {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 750;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .time-control__footer {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .time-stepper {
+      display: inline-flex;
+      gap: 6px;
+      flex: 0 0 auto;
+    }
+
+    .time-stepper button {
+      display: inline-grid;
+      place-items: center;
+      min-width: 42px;
+      height: 28px;
+      padding: 0 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 5px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .time-stepper button:hover,
+    .time-stepper button:focus-visible {
+      outline: none;
+      border-color: rgba(114, 212, 255, 0.72);
+      background: rgba(114, 212, 255, 0.16);
+    }
+
+    .restore-button {
+      min-width: 92px;
+      height: 40px;
+      padding: 0 13px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      color: #09121f;
+      background: var(--warm);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .restore-button:hover,
+    .restore-button:focus-visible {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.72);
+      filter: brightness(1.06);
+    }
+
+    .control-button {
+      display: inline-grid;
+      grid-template-rows: 18px auto;
+      place-items: center;
+      min-width: 52px;
+      height: 46px;
+      padding: 5px 6px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.09);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .control-button__icon {
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .control-button__label {
+      overflow: hidden;
+      max-width: 100%;
+      color: currentColor;
+      font-size: 9px;
+      font-weight: 850;
+      line-height: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .control-button:hover,
+    .control-button:focus-visible {
+      outline: none;
+      border-color: rgba(114, 212, 255, 0.72);
+      background: rgba(114, 212, 255, 0.18);
+    }
+
+    .control-button[aria-pressed="true"] {
+      color: #09121f;
+      background: var(--accent);
+    }
+
+    .label {
+      position: fixed;
+      z-index: 4;
+      display: grid;
+      gap: 4px;
+      min-width: 130px;
+      padding: 8px 10px;
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(7, 12, 24, 0.72);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.34);
+      pointer-events: none;
+      transform: translate(-50%, calc(-100% - 18px));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .label::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -18px;
+      width: 1px;
+      height: 18px;
+      background: linear-gradient(var(--accent), rgba(114, 212, 255, 0));
+    }
+
+    .label__title {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .label__sub {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .sky-compass {
+      position: fixed;
+      z-index: 5;
+      top: 24px;
+      right: 24px;
+      display: none;
+      width: 190px;
+      padding: 12px;
+      color: var(--text);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: rgba(8, 14, 28, 0.62);
+      box-shadow: 0 18px 58px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .sky-compass.is-visible {
+      display: grid;
+      gap: 9px;
+    }
+
+    .sky-compass__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .sky-compass__title strong {
+      color: var(--text);
+      font-size: 11px;
+      text-transform: none;
+    }
+
+    .sky-compass__plot {
+      position: relative;
+      width: 116px;
+      height: 116px;
+      margin: 0 auto;
+      border: 1px solid rgba(226, 236, 249, 0.22);
+      border-radius: 50%;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08)) 50% 50% / 1px 100% no-repeat,
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08)) 50% 50% / 100% 1px no-repeat,
+        radial-gradient(circle at 50% 50%, rgba(114, 212, 255, 0.18), rgba(114, 212, 255, 0.03) 58%, rgba(255, 255, 255, 0.03) 100%);
+    }
+
+    .sky-compass__dir {
+      position: absolute;
+      color: rgba(226, 236, 249, 0.72);
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .sky-compass__dir--n { left: 50%; top: 9px; }
+    .sky-compass__dir--e { left: calc(100% - 9px); top: 50%; }
+    .sky-compass__dir--s { left: 50%; top: calc(100% - 9px); }
+    .sky-compass__dir--w { left: 9px; top: 50%; }
+
+    .sky-compass__arrow {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 43px;
+      border-radius: 999px;
+      background: linear-gradient(var(--accent), rgba(114, 212, 255, 0));
+      transform: translate(-50%, -100%) rotate(var(--view-angle, 180deg));
+      transform-origin: 50% 100%;
+    }
+
+    .sky-compass__arrow::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -4px;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+      transform: translateX(-50%) rotate(-45deg);
+    }
+
+    .sky-compass__body {
+      position: absolute;
+      left: var(--x, 50%);
+      top: var(--y, 50%);
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 50%;
+      color: #09121f;
+      font-size: 9px;
+      font-weight: 950;
+      line-height: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .sky-compass__body--sun {
+      background: #ffd37a;
+      box-shadow: 0 0 18px rgba(255, 211, 122, 0.58);
+    }
+
+    .sky-compass__body--moon {
+      background: #d8f1ff;
+      box-shadow: 0 0 14px rgba(216, 241, 255, 0.42);
+    }
+
+    .sky-compass__meta {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 750;
+      line-height: 1.25;
+    }
+
+    .sky-compass__meta span {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sky-compass__meta b,
+    .sky-compass__meta em {
+      font-style: normal;
+    }
+
+    .guide-legend {
+      position: fixed;
+      z-index: 5;
+      right: 24px;
+      top: 24px;
+      display: none;
+      gap: 7px;
+      width: 190px;
+      padding: 12px;
+      color: var(--muted);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: rgba(8, 14, 28, 0.62);
+      box-shadow: 0 18px 58px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .guide-legend.is-visible {
+      display: grid;
+    }
+
+    .guide-legend__title {
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .guide-legend__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guide-legend__swatch {
+      width: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--line-color);
+      box-shadow: 0 0 12px var(--line-color);
+    }
+
+    body.is-immersive .hud,
+    body.is-immersive .sky-compass,
+    body.is-immersive .guide-legend,
+    body.is-immersive #beijing-label {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      background: #02040a;
+      transition: opacity 360ms ease, visibility 360ms ease;
+    }
+
+    .loading.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading__panel {
+      width: min(330px, calc(100vw - 48px));
+      padding: 22px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel);
+      text-align: center;
+    }
+
+    .loading__title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .loading__bar {
+      height: 3px;
+      margin-top: 16px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .loading__bar::before {
+      content: "";
+      display: block;
+      width: 42%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(114, 212, 255, 0), var(--accent), rgba(255, 211, 122, 0));
+      animation: sweep 1.1s ease-in-out infinite;
+    }
+
+    .error {
+      position: fixed;
+      inset: auto 24px 24px 24px;
+      z-index: 12;
+      display: none;
+      max-width: 720px;
+      padding: 14px 16px;
+      color: #fff4f4;
+      border: 1px solid rgba(255, 142, 142, 0.44);
+      border-radius: 8px;
+      background: rgba(80, 10, 20, 0.8);
+    }
+
+    .error.is-visible { display: block; }
+
+    @keyframes sweep {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(250%); }
+    }
+
+    @media (max-width: 720px) {
+      .hud {
+        left: 10px;
+        top: max(10px, env(safe-area-inset-top));
+        width: calc(100vw - 20px);
+        max-height: min(43vh, 330px);
+        padding: 11px 12px;
+        overflow: auto;
+      }
+
+      .hud-toggle {
+        display: grid;
+      }
+
+      body.hud-collapsed .hud {
+        width: auto;
+        max-height: none;
+        padding: 10px 44px 10px 12px;
+        overflow: visible;
+      }
+
+      body.hud-collapsed .hud h1,
+      body.hud-collapsed .hud__grid {
+        display: none;
+      }
+
+      body.hud-collapsed .hud__eyebrow {
+        margin: 0;
+      }
+
+      .hud__eyebrow {
+        margin-bottom: 5px;
+        font-size: 10px;
+      }
+
+      .hud h1 {
+        font-size: 22px;
+        line-height: 1.08;
+      }
+
+      .hud__grid {
+        gap: 7px;
+        margin-top: 12px;
+      }
+
+      .metric {
+        gap: 2px;
+        padding-top: 7px;
+      }
+
+      .metric span {
+        font-size: 10px;
+      }
+
+      .metric strong {
+        font-size: 12px;
+        line-height: 1.25;
+      }
+
+      .controls {
+        right: 10px;
+        left: auto;
+        bottom: calc(172px + env(safe-area-inset-bottom));
+        gap: 8px;
+        padding: 8px;
+      }
+
+      .control-buttons {
+        gap: 6px;
+      }
+
+      .zoom-control {
+        width: 164px;
+        gap: 5px;
+        font-size: 10px;
+      }
+
+      .zoom-control__value {
+        font-size: 11px;
+      }
+
+      .time-controls {
+        left: 10px;
+        right: 10px;
+        bottom: max(10px, env(safe-area-inset-bottom));
+        grid-template-columns: 1fr;
+        gap: 8px;
+        width: auto;
+        padding: 10px;
+        transform: none;
+      }
+
+      .time-controls label {
+        gap: 6px;
+        font-size: 11px;
+      }
+
+      .time-control__head {
+        align-items: flex-start;
+        gap: 7px;
+        flex-wrap: wrap;
+      }
+
+      .time-scale {
+        gap: 3px;
+        padding: 2px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .time-scale button {
+        min-width: 44px;
+        height: 24px;
+        padding: 0 7px;
+        font-size: 10px;
+      }
+
+      .time-controls__value {
+        font-size: 12px;
+      }
+
+      .time-slider-hint {
+        font-size: 9px;
+      }
+
+      .time-stepper button {
+        min-width: 40px;
+        height: 26px;
+        padding: 0 7px;
+        font-size: 11px;
+      }
+
+      .restore-button {
+        width: 100%;
+        height: 34px;
+        font-size: 12px;
+      }
+
+      .control-button {
+        min-width: 38px;
+        height: 40px;
+        padding: 4px;
+        grid-template-rows: 16px auto;
+      }
+
+      .control-button__icon {
+        font-size: 15px;
+      }
+
+      .control-button__label {
+        font-size: 8px;
+      }
+
+      .sky-compass {
+        top: calc(min(43vh, 330px) + 20px);
+        right: 10px;
+        width: 152px;
+        padding: 9px;
+      }
+
+      .guide-legend {
+        top: calc(min(43vh, 330px) + 20px);
+        right: 10px;
+        width: 152px;
+        padding: 9px;
+        font-size: 10px;
+      }
+
+      .sky-compass__plot {
+        width: 92px;
+        height: 92px;
+      }
+
+      .sky-compass__arrow {
+        height: 34px;
+      }
+
+      .sky-compass__body {
+        width: 16px;
+        height: 16px;
+        font-size: 8px;
+      }
+
+      .label {
+        min-width: 112px;
+        padding: 7px 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="scene" aria-label="Interactive Solar System"></main>
+
+  <section class="hud" aria-label="Beijing solar system data">
+    <button id="hud-toggle" class="hud-toggle" type="button" aria-label="Collapse information panel" title="Collapse information panel">i</button>
+    <p class="hud__eyebrow">Solar System Observatory</p>
+    <h1>Beijing on Earth</h1>
+    <div class="hud__grid">
+      <div class="metric">
+        <span>Location</span>
+        <strong>Beijing, China · 39.9042°N, 116.4074°E</strong>
+      </div>
+      <div class="metric">
+        <span>Current Time</span>
+        <strong id="time-readout">Loading selected Beijing time...</strong>
+      </div>
+      <div class="metric">
+        <span>Moon Phase</span>
+        <strong id="phase-readout">Calculating lunar phase...</strong>
+      </div>
+      <div class="metric">
+        <span>Daylight At Beijing</span>
+        <strong id="daylight-readout">Tracking sunlight...</strong>
+      </div>
+      <div class="metric">
+        <span>View</span>
+        <strong id="view-readout">Solar orbit overview</strong>
+      </div>
+    </div>
+  </section>
+
+  <div id="beijing-label" class="label" aria-hidden="true">
+    <div class="label__title">Beijing</div>
+    <div class="label__sub">live position marker</div>
+  </div>
+
+  <aside id="sky-compass" class="sky-compass" aria-label="Sky sightline orientation">
+    <div class="sky-compass__title">
+      Sky bearing
+      <strong id="sky-facing-label">Facing S</strong>
+    </div>
+    <div id="sky-compass-plot" class="sky-compass__plot">
+      <span class="sky-compass__dir sky-compass__dir--n">N</span>
+      <span class="sky-compass__dir sky-compass__dir--e">E</span>
+      <span class="sky-compass__dir sky-compass__dir--s">S</span>
+      <span class="sky-compass__dir sky-compass__dir--w">W</span>
+      <span id="sky-view-arrow" class="sky-compass__arrow"></span>
+      <span id="sky-sun-dot" class="sky-compass__body sky-compass__body--sun">S</span>
+      <span id="sky-moon-dot" class="sky-compass__body sky-compass__body--moon">M</span>
+    </div>
+    <div class="sky-compass__meta">
+      <span><b>Sun</b><em id="sky-sun-status">--</em></span>
+      <span><b>Moon</b><em id="sky-moon-status">--</em></span>
+    </div>
+  </aside>
+
+  <aside id="guide-legend" class="guide-legend" aria-label="Earth-Moon guide legend">
+    <div class="guide-legend__title">Earth-Moon guides</div>
+    <div class="guide-legend__item"><span class="guide-legend__swatch" style="--line-color: #ffd37a;"></span>Sun direction</div>
+    <div class="guide-legend__item"><span class="guide-legend__swatch" style="--line-color: #9fdcff;"></span>Moon sightline</div>
+  </aside>
+
+  <section class="time-controls" aria-label="Time controls">
+    <label for="time-slider">
+      <span class="time-control__head">
+        Time Offset
+        <span class="time-scale" aria-label="Time offset scale">
+          <button id="time-minute-button" type="button" aria-pressed="false">Minute</button>
+          <button id="time-hour-button" type="button" aria-pressed="true">Hour</button>
+          <button id="time-day-button" type="button" aria-pressed="false">Day</button>
+          <button id="time-month-button" type="button" aria-pressed="false">Month</button>
+        </span>
+      </span>
+      <input id="time-slider" type="range" min="-24" max="24" step="1" value="0">
+      <span class="time-slider-hint" aria-hidden="true">
+        <span id="time-slider-min">-24 hours</span>
+        <span id="time-slider-mid">Live now</span>
+        <span id="time-slider-max">+24 hours</span>
+      </span>
+      <span class="time-control__footer">
+        <span id="time-offset-readout" class="time-controls__value">Live now</span>
+        <span id="time-stepper" class="time-stepper" aria-label="Time fine controls">
+          <button id="time-step-back" type="button" aria-label="Move back one step" title="Move back one step">-1h</button>
+          <button id="time-step-forward" type="button" aria-label="Move forward one step" title="Move forward one step">+1h</button>
+        </span>
+      </span>
+    </label>
+    <button id="restore-time-button" class="restore-button" type="button">Restore</button>
+  </section>
+
+  <div class="controls" aria-label="Scene controls">
+    <div class="control-buttons">
+      <button id="focus-button" class="control-button" type="button" aria-label="Solar overview" title="Solar overview"><span class="control-button__icon">☉</span><span class="control-button__label">Solar</span></button>
+      <button id="moon-button" class="control-button" type="button" aria-label="Earth-Moon view" title="Earth-Moon view"><span class="control-button__icon">◐</span><span class="control-button__label">Moon</span></button>
+      <button id="moon-observe-button" class="control-button" type="button" aria-label="Observe Moon from Earth" title="Observe Moon from Earth"><span class="control-button__icon">☾</span><span class="control-button__label">Sight</span></button>
+      <button id="sky-button" class="control-button" type="button" aria-label="Sky sightline from Beijing" title="Sky sightline from Beijing"><span class="control-button__icon">◒</span><span class="control-button__label">Sky</span></button>
+      <button id="earth-button" class="control-button" type="button" aria-label="Earth daylight view" title="Earth daylight view"><span class="control-button__icon">⊕</span><span class="control-button__label">Earth</span></button>
+    </div>
+    <label class="zoom-control" for="zoom-slider">
+      Zoom Level
+      <input id="zoom-slider" type="range" min="0" max="100" step="1" value="0">
+      <span id="zoom-readout" class="zoom-control__value">Level 1 · Sun-Earth</span>
+    </label>
+    <button id="immersive-button" class="immersive-button" type="button" aria-pressed="false">Minimal</button>
+  </div>
+
+  <div id="loading" class="loading" role="status" aria-live="polite">
+    <div class="loading__panel">
+      <div class="loading__title">Building the solar system</div>
+      <div class="loading__bar"></div>
+    </div>
+  </div>
+
+  <div id="error" class="error" role="alert"></div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.165.0/build/three.module.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.165.0/build/three.module.js";
+    import { OrbitControls } from "https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js";
+
+    const BEIJING = {
+      name: "Beijing",
+      lat: 39.9042,
+      lon: 116.4074,
+      timezone: "Asia/Shanghai"
+    };
+
+    const LUNAR_MONTH = 29.53058867;
+    const EARTH_RADIUS = 0.72;
+    const MOON_RADIUS = 0.2;
+    const MOON_DISTANCE = 5.4;
+    const SOLAR_ORBIT_RADIUS = 18.5;
+    const AVERAGE_MOON_DISTANCE_KM = 384400;
+    const container = document.getElementById("scene");
+    const loading = document.getElementById("loading");
+    const errorBox = document.getElementById("error");
+    const label = document.getElementById("beijing-label");
+    const timeReadout = document.getElementById("time-readout");
+    const hudToggle = document.getElementById("hud-toggle");
+    const phaseReadout = document.getElementById("phase-readout");
+    const daylightReadout = document.getElementById("daylight-readout");
+    const viewReadout = document.getElementById("view-readout");
+    const timeSlider = document.getElementById("time-slider");
+    const timeOffsetReadout = document.getElementById("time-offset-readout");
+    const timeSliderMin = document.getElementById("time-slider-min");
+    const timeSliderMid = document.getElementById("time-slider-mid");
+    const timeSliderMax = document.getElementById("time-slider-max");
+    const timeMinuteButton = document.getElementById("time-minute-button");
+    const timeHourButton = document.getElementById("time-hour-button");
+    const timeDayButton = document.getElementById("time-day-button");
+    const timeMonthButton = document.getElementById("time-month-button");
+    const timeStepBack = document.getElementById("time-step-back");
+    const timeStepForward = document.getElementById("time-step-forward");
+    const restoreTimeButton = document.getElementById("restore-time-button");
+    const moonButton = document.getElementById("moon-button");
+    const moonObserveButton = document.getElementById("moon-observe-button");
+    const skyButton = document.getElementById("sky-button");
+    const earthButton = document.getElementById("earth-button");
+    const focusButton = document.getElementById("focus-button");
+    const zoomSlider = document.getElementById("zoom-slider");
+    const zoomReadout = document.getElementById("zoom-readout");
+    const skyCompass = document.getElementById("sky-compass");
+    const skyCompassPlot = document.getElementById("sky-compass-plot");
+    const skyFacingLabel = document.getElementById("sky-facing-label");
+    const skyViewArrow = document.getElementById("sky-view-arrow");
+    const skySunDot = document.getElementById("sky-sun-dot");
+    const skyMoonDot = document.getElementById("sky-moon-dot");
+    const skySunStatus = document.getElementById("sky-sun-status");
+    const skyMoonStatus = document.getElementById("sky-moon-status");
+    const guideLegend = document.getElementById("guide-legend");
+    const immersiveButton = document.getElementById("immersive-button");
+
+    let lastFrame = performance.now();
+    let selectedBaseTime = Date.now();
+    let timeOffsetMinutes = 0;
+    let sceneOffsetMinutes = 0;
+    let timeAnimation = null;
+    let timeScale = "hour";
+    const timeScaleValues = {
+      minute: 0,
+      hour: 0,
+      day: 0,
+      month: 0
+    };
+    let zoomLevel = 0;
+    let zoomAnimation = null;
+    let viewMode = "solar";
+    let cameraModeOverride = null;
+    let cameraTransition = null;
+    let immersiveMode = false;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x02040a, 0.012);
+
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 520);
+    camera.position.set(0, 44, 0.12);
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    } catch (error) {
+      showFatalError("WebGL is unavailable in this browser session. Please enable hardware acceleration or open the page in a browser with WebGL support.");
+      throw error;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.26;
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enableZoom = false;
+    controls.dampingFactor = 0.055;
+    controls.minDistance = 6;
+    controls.maxDistance = 38;
+    controls.target.set(0, 0, 0);
+
+    const ambient = new THREE.AmbientLight(0x8fb0d2, 0.24);
+    scene.add(ambient);
+
+    const sunPosition = new THREE.Vector3(0, 0, 0);
+    const sunLight = new THREE.PointLight(0xffe1a3, 3.9, 90, 1.6);
+    sunLight.position.copy(sunPosition);
+    scene.add(sunLight);
+
+    const sunGroup = new THREE.Group();
+    sunGroup.position.copy(sunPosition);
+    scene.add(sunGroup);
+
+    const sun = new THREE.Mesh(
+      new THREE.SphereGeometry(1.08, 64, 64),
+      new THREE.MeshBasicMaterial({
+        color: 0xffd176,
+        map: createSunTexture(),
+        transparent: true
+      })
+    );
+    sunGroup.add(sun);
+
+    const sunGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(1.86, 64, 64),
+      new THREE.MeshBasicMaterial({
+        color: 0xffb34f,
+        transparent: true,
+        opacity: 0.17,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      })
+    );
+    sunGroup.add(sunGlow);
+
+    const solarOrbit = createOrbitRing(SOLAR_ORBIT_RADIUS, 0x9ee9ff, 0.92);
+    scene.add(solarOrbit);
+    const solarOrbitGlow = createOrbitRing(SOLAR_ORBIT_RADIUS, 0x4aa8ff, 0.54);
+    solarOrbitGlow.scale.setScalar(1.006);
+    scene.add(solarOrbitGlow);
+    const monthMarkers = createMonthMarkers();
+    monthMarkers.forEach((marker) => scene.add(marker));
+
+    const earthSystem = new THREE.Group();
+    scene.add(earthSystem);
+
+    const overviewEarth = new THREE.Mesh(
+      new THREE.SphereGeometry(0.08, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0x5fb6ff })
+    );
+    scene.add(overviewEarth);
+
+    const overviewEarthHalo = new THREE.Mesh(
+      new THREE.SphereGeometry(0.32, 32, 32),
+      new THREE.MeshBasicMaterial({
+        color: 0x73d4ff,
+        transparent: true,
+        opacity: 0.62,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      })
+    );
+    scene.add(overviewEarthHalo);
+    overviewEarthHalo.visible = false;
+
+    const overviewEarthGlow = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: createBlueGlowTexture(),
+      color: 0x73d4ff,
+      transparent: true,
+      opacity: 0.96,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      depthTest: false
+    }));
+    overviewEarthGlow.scale.set(1.8, 1.8, 1);
+    overviewEarthGlow.visible = false;
+    scene.add(overviewEarthGlow);
+
+    const overviewEarthLabel = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: createTextTexture("Earth"),
+      transparent: true,
+      opacity: 0.9,
+      depthWrite: false
+    }));
+    overviewEarthLabel.scale.set(1.12, 0.42, 1);
+    scene.add(overviewEarthLabel);
+
+    const earthGroup = new THREE.Group();
+    earthSystem.add(earthGroup);
+    earthGroup.rotation.z = THREE.MathUtils.degToRad(-23.44);
+
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.setCrossOrigin("anonymous");
+    const dayTexture = loadTexture("https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg", THREE.SRGBColorSpace);
+    const nightTexture = loadTexture("https://threejs.org/examples/textures/planets/earth_lights_2048.png", THREE.SRGBColorSpace);
+    const bumpTexture = createEarthBumpTexture();
+    [dayTexture, nightTexture, bumpTexture].forEach((texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    });
+    bumpTexture.colorSpace = THREE.NoColorSpace;
+
+    const earthMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        dayMap: { value: dayTexture },
+        nightMap: { value: nightTexture },
+        sunDirection: { value: new THREE.Vector3() },
+        brightness: { value: 1.42 }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vWorldNormal;
+        void main() {
+          vUv = uv;
+          vWorldNormal = normalize(mat3(modelMatrix) * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D dayMap;
+        uniform sampler2D nightMap;
+        uniform vec3 sunDirection;
+        uniform float brightness;
+        varying vec2 vUv;
+        varying vec3 vWorldNormal;
+        void main() {
+          float light = dot(normalize(vWorldNormal), normalize(sunDirection));
+          float dayMask = smoothstep(-0.28, 0.34, light);
+          vec3 dayColor = texture2D(dayMap, vUv).rgb * 1.72;
+          vec3 nightColor = texture2D(nightMap, vUv).rgb;
+          vec3 color = mix(nightColor * 0.26, dayColor, dayMask);
+          color += dayColor * max(light, 0.0) * 0.46 * dayMask;
+          color *= brightness;
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `
+    });
+
+    const earth = new THREE.Mesh(new THREE.SphereGeometry(EARTH_RADIUS, 96, 96), earthMaterial);
+    earthGroup.add(earth);
+
+    const cloudTexture = loadTexture("https://threejs.org/examples/textures/planets/earth_clouds_1024.png", THREE.SRGBColorSpace);
+    cloudTexture.colorSpace = THREE.SRGBColorSpace;
+    const clouds = new THREE.Mesh(
+      new THREE.SphereGeometry(EARTH_RADIUS * 1.015, 96, 96),
+      new THREE.MeshPhongMaterial({
+        map: cloudTexture,
+        transparent: true,
+        opacity: 0.22,
+        depthWrite: false
+      })
+    );
+    earthGroup.add(clouds);
+
+    const atmosphere = new THREE.Mesh(
+      new THREE.SphereGeometry(EARTH_RADIUS * 1.07, 96, 96),
+      new THREE.MeshBasicMaterial({
+        color: 0x6ebcff,
+        transparent: true,
+        opacity: 0.12,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide,
+        depthWrite: false
+      })
+    );
+    earthGroup.add(atmosphere);
+
+    const beijingLocal = latLonToVector3(BEIJING.lat, BEIJING.lon, EARTH_RADIUS * 1.025);
+    const beijingMarker = new THREE.Mesh(
+      new THREE.SphereGeometry(0.032, 24, 24),
+      new THREE.MeshBasicMaterial({ color: 0xff3b5f })
+    );
+    beijingMarker.position.copy(beijingLocal);
+    beijingMarker.visible = false;
+    earthGroup.add(beijingMarker);
+
+    const beacon = new THREE.Mesh(
+      new THREE.SphereGeometry(0.065, 24, 24),
+      new THREE.MeshBasicMaterial({
+        color: 0xff7890,
+        transparent: true,
+        opacity: 0.34,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      })
+    );
+    beacon.position.copy(beijingLocal.clone().multiplyScalar(1.01));
+    beacon.visible = false;
+    earthGroup.add(beacon);
+
+    const moonPivot = new THREE.Group();
+    earthSystem.add(moonPivot);
+    const moonOrbit = createOrbitRing(MOON_DISTANCE, 0xd9efff, 0.72);
+    moonPivot.add(moonOrbit);
+    const moonOrbitGlow = createOrbitRing(MOON_DISTANCE, 0x6fd3ff, 0.22);
+    moonOrbitGlow.scale.setScalar(1.012);
+    moonPivot.add(moonOrbitGlow);
+
+    const moonTexture = loadMoonTexture("https://threejs.org/examples/textures/planets/moon_1024.jpg");
+    moonTexture.colorSpace = THREE.SRGBColorSpace;
+    const moonMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        moonMap: { value: moonTexture },
+        sunDirection: { value: new THREE.Vector3(1, 0, 0) },
+        alpha: { value: 1 },
+        observeBoost: { value: 0 }
+      },
+      transparent: true,
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vWorldNormal;
+        void main() {
+          vUv = uv;
+          vWorldNormal = normalize(mat3(modelMatrix) * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D moonMap;
+        uniform vec3 sunDirection;
+        uniform float alpha;
+        uniform float observeBoost;
+        varying vec2 vUv;
+        varying vec3 vWorldNormal;
+        void main() {
+          float light = dot(normalize(vWorldNormal), normalize(sunDirection));
+          float litMask = smoothstep(-0.08, 0.18, light);
+          vec3 textureColor = texture2D(moonMap, vUv).rgb;
+          vec3 nightColor = textureColor * mix(vec3(0.17, 0.18, 0.2), vec3(0.36, 0.38, 0.44), observeBoost);
+          vec3 dayColor = textureColor * mix(vec3(1.46, 1.42, 1.32), vec3(1.76, 1.7, 1.5), observeBoost);
+          vec3 color = mix(nightColor, dayColor, litMask);
+          color += dayColor * max(light, 0.0) * mix(0.28, 0.4, observeBoost) * litMask;
+          gl_FragColor = vec4(color, alpha);
+        }
+      `
+    });
+    const moon = new THREE.Mesh(
+      new THREE.SphereGeometry(MOON_RADIUS, 64, 64),
+      moonMaterial
+    );
+    moon.position.set(MOON_DISTANCE, 0.18, 0);
+    moonPivot.add(moon);
+
+    const moonHalo = new THREE.Mesh(
+      new THREE.SphereGeometry(MOON_RADIUS * 1.72, 32, 32),
+      new THREE.MeshBasicMaterial({
+        color: 0xd8f1ff,
+        transparent: true,
+        opacity: 0.2,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      })
+    );
+    moonPivot.add(moonHalo);
+
+    const moonLabel = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: createTextTexture("Moon"),
+      transparent: true,
+      opacity: 0.92,
+      depthWrite: false
+    }));
+    moonLabel.scale.set(1.0, 0.34, 1);
+    moonLabel.visible = false;
+    moonPivot.add(moonLabel);
+
+    const sunEarthLine = createGuideLine(0xffd37a, 0.88);
+    sunEarthLine.visible = false;
+    scene.add(sunEarthLine);
+    const earthMoonLine = createGuideLine(0x9fdcff, 0.82);
+    earthMoonLine.visible = false;
+    scene.add(earthMoonLine);
+
+    const sunDirectionLabel = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: createTextTexture("Sun"),
+      transparent: true,
+      opacity: 0.94,
+      depthWrite: false
+    }));
+    sunDirectionLabel.scale.set(1.04, 0.38, 1);
+    sunDirectionLabel.visible = false;
+    scene.add(sunDirectionLabel);
+
+    const earthSunDirection = new THREE.Vector3();
+    const moonWorldPosition = new THREE.Vector3();
+    const moonSunDirection = new THREE.Vector3();
+    const beijingWorldPosition = new THREE.Vector3();
+    const localNorthVector = new THREE.Vector3();
+    const localEastVector = new THREE.Vector3();
+    const localUpVector = new THREE.Vector3();
+    const skyLookVector = new THREE.Vector3();
+    const cameraLookVector = new THREE.Vector3();
+    const worldPosition = new THREE.Vector3();
+    const screenPosition = new THREE.Vector3();
+    const raycaster = new THREE.Raycaster();
+    const labelObjects = [earth];
+
+    setAstronomicalState(new Date());
+    setZoomLevel(0);
+    updateReadouts();
+
+    timeSlider.addEventListener("input", () => {
+      applyTimeSliderValue(Number(timeSlider.value));
+      timeAnimation = null;
+      updateReadouts();
+    });
+
+    hudToggle.addEventListener("click", () => {
+      const collapsed = document.body.classList.toggle("hud-collapsed");
+      hudToggle.setAttribute("aria-label", collapsed ? "Expand information panel" : "Collapse information panel");
+      hudToggle.title = collapsed ? "Expand information panel" : "Collapse information panel";
+    });
+
+    immersiveButton.addEventListener("click", () => {
+      immersiveMode = !immersiveMode;
+      document.body.classList.toggle("is-immersive", immersiveMode);
+      immersiveButton.setAttribute("aria-pressed", String(immersiveMode));
+      immersiveButton.textContent = immersiveMode ? "Restore" : "Minimal";
+      updateZoomVisibility(zoomLevel / 100);
+      updateSkyCompass();
+      updateGuideLegend();
+    });
+
+    restoreTimeButton.addEventListener("click", () => {
+      selectedBaseTime = Date.now();
+      Object.keys(timeScaleValues).forEach((scale) => {
+        timeScaleValues[scale] = 0;
+      });
+      timeOffsetMinutes = 0;
+      sceneOffsetMinutes = 0;
+      timeAnimation = null;
+      syncTimeSliderToOffset();
+      updateReadouts();
+    });
+
+    timeMinuteButton.addEventListener("click", () => {
+      setTimeScale("minute");
+    });
+
+    timeHourButton.addEventListener("click", () => {
+      setTimeScale("hour");
+    });
+
+    timeDayButton.addEventListener("click", () => {
+      setTimeScale("day");
+    });
+
+    timeMonthButton.addEventListener("click", () => {
+      setTimeScale("month");
+    });
+
+    timeStepBack.addEventListener("click", () => {
+      stepTimeOffset(-1);
+    });
+
+    timeStepForward.addEventListener("click", () => {
+      stepTimeOffset(1);
+    });
+
+    moonButton.addEventListener("click", () => {
+      startCameraTransition();
+      cameraModeOverride = null;
+      animateZoomTo(50);
+    });
+
+    moonObserveButton.addEventListener("click", () => {
+      cameraModeOverride = "moonObserve";
+      startCameraTransition();
+      animateZoomTo(58);
+    });
+
+    skyButton.addEventListener("click", () => {
+      cameraModeOverride = "sky";
+      startCameraTransition();
+      animateZoomTo(82);
+    });
+
+    earthButton.addEventListener("click", () => {
+      startCameraTransition();
+      cameraModeOverride = null;
+      animateZoomTo(100);
+    });
+
+    focusButton.addEventListener("click", () => {
+      startCameraTransition();
+      cameraModeOverride = null;
+      animateZoomTo(0);
+    });
+
+    zoomSlider.addEventListener("input", () => {
+      zoomAnimation = null;
+      cameraModeOverride = null;
+      setZoomLevel(Number(zoomSlider.value));
+    });
+
+    renderer.domElement.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      zoomAnimation = null;
+      cameraModeOverride = null;
+      setZoomLevel(zoomLevel + event.deltaY * 0.035);
+    });
+
+    window.addEventListener("resize", onResize);
+
+    requestAnimationFrame(animate);
+    window.setTimeout(() => loading.classList.add("is-hidden"), 420);
+
+    function animate(now) {
+      const delta = Math.min(0.04, (now - lastFrame) / 1000);
+      lastFrame = now;
+
+      updateTimeAnimation(now);
+      updateZoomAnimation(now);
+      beacon.scale.setScalar(1 + Math.sin(now * 0.004) * 0.12);
+
+      updateBeijingLabel();
+      updateSkyCompass();
+      updateGuideLegend();
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+    function updateTimeAnimation(now) {
+      if (!timeAnimation) return;
+      const progress = Math.max(0, Math.min(1, (now - timeAnimation.startTime) / timeAnimation.duration));
+      sceneOffsetMinutes = THREE.MathUtils.lerp(timeAnimation.from, timeAnimation.to, easeInOutCubic(progress));
+      updateReadouts();
+      if (progress >= 1) {
+        sceneOffsetMinutes = timeAnimation.to;
+        timeAnimation = null;
+        updateReadouts();
+      }
+    }
+
+    function onResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function showFatalError(message) {
+      errorBox.textContent = message;
+      errorBox.classList.add("is-visible");
+      loading.classList.add("is-hidden");
+    }
+
+    function updateReadouts() {
+      const now = getSceneDate();
+      timeReadout.textContent = new Intl.DateTimeFormat("zh-CN", {
+        timeZone: BEIJING.timezone,
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(now);
+
+      const phase = lunarPhase(now);
+      setAstronomicalState(now);
+      phaseReadout.textContent = `${phase.name} · moon age ${phase.age.toFixed(1)} days · ${Math.round(phase.illumination * 100)}% lit`;
+      daylightReadout.textContent = daylightAtBeijing();
+      timeOffsetReadout.textContent = formatTimeOffset();
+    }
+
+    function getSceneDate() {
+      return new Date(selectedBaseTime + sceneOffsetMinutes * 60000);
+    }
+
+    function formatTimeOffset() {
+      const value = timeScaleValues[timeScale];
+      if (value === 0) return "Live now";
+      const absolute = Math.abs(value);
+      const sign = value > 0 ? "+" : "-";
+      const unit = timeScale === "minute"
+        ? "minute"
+        : timeScale === "hour"
+          ? "hour"
+          : timeScale === "day"
+            ? "day"
+            : "month";
+      return `${sign}${absolute} ${unit}${absolute === 1 ? "" : "s"}`;
+    }
+
+    function setTimeScale(scale) {
+      if (timeScale === scale) return;
+      timeScale = scale;
+      syncTimeSliderToOffset();
+      timeOffsetMinutes = getOffsetMinutesForValue(timeScale, timeScaleValues[timeScale]);
+      sceneOffsetMinutes = timeOffsetMinutes;
+      timeAnimation = null;
+      timeMinuteButton.setAttribute("aria-pressed", String(timeScale === "minute"));
+      timeHourButton.setAttribute("aria-pressed", String(timeScale === "hour"));
+      timeDayButton.setAttribute("aria-pressed", String(timeScale === "day"));
+      timeMonthButton.setAttribute("aria-pressed", String(timeScale === "month"));
+      updateTimeStepperLabels();
+      updateReadouts();
+    }
+
+    function stepTimeOffset(direction) {
+      const nextValue = Math.max(Number(timeSlider.min), Math.min(Number(timeSlider.max), Number(timeSlider.value) + direction));
+      timeSlider.value = String(nextValue);
+      const fromOffset = sceneOffsetMinutes;
+      applyTimeSliderValue(nextValue);
+      timeAnimation = {
+        from: fromOffset,
+        to: timeOffsetMinutes,
+        startTime: performance.now(),
+        duration: 760
+      };
+      updateReadouts();
+    }
+
+    function syncTimeSliderToOffset() {
+      const config = getTimeScaleConfig(timeScale);
+      timeSlider.min = String(config.min);
+      timeSlider.max = String(config.max);
+      timeSlider.step = String(config.step);
+      timeSlider.value = String(timeScaleValues[timeScale]);
+      timeSliderMin.textContent = formatScaleHint(config.min, timeScale);
+      timeSliderMid.textContent = "Live now";
+      timeSliderMax.textContent = formatScaleHint(config.max, timeScale);
+      updateTimeStepperLabels();
+    }
+
+    function applyTimeSliderValue(value) {
+      timeScaleValues[timeScale] = value;
+      timeOffsetMinutes = getOffsetMinutesForValue(timeScale, value);
+      sceneOffsetMinutes = timeOffsetMinutes;
+    }
+
+    function getOffsetMinutesForValue(scale, value) {
+      if (scale === "minute") return value;
+      if (scale === "hour") return value * 60;
+      if (scale === "day") return value * 1440;
+      const shifted = addCalendarMonths(new Date(selectedBaseTime), value);
+      return (shifted.getTime() - selectedBaseTime) / 60000;
+    }
+
+    function addCalendarMonths(date, months) {
+      const result = new Date(date.getTime());
+      const day = result.getDate();
+      result.setDate(1);
+      result.setMonth(result.getMonth() + months);
+      const lastDay = new Date(result.getFullYear(), result.getMonth() + 1, 0).getDate();
+      result.setDate(Math.min(day, lastDay));
+      return result;
+    }
+
+    function getTimeScaleConfig(scale) {
+      if (scale === "minute") return { min: -60, max: 60, step: 1 };
+      if (scale === "hour") return { min: -24, max: 24, step: 1 };
+      if (scale === "day") return { min: -30, max: 30, step: 1 };
+      return { min: -12, max: 12, step: 1 };
+    }
+
+    function formatScaleHint(value, scale) {
+      if (value === 0) return "Live now";
+      const absolute = Math.abs(value);
+      const sign = value > 0 ? "+" : "-";
+      const unit = scale === "minute"
+        ? "minute"
+        : scale === "hour"
+          ? "hour"
+          : scale === "day"
+            ? "day"
+            : "month";
+      return `${sign}${absolute} ${unit}${absolute === 1 ? "" : "s"}`;
+    }
+
+    function updateTimeStepperLabels() {
+      const suffix = timeScale === "minute"
+        ? "m"
+        : timeScale === "hour"
+          ? "h"
+          : timeScale === "day"
+            ? "d"
+            : "mo";
+      timeStepBack.textContent = `-1${suffix}`;
+      timeStepForward.textContent = `+1${suffix}`;
+      timeStepBack.setAttribute("aria-label", `Move back one ${timeScale}`);
+      timeStepForward.setAttribute("aria-label", `Move forward one ${timeScale}`);
+      timeStepBack.title = `Move back one ${timeScale}`;
+      timeStepForward.title = `Move forward one ${timeScale}`;
+    }
+
+    function setAstronomicalState(date) {
+      const astronomy = getAstronomyState(date);
+      const earthPosition = astronomy.earth.position;
+      earthSystem.position.copy(earthPosition);
+      overviewEarth.position.copy(earthPosition);
+      overviewEarthHalo.position.copy(earthPosition);
+      overviewEarthGlow.position.copy(earthPosition);
+      overviewEarthLabel.position.copy(earthPosition).add(new THREE.Vector3(0, 0.16, 0));
+      earthGroup.rotation.y = earthRotationFromDate(date);
+      earthSunDirection.copy(sunGroup.position).sub(earthSystem.position).normalize();
+      earthMaterial.uniforms.sunDirection.value.copy(earthSunDirection);
+      setMoonFromAstronomy(astronomy.moon);
+      updateMoonLighting();
+      updateEarthMoonGuides();
+      updateContinuousView();
+    }
+
+    function daylightAtBeijing() {
+      const markerWorld = beijingMarker.getWorldPosition(new THREE.Vector3()).sub(earthSystem.position).normalize();
+      const light = markerWorld.dot(earthSunDirection);
+      if (light > 0) return "Day side · Beijing is facing sunlight";
+      return "Night side · Beijing is facing away from the Sun";
+    }
+
+    function updateBeijingLabel() {
+      beijingMarker.getWorldPosition(worldPosition);
+      screenPosition.copy(worldPosition).project(camera);
+      const x = (screenPosition.x * 0.5 + 0.5) * window.innerWidth;
+      const y = (-screenPosition.y * 0.5 + 0.5) * window.innerHeight;
+      const visible = (viewMode === "earth" || viewMode === "moon") && screenPosition.z < 1 && isPointFacingCamera(worldPosition) && !isOccluded(worldPosition);
+
+      label.style.left = `${x}px`;
+      label.style.top = `${y}px`;
+      label.style.opacity = visible ? "1" : "0";
+      label.style.visibility = visible ? "visible" : "hidden";
+    }
+
+    function isPointFacingCamera(point) {
+      const normal = point.clone().sub(earthSystem.position).normalize();
+      const cameraDirection = camera.position.clone().sub(point).normalize();
+      return normal.dot(cameraDirection) > 0.1;
+    }
+
+    function isOccluded(point) {
+      const direction = point.clone().sub(camera.position).normalize();
+      raycaster.set(camera.position, direction);
+      const intersections = raycaster.intersectObjects(labelObjects, false);
+      return intersections.length > 0 && intersections[0].distance < camera.position.distanceTo(point) - 0.08;
+    }
+
+    function setViewMode(mode) {
+      viewMode = mode;
+      const isMoonObserve = mode === "moonObserve";
+      const isSky = mode === "sky";
+      earthSystem.visible = true;
+      overviewEarth.visible = false;
+      overviewEarthHalo.visible = false;
+      overviewEarthGlow.visible = false;
+      overviewEarthLabel.visible = false;
+      moonOrbit.visible = true;
+      moonOrbitGlow.visible = true;
+      moon.visible = true;
+      moonHalo.visible = true;
+      moonLabel.visible = false;
+      beijingMarker.visible = mode === "earth" || mode === "moon";
+      beacon.visible = mode === "earth" || mode === "moon";
+      label.style.display = mode === "earth" || mode === "moon" ? "grid" : "none";
+      moonButton.setAttribute("aria-pressed", String(mode === "moon"));
+      moonObserveButton.setAttribute("aria-pressed", String(isMoonObserve));
+      skyButton.setAttribute("aria-pressed", String(isSky));
+      earthButton.setAttribute("aria-pressed", String(mode === "earth"));
+      focusButton.setAttribute("aria-pressed", String(mode === "solar"));
+      viewReadout.textContent = isSky
+        ? "Sky sightline from Beijing"
+        : isMoonObserve
+        ? "Earth-to-Moon sightline"
+        : mode === "earth"
+        ? "Earth lit hemisphere"
+        : mode === "moon"
+          ? "Earth-Moon phase view"
+          : "Solar orbit overview";
+      updateGuideLegend();
+      updateContinuousView();
+    }
+
+    function setZoomLevel(value) {
+      zoomLevel = Math.max(0, Math.min(100, value));
+      zoomSlider.value = String(Math.round(zoomLevel));
+      const mode = cameraModeOverride === "sky"
+        ? "sky"
+        : cameraModeOverride === "moonObserve"
+          ? "moonObserve"
+          : zoomLevel < 34 ? "solar" : zoomLevel < 67 ? "moon" : "earth";
+      setViewMode(mode);
+      updateZoomReadout();
+    }
+
+    function animateZoomTo(target) {
+      const end = Math.max(0, Math.min(100, target));
+      zoomAnimation = {
+        start: zoomLevel,
+        end,
+        startTime: performance.now(),
+        duration: 980
+      };
+    }
+
+    function startCameraTransition() {
+      cameraTransition = {
+        fromPosition: camera.position.clone(),
+        fromTarget: controls.target.clone(),
+        fromFov: camera.fov,
+        startTime: performance.now(),
+        duration: 1100
+      };
+    }
+
+    function updateZoomAnimation(now) {
+      if (!zoomAnimation) return;
+      const progress = Math.max(0, Math.min(1, (now - zoomAnimation.startTime) / zoomAnimation.duration));
+      const eased = easeInOutCubic(progress);
+      setZoomLevel(THREE.MathUtils.lerp(zoomAnimation.start, zoomAnimation.end, eased));
+      if (progress >= 1) {
+        setZoomLevel(zoomAnimation.end);
+        zoomAnimation = null;
+      }
+    }
+
+    function easeInOutCubic(value) {
+      return value < 0.5
+        ? 4 * value * value * value
+        : 1 - Math.pow(-2 * value + 2, 3) / 2;
+    }
+
+    function updateZoomReadout() {
+      if (viewMode === "sky") {
+        zoomReadout.textContent = "Sky sightline";
+      } else if (viewMode === "moonObserve") {
+        zoomReadout.textContent = "Moon sightline";
+      } else if (viewMode === "solar") {
+        zoomReadout.textContent = "Level 1 · Sun-Earth";
+      } else if (viewMode === "moon") {
+        zoomReadout.textContent = "Level 2 · Earth-Moon";
+      } else {
+        zoomReadout.textContent = "Level 3 · Earth daylight";
+      }
+    }
+
+    function updateContinuousView() {
+      if (!controls) return;
+      const z = zoomLevel / 100;
+      const moveToEarth = smootherStep(0.08, 0.62, z);
+      const moveToSurface = smootherStep(0.62, 1, z);
+      const earthPosition = earthSystem.position.clone();
+      const solarTarget = new THREE.Vector3(0, 0, 0);
+      const moonTarget = earthPosition.clone();
+      const sunSide = normalizedOr(earthSunDirection.clone().setY(0), new THREE.Vector3(1, 0, 0));
+      const orbitSide = normalizedOr(new THREE.Vector3(-earthPosition.z, 0, earthPosition.x), new THREE.Vector3(0, 0, 1));
+      const closeSide = normalizedOr(new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), sunSide), orbitSide);
+
+      const solarCamera = new THREE.Vector3(0, 58, 0.12);
+      const moonCamera = earthPosition.clone().add(orbitSide.clone().multiplyScalar(0.8)).add(new THREE.Vector3(0, 18.8, 0.46));
+      const earthCamera = earthPosition.clone()
+        .add(closeSide.multiplyScalar(2.32))
+        .add(sunSide.multiplyScalar(1.42))
+        .add(new THREE.Vector3(0, 1.72, 0));
+
+      let cameraPosition = solarCamera.clone().lerp(moonCamera, moveToEarth).lerp(earthCamera, moveToSurface);
+      let cameraTarget = solarTarget.clone().lerp(moonTarget, moveToEarth);
+      const overviewFov = THREE.MathUtils.lerp(46, 42, moveToEarth);
+      let cameraFov = THREE.MathUtils.lerp(overviewFov, 34, moveToSurface);
+
+      if (viewMode === "moonObserve") {
+        moon.getWorldPosition(moonWorldPosition);
+        const sunToEarthRay = normalizedOr(earthPosition.clone().sub(sunGroup.position), new THREE.Vector3(1, 0, 0));
+        const moonSightline = normalizedOr(moonWorldPosition.clone().sub(earthPosition), new THREE.Vector3(1, 0, 0));
+        const sightSide = normalizedOr(new THREE.Vector3().crossVectors(moonSightline, new THREE.Vector3(0, 1, 0)), orbitSide);
+        const observePosition = earthPosition.clone()
+          .add(sunToEarthRay.multiplyScalar(EARTH_RADIUS * 2.55))
+          .add(sightSide.multiplyScalar(0.34))
+          .add(new THREE.Vector3(0, EARTH_RADIUS * 0.74, 0));
+        const observeTarget = moonWorldPosition.clone();
+        cameraPosition = observePosition;
+        cameraTarget = observeTarget;
+        cameraFov = 25;
+      }
+
+      if (viewMode === "sky") {
+        const frame = getBeijingFrame();
+        moon.getWorldPosition(moonWorldPosition);
+        const sunSkyData = getLocalSkyData(sunGroup.position, frame);
+        const moonSkyData = getLocalSkyData(moonWorldPosition, frame);
+        const lookDirection = chooseSkyLookDirection(frame, sunSkyData, moonSkyData);
+        cameraPosition = frame.position.clone().add(frame.up.clone().multiplyScalar(0.085));
+        cameraTarget = cameraPosition.clone().add(lookDirection.multiplyScalar(4.2));
+        cameraFov = 68;
+      }
+
+      if (cameraTransition) {
+        const progress = Math.max(0, Math.min(1, (performance.now() - cameraTransition.startTime) / cameraTransition.duration));
+        const eased = easeInOutCubic(progress);
+        cameraPosition = cameraTransition.fromPosition.clone().lerp(cameraPosition, eased);
+        cameraTarget = cameraTransition.fromTarget.clone().lerp(cameraTarget, eased);
+        cameraFov = THREE.MathUtils.lerp(cameraTransition.fromFov, cameraFov, eased);
+        if (progress >= 1) cameraTransition = null;
+      }
+
+      controls.target.copy(cameraTarget);
+      camera.position.copy(cameraPosition);
+      camera.fov = cameraFov;
+      camera.updateProjectionMatrix();
+      controls.minDistance = THREE.MathUtils.lerp(24, 2.0, Math.max(moveToEarth, moveToSurface));
+      controls.maxDistance = THREE.MathUtils.lerp(260, 9, Math.max(moveToEarth, moveToSurface));
+
+      updateZoomVisibility(z);
+      controls.update();
+    }
+
+    function updateZoomVisibility(z) {
+      const isMoonObserve = viewMode === "moonObserve";
+      const isSky = viewMode === "sky";
+      const solarGuideAlpha = 1 - smootherStep(0.18, 0.42, z);
+      const moonAlpha = isMoonObserve ? 1 : smootherStep(0.18, 0.46, z) * (1 - smootherStep(0.72, 0.94, z));
+      const orbitAlpha = isMoonObserve ? 0 : smootherStep(0.16, 0.42, z) * (1 - smootherStep(0.68, 0.9, z));
+      const markerAlpha = isMoonObserve ? 0 : viewMode === "moon" ? 1 : smootherStep(0.68, 0.9, z);
+      const guideAlpha = viewMode === "moon" ? 1 : 0;
+      const moonObserveBoost = viewMode === "moonObserve" || viewMode === "sky" ? 1 : 0;
+      const solarAlpha = isSky ? 0 : solarGuideAlpha;
+      const effectiveMoonAlpha = isSky ? 1 : moonAlpha;
+      const effectiveOrbitAlpha = isSky ? 0 : orbitAlpha;
+      const effectiveMarkerAlpha = isSky ? 0 : markerAlpha;
+      solarOrbit.material.opacity = 0.92 * solarAlpha;
+      solarOrbitGlow.material.opacity = 0.54 * solarAlpha;
+      solarOrbit.visible = solarAlpha > 0.01;
+      solarOrbitGlow.visible = solarAlpha > 0.01;
+      overviewEarthHalo.material.opacity = 0.62 * solarAlpha;
+      overviewEarthHalo.visible = solarAlpha > 0.01;
+      overviewEarthGlow.material.opacity = 0.96 * solarAlpha;
+      overviewEarthGlow.visible = solarAlpha > 0.01;
+      sunGroup.visible = true;
+      monthMarkers.forEach((marker) => setObjectOpacity(marker, solarAlpha));
+      moonOrbit.material.opacity = 0.72 * effectiveOrbitAlpha;
+      moonOrbitGlow.material.opacity = 0.22 * effectiveOrbitAlpha;
+      moon.material.uniforms.alpha.value = effectiveMoonAlpha;
+      moon.material.uniforms.observeBoost.value = moonObserveBoost;
+      moon.scale.setScalar(THREE.MathUtils.lerp(1, 2.35, moonObserveBoost));
+      moonHalo.scale.setScalar(THREE.MathUtils.lerp(1, 1.45, moonObserveBoost));
+      moonHalo.material.opacity = (isMoonObserve ? 0.12 : 0.18 * effectiveMoonAlpha) + 0.1 * moonObserveBoost;
+      moonOrbit.visible = effectiveOrbitAlpha > 0.01;
+      moonOrbitGlow.visible = effectiveOrbitAlpha > 0.01;
+      moon.visible = effectiveMoonAlpha > 0.01;
+      moonHalo.visible = effectiveMoonAlpha > 0.01 || moonObserveBoost > 0;
+      sunEarthLine.material.opacity = 0.88 * guideAlpha * (immersiveMode ? 0 : 1);
+      earthMoonLine.material.opacity = 0.82 * guideAlpha * (immersiveMode ? 0 : 1);
+      sunDirectionLabel.material.opacity = 0.94 * guideAlpha * (immersiveMode ? 0 : 1);
+      sunEarthLine.visible = guideAlpha > 0.01 && !immersiveMode;
+      earthMoonLine.visible = guideAlpha > 0.01 && !immersiveMode;
+      sunDirectionLabel.visible = guideAlpha > 0.01 && !immersiveMode;
+      beijingMarker.visible = effectiveMarkerAlpha > 0.05;
+      beacon.visible = effectiveMarkerAlpha > 0.05;
+      beijingMarker.material.opacity = effectiveMarkerAlpha;
+      beijingMarker.material.transparent = true;
+      beacon.material.opacity = 0.34 * effectiveMarkerAlpha;
+    }
+
+    function setObjectOpacity(object, alpha) {
+      object.visible = alpha > 0.01;
+      object.traverse((child) => {
+        if (!child.material) return;
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        materials.forEach((material) => {
+          if (material.userData.baseOpacity === undefined) {
+            material.userData.baseOpacity = material.opacity;
+          }
+          material.transparent = true;
+          material.opacity = material.userData.baseOpacity * alpha;
+        });
+      });
+    }
+
+    function getBeijingFrame() {
+      earthSystem.updateWorldMatrix(true, true);
+      earthGroup.updateWorldMatrix(true, true);
+      beijingMarker.getWorldPosition(beijingWorldPosition);
+      const northPoint = latLonToVector3(BEIJING.lat + 0.1, BEIJING.lon, EARTH_RADIUS * 1.025).applyMatrix4(earthGroup.matrixWorld);
+      const eastPoint = latLonToVector3(BEIJING.lat, BEIJING.lon + 0.1, EARTH_RADIUS * 1.025).applyMatrix4(earthGroup.matrixWorld);
+      localUpVector.copy(beijingWorldPosition).sub(earthSystem.position).normalize();
+      localNorthVector.copy(northPoint).sub(beijingWorldPosition).normalize();
+      localEastVector.copy(eastPoint).sub(beijingWorldPosition).normalize();
+      return {
+        position: beijingWorldPosition.clone(),
+        up: localUpVector.clone(),
+        north: localNorthVector.clone(),
+        east: localEastVector.clone()
+      };
+    }
+
+    function getLocalSkyData(bodyWorldPosition, frame) {
+      const direction = bodyWorldPosition.clone().sub(frame.position).normalize();
+      const altitude = Math.asin(THREE.MathUtils.clamp(direction.dot(frame.up), -1, 1));
+      const azimuth = Math.atan2(direction.dot(frame.east), direction.dot(frame.north));
+      return { direction, altitude, azimuth };
+    }
+
+    function chooseSkyLookDirection(frame, sunSkyData, moonSkyData) {
+      const sunWeight = Math.max(0, Math.sin(sunSkyData.altitude));
+      const moonWeight = Math.max(0, Math.sin(moonSkyData.altitude));
+      skyLookVector.set(0, 0, 0);
+      if (sunWeight + moonWeight > 0.08) {
+        skyLookVector
+          .add(sunSkyData.direction.clone().multiplyScalar(sunWeight + 0.18))
+          .add(moonSkyData.direction.clone().multiplyScalar(moonWeight + 0.14))
+          .add(frame.up.clone().multiplyScalar(0.22));
+      } else {
+        skyLookVector.copy(frame.north).multiplyScalar(-0.75).add(frame.up.clone().multiplyScalar(0.48));
+      }
+      return normalizedOr(skyLookVector, frame.up);
+    }
+
+    function updateSkyCompass() {
+      const isSky = viewMode === "sky";
+      skyCompass.classList.toggle("is-visible", isSky && !immersiveMode);
+      if (!isSky || immersiveMode) return;
+
+      const frame = getBeijingFrame();
+      moon.getWorldPosition(moonWorldPosition);
+      const sunSkyData = getLocalSkyData(sunGroup.position, frame);
+      const moonSkyData = getLocalSkyData(moonWorldPosition, frame);
+      cameraLookVector.copy(controls.target).sub(camera.position).normalize();
+      const viewAzimuth = Math.atan2(cameraLookVector.dot(frame.east), cameraLookVector.dot(frame.north));
+      const viewDegrees = normalizeDegrees(THREE.MathUtils.radToDeg(viewAzimuth));
+
+      skyCompassPlot.style.setProperty("--view-angle", `${viewDegrees}deg`);
+      skyFacingLabel.textContent = `Facing ${bearingName(viewAzimuth)}`;
+      positionSkyDot(skySunDot, sunSkyData);
+      positionSkyDot(skyMoonDot, moonSkyData);
+      skySunStatus.textContent = formatSkyStatus(sunSkyData);
+      skyMoonStatus.textContent = formatSkyStatus(moonSkyData);
+    }
+
+    function positionSkyDot(dot, skyData) {
+      const altitudeRatio = THREE.MathUtils.clamp((skyData.altitude + THREE.MathUtils.degToRad(8)) / (Math.PI / 2 + THREE.MathUtils.degToRad(8)), 0, 1);
+      const radius = THREE.MathUtils.lerp(44, 9, altitudeRatio);
+      const x = 50 + Math.sin(skyData.azimuth) * radius;
+      const y = 50 - Math.cos(skyData.azimuth) * radius;
+      const aboveHorizon = skyData.altitude >= 0;
+      dot.style.setProperty("--x", `${x}%`);
+      dot.style.setProperty("--y", `${y}%`);
+      dot.style.opacity = aboveHorizon ? "1" : "0.42";
+    }
+
+    function formatSkyStatus(skyData) {
+      const degrees = THREE.MathUtils.radToDeg(skyData.altitude);
+      const sign = degrees >= 0 ? "+" : "";
+      return `${bearingName(skyData.azimuth)} · ${sign}${degrees.toFixed(0)}°`;
+    }
+
+    function bearingName(azimuth) {
+      const degrees = normalizeDegrees(THREE.MathUtils.radToDeg(azimuth));
+      const names = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+      return names[Math.round(degrees / 45) % names.length];
+    }
+
+    function normalizeDegrees(degrees) {
+      return ((degrees % 360) + 360) % 360;
+    }
+
+    function updateGuideLegend() {
+      guideLegend.classList.toggle("is-visible", viewMode === "moon" && !immersiveMode);
+    }
+
+    function smootherStep(edge0, edge1, value) {
+      const x = Math.max(0, Math.min(1, (value - edge0) / (edge1 - edge0)));
+      return x * x * x * (x * (x * 6 - 15) + 10);
+    }
+
+    function normalizedOr(vector, fallback) {
+      return vector.lengthSq() > 0.000001 ? vector.normalize() : fallback.clone().normalize();
+    }
+
+    function setMoonFromAstronomy(moonState) {
+      moon.position.copy(moonState.position);
+      moonHalo.position.copy(moon.position);
+      moonLabel.position.copy(moon.position).add(new THREE.Vector3(0, 0.42, 0));
+      moon.lookAt(earthSystem.position);
+      updateMoonLighting();
+    }
+
+    function updateMoonLighting() {
+      moon.getWorldPosition(moonWorldPosition);
+      moonSunDirection.copy(sunGroup.position).sub(moonWorldPosition).normalize();
+      moon.material.uniforms.sunDirection.value.copy(moonSunDirection);
+    }
+
+    function updateEarthMoonGuides() {
+      moon.getWorldPosition(moonWorldPosition);
+      const earthPosition = earthSystem.position;
+      const sunDirection = normalizedOr(sunGroup.position.clone().sub(earthPosition), new THREE.Vector3(-1, 0, 0));
+      const sunGuideEnd = earthPosition.clone().add(sunDirection.multiplyScalar(MOON_DISTANCE * 1.22));
+      setGuideLinePoints(sunEarthLine, earthPosition, sunGuideEnd);
+      setGuideLinePoints(earthMoonLine, earthPosition, moonWorldPosition);
+      sunDirectionLabel.position.copy(sunGuideEnd).add(new THREE.Vector3(0, 0.36, 0));
+    }
+
+    function lunarPhase(date) {
+      return getAstronomyState(date).phase;
+    }
+
+    function getAstronomyState(date) {
+      const sun = solarEclipticState(date);
+      const moonState = lunarEclipticState(date);
+      const synodicFraction = normalizeDegrees(moonState.longitudeDeg - sun.longitudeDeg) / 360;
+      const elongation = Math.acos(THREE.MathUtils.clamp(sun.direction.dot(moonState.direction), -1, 1));
+      const illumination = (1 - Math.cos(elongation)) / 2;
+      const age = synodicFraction * LUNAR_MONTH;
+      const names = [
+        "New Moon",
+        "Waxing Crescent",
+        "First Quarter",
+        "Waxing Gibbous",
+        "Full Moon",
+        "Waning Gibbous",
+        "Last Quarter",
+        "Waning Crescent"
+      ];
+      const index = Math.floor(((synodicFraction * 8) + 0.5) % 8);
+      return {
+        sun,
+        earth: {
+          position: sun.direction.clone().multiplyScalar(-SOLAR_ORBIT_RADIUS * sun.distanceAU)
+        },
+        moon: moonState,
+        phase: {
+          age,
+          fraction: synodicFraction,
+          illumination,
+          name: names[index],
+          elongation
+        }
+      };
+    }
+
+    function solarEclipticState(date) {
+      const days = julianDate(date) - 2451545.0;
+      const meanLongitude = normalizeDegrees(280.460 + 0.9856474 * days);
+      const meanAnomaly = normalizeDegrees(357.528 + 0.9856003 * days);
+      const anomalyRad = THREE.MathUtils.degToRad(meanAnomaly);
+      const longitudeDeg = normalizeDegrees(
+        meanLongitude
+        + 1.915 * Math.sin(anomalyRad)
+        + 0.020 * Math.sin(2 * anomalyRad)
+      );
+      const distanceAU = 1.00014 - 0.01671 * Math.cos(anomalyRad) - 0.00014 * Math.cos(2 * anomalyRad);
+      return {
+        longitudeDeg,
+        distanceAU,
+        direction: eclipticVector(THREE.MathUtils.degToRad(longitudeDeg), 0)
+      };
+    }
+
+    function lunarEclipticState(date) {
+      const days = julianDate(date) - 2451545.0;
+      const meanLongitude = normalizeDegrees(218.316 + 13.176396 * days);
+      const moonAnomaly = normalizeDegrees(134.963 + 13.064993 * days);
+      const sunAnomaly = normalizeDegrees(357.529 + 0.98560028 * days);
+      const elongation = normalizeDegrees(297.850 + 12.190749 * days);
+      const argumentLatitude = normalizeDegrees(93.272 + 13.229350 * days);
+      const m = THREE.MathUtils.degToRad(moonAnomaly);
+      const ms = THREE.MathUtils.degToRad(sunAnomaly);
+      const d = THREE.MathUtils.degToRad(elongation);
+      const f = THREE.MathUtils.degToRad(argumentLatitude);
+      const longitudeDeg = normalizeDegrees(
+        meanLongitude
+        + 6.289 * Math.sin(m)
+        + 1.274 * Math.sin(2 * d - m)
+        + 0.658 * Math.sin(2 * d)
+        + 0.214 * Math.sin(2 * m)
+        - 0.186 * Math.sin(ms)
+        - 0.114 * Math.sin(2 * f)
+        + 0.059 * Math.sin(2 * d - 2 * m)
+        + 0.057 * Math.sin(2 * d - ms - m)
+        + 0.053 * Math.sin(2 * d + m)
+        + 0.046 * Math.sin(2 * d - ms)
+      );
+      const latitudeDeg =
+        5.128 * Math.sin(f)
+        + 0.280 * Math.sin(m + f)
+        + 0.277 * Math.sin(m - f)
+        + 0.173 * Math.sin(2 * d - f)
+        + 0.055 * Math.sin(2 * d + f - m)
+        + 0.046 * Math.sin(2 * d - f - m)
+        + 0.033 * Math.sin(2 * d + f)
+        + 0.017 * Math.sin(2 * m + f);
+      const distanceKm =
+        385001
+        - 20905 * Math.cos(m)
+        - 3699 * Math.cos(2 * d - m)
+        - 2956 * Math.cos(2 * d)
+        - 570 * Math.cos(2 * m)
+        + 246 * Math.cos(2 * m - 2 * d)
+        - 205 * Math.cos(ms - 2 * d)
+        - 171 * Math.cos(m + 2 * d)
+        - 152 * Math.cos(m + ms - 2 * d);
+      const direction = eclipticVector(
+        THREE.MathUtils.degToRad(longitudeDeg),
+        THREE.MathUtils.degToRad(latitudeDeg)
+      );
+      const sceneDistance = MOON_DISTANCE * (distanceKm / AVERAGE_MOON_DISTANCE_KM);
+      return {
+        longitudeDeg,
+        latitudeDeg,
+        distanceKm,
+        direction,
+        position: direction.clone().multiplyScalar(sceneDistance)
+      };
+    }
+
+    function julianDate(date) {
+      return date.getTime() / 86400000 + 2440587.5;
+    }
+
+    function eclipticVector(longitudeRad, latitudeRad) {
+      const cosLatitude = Math.cos(latitudeRad);
+      return new THREE.Vector3(
+        Math.cos(longitudeRad) * cosLatitude,
+        Math.sin(latitudeRad),
+        Math.sin(longitudeRad) * cosLatitude
+      ).normalize();
+    }
+
+    function earthRotationFromDate(date) {
+      const hours = date.getUTCHours() + date.getUTCMinutes() / 60 + date.getUTCSeconds() / 3600;
+      const dayOfYear = Math.floor((date - Date.UTC(date.getUTCFullYear(), 0, 0)) / 86400000);
+      return -((hours / 24) * Math.PI * 2) - THREE.MathUtils.degToRad(dayOfYear * 0.9856) + 0.42;
+    }
+
+    function createMonthMarkers() {
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return monthNames.map((name, index) => {
+        const angle = orbitAngle(index / 12);
+        const group = new THREE.Group();
+        group.position.set(Math.cos(angle) * SOLAR_ORBIT_RADIUS, 0, Math.sin(angle) * SOLAR_ORBIT_RADIUS);
+
+        const tick = new THREE.Mesh(
+          new THREE.SphereGeometry(0.16, 20, 20),
+          new THREE.MeshBasicMaterial({ color: 0xe4f8ff, transparent: true, opacity: 0.98 })
+        );
+        group.add(tick);
+
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: createTextTexture(name, {
+            width: 180,
+            height: 72,
+            panelX: 18,
+            panelY: 10,
+            panelWidth: 144,
+            panelHeight: 52,
+            panelFill: "rgba(8, 14, 28, 0.88)",
+            panelStroke: "rgba(180, 232, 255, 0.72)",
+            font: "850 42px system-ui, sans-serif",
+            textFill: "#f1fbff",
+            textY: 37
+          }),
+          transparent: true,
+          opacity: 0.96,
+          depthWrite: false,
+          depthTest: false
+        }));
+        sprite.position.set(0, 0.72, 0);
+        sprite.scale.set(4.2, 1.55, 1);
+        group.add(sprite);
+        return group;
+      });
+    }
+
+    function orbitAngle(fraction) {
+      return fraction * Math.PI * 2 - Math.PI;
+    }
+
+    function createTextTexture(text, options = {}) {
+      const canvas = document.createElement("canvas");
+      canvas.width = options.width || 128;
+      canvas.height = options.height || 48;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = options.panelFill || "rgba(8, 14, 28, 0.62)";
+      ctx.fillRect(
+        options.panelX || 14,
+        options.panelY || 7,
+        options.panelWidth || 100,
+        options.panelHeight || 34
+      );
+      if (options.panelStroke) {
+        ctx.strokeStyle = options.panelStroke;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(
+          options.panelX || 14,
+          options.panelY || 7,
+          options.panelWidth || 100,
+          options.panelHeight || 34
+        );
+      }
+      ctx.font = options.font || "700 22px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = options.textFill || "#cfe8ff";
+      ctx.fillText(text, canvas.width / 2, options.textY || 25);
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      return texture;
+    }
+
+    function latLonToVector3(lat, lon, radius) {
+      const phi = THREE.MathUtils.degToRad(90 - lat);
+      const theta = THREE.MathUtils.degToRad(lon + 180);
+      return new THREE.Vector3(
+        -radius * Math.sin(phi) * Math.cos(theta),
+        radius * Math.cos(phi),
+        radius * Math.sin(phi) * Math.sin(theta)
+      );
+    }
+
+    function createOrbitRing(radius, color, opacity) {
+      const curve = new THREE.EllipseCurve(0, 0, radius, radius, 0, Math.PI * 2, false, 0);
+      const points = curve.getPoints(220);
+      const geometry = new THREE.BufferGeometry().setFromPoints(points.map((p) => new THREE.Vector3(p.x, 0, p.y)));
+      return new THREE.Line(
+        geometry,
+        new THREE.LineBasicMaterial({
+          color,
+          transparent: true,
+          opacity,
+          depthWrite: false
+        })
+      );
+    }
+
+    function createGuideLine(color, opacity) {
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.Float32BufferAttribute(new Float32Array(6), 3));
+      return new THREE.Line(
+        geometry,
+        new THREE.LineBasicMaterial({
+          color,
+          transparent: true,
+          opacity,
+          depthWrite: false
+        })
+      );
+    }
+
+    function setGuideLinePoints(line, start, end) {
+      const position = line.geometry.attributes.position;
+      position.setXYZ(0, start.x, start.y, start.z);
+      position.setXYZ(1, end.x, end.y, end.z);
+      position.needsUpdate = true;
+      line.geometry.computeBoundingSphere();
+    }
+
+    function loadTexture(url, colorSpace) {
+      const texture = textureLoader.load(url, undefined, undefined, () => {
+        const fallback = url.includes("earth_clouds") ? createCloudTexture() : createEarthTexture(url.includes("earth_lights"));
+        texture.image = fallback.image;
+        texture.needsUpdate = true;
+      });
+      texture.colorSpace = colorSpace;
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      return texture;
+    }
+
+    function loadMoonTexture(url) {
+      const texture = textureLoader.load(url, undefined, undefined, () => {
+        const fallback = createMoonTexture();
+        texture.image = fallback.image;
+        texture.needsUpdate = true;
+      });
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      return texture;
+    }
+
+    function createSunTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 256;
+      const ctx = canvas.getContext("2d");
+      const gradient = ctx.createRadialGradient(210, 114, 15, 250, 130, 260);
+      gradient.addColorStop(0, "#fff7bd");
+      gradient.addColorStop(0.28, "#ffd679");
+      gradient.addColorStop(0.62, "#ff914d");
+      gradient.addColorStop(1, "#9c300f");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 120; i += 1) {
+        ctx.strokeStyle = `rgba(255, ${150 + Math.random() * 80}, 65, ${0.08 + Math.random() * 0.16})`;
+        ctx.lineWidth = 1 + Math.random() * 3;
+        ctx.beginPath();
+        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        ctx.bezierCurveTo(Math.random() * 512, Math.random() * 256, Math.random() * 512, Math.random() * 256, Math.random() * 512, Math.random() * 256);
+        ctx.stroke();
+      }
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function createBlueGlowTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 256;
+      canvas.height = 256;
+      const ctx = canvas.getContext("2d");
+      const glow = ctx.createRadialGradient(128, 128, 2, 128, 128, 118);
+      glow.addColorStop(0, "rgba(160, 222, 255, 0.96)");
+      glow.addColorStop(0.22, "rgba(93, 181, 255, 0.56)");
+      glow.addColorStop(0.58, "rgba(74, 159, 255, 0.22)");
+      glow.addColorStop(1, "rgba(74, 159, 255, 0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      return texture;
+    }
+
+    function createEarthTexture(isNight) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1024;
+      canvas.height = 512;
+      const ctx = canvas.getContext("2d");
+      const ocean = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      ocean.addColorStop(0, isNight ? "#020714" : "#133f6f");
+      ocean.addColorStop(0.48, isNight ? "#031024" : "#1768a1");
+      ocean.addColorStop(1, isNight ? "#01040d" : "#0c315f");
+      ctx.fillStyle = ocean;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      drawLand(ctx, isNight, [
+        [690, 132], [745, 100], [842, 126], [914, 174], [872, 244], [787, 260], [710, 218], [652, 176]
+      ]);
+      drawLand(ctx, isNight, [
+        [600, 218], [670, 238], [744, 298], [732, 388], [664, 420], [590, 348], [552, 272]
+      ]);
+      drawLand(ctx, isNight, [
+        [456, 142], [542, 124], [606, 176], [592, 244], [510, 254], [440, 206]
+      ]);
+      drawLand(ctx, isNight, [
+        [258, 132], [346, 98], [434, 150], [408, 238], [314, 258], [230, 206]
+      ]);
+      drawLand(ctx, isNight, [
+        [320, 266], [390, 296], [410, 388], [356, 470], [298, 396], [288, 316]
+      ]);
+      drawLand(ctx, isNight, [
+        [486, 300], [548, 284], [600, 336], [578, 404], [500, 392]
+      ]);
+      drawLand(ctx, isNight, [
+        [786, 352], [842, 344], [890, 384], [874, 432], [804, 428]
+      ]);
+
+      if (isNight) drawCityLights(ctx);
+      else drawDayDetails(ctx);
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function drawLand(ctx, isNight, points) {
+      ctx.beginPath();
+      points.forEach(([x, y], index) => {
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fillStyle = isNight ? "#06131a" : "#397250";
+      ctx.fill();
+      if (!isNight) {
+        ctx.globalAlpha = 0.42;
+        ctx.fillStyle = "#b5a35f";
+        for (let i = 0; i < 9; i += 1) {
+          const point = points[Math.floor(Math.random() * points.length)];
+          ctx.beginPath();
+          ctx.ellipse(point[0] + (Math.random() - 0.5) * 80, point[1] + (Math.random() - 0.5) * 55, 22 + Math.random() * 44, 8 + Math.random() * 18, Math.random() * Math.PI, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function drawDayDetails(ctx) {
+      ctx.globalAlpha = 0.22;
+      ctx.strokeStyle = "#c8e8ff";
+      for (let i = 0; i < 42; i += 1) {
+        ctx.beginPath();
+        const y = 50 + Math.random() * 410;
+        ctx.moveTo(Math.random() * 1024, y);
+        ctx.bezierCurveTo(Math.random() * 1024, y + 20, Math.random() * 1024, y - 22, Math.random() * 1024, y + 5);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function drawCityLights(ctx) {
+      const cities = [
+        [813, 181], [802, 194], [785, 202], [755, 182], [721, 177], [674, 173],
+        [540, 176], [510, 186], [462, 166], [372, 180], [336, 184], [342, 218],
+        [356, 336], [364, 368], [512, 314], [584, 318], [846, 382]
+      ];
+      cities.forEach(([x, y]) => {
+        const glow = ctx.createRadialGradient(x, y, 1, x, y, 14);
+        glow.addColorStop(0, "rgba(255, 226, 126, 0.95)");
+        glow.addColorStop(0.25, "rgba(255, 170, 73, 0.45)");
+        glow.addColorStop(1, "rgba(255, 170, 73, 0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, 14, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function createEarthBumpTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 256;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#737373";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 0.34;
+      for (let i = 0; i < 160; i += 1) {
+        ctx.fillStyle = Math.random() > 0.5 ? "#999" : "#555";
+        ctx.beginPath();
+        ctx.ellipse(Math.random() * 512, Math.random() * 256, 10 + Math.random() * 42, 3 + Math.random() * 16, Math.random() * Math.PI, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function createCloudTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1024;
+      canvas.height = 512;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 170; i += 1) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const radius = 10 + Math.random() * 34;
+        const gradient = ctx.createRadialGradient(x, y, 1, x, y, radius);
+        gradient.addColorStop(0, "rgba(255, 255, 255, 0.58)");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.ellipse(x, y, radius * 1.9, radius * 0.55, Math.random() * Math.PI, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function createMoonTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 256;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#bdbab0";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 80; i += 1) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const r = 4 + Math.random() * 19;
+        const shade = Math.floor(125 + Math.random() * 70);
+        ctx.fillStyle = `rgba(${shade}, ${shade}, ${shade}, ${0.24 + Math.random() * 0.34})`;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    window.addEventListener("error", (event) => {
+      errorBox.textContent = `Solar System failed to load: ${event.message}`;
+      errorBox.classList.add("is-visible");
+      loading.classList.add("is-hidden");
+    });
+  </script>
+</body>
+</html>
