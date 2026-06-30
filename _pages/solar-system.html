@@ -32,11 +32,13 @@ permalink: /solar-system/
       overflow: hidden;
       background: #02040a;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      touch-action: manipulation;
     }
 
     #scene {
       position: fixed;
       inset: 0;
+      touch-action: none;
     }
 
     .hud {
@@ -59,7 +61,7 @@ permalink: /solar-system/
       position: absolute;
       right: 10px;
       top: 10px;
-      display: none;
+      display: grid;
       place-items: center;
       width: 28px;
       height: 28px;
@@ -72,8 +74,67 @@ permalink: /solar-system/
       font-weight: 900;
     }
 
+    .panel-toggle {
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .panel-toggle:hover,
+    .panel-toggle:focus-visible,
+    .hud-toggle:hover,
+    .hud-toggle:focus-visible {
+      outline: none;
+      border-color: rgba(114, 212, 255, 0.72);
+      background: rgba(114, 212, 255, 0.16);
+    }
+
+    .panel-tab {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .panel-head {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    body.hud-collapsed .hud {
+      width: auto;
+      min-height: 48px;
+      max-height: none;
+      padding: 10px 44px 10px 12px;
+      overflow: visible;
+    }
+
+    body.hud-collapsed .hud h1,
+    body.hud-collapsed .hud__grid {
+      display: none;
+    }
+
+    body.hud-collapsed .hud__eyebrow {
+      margin: 0;
+    }
+
     .hud__eyebrow {
-      margin: 0 0 8px;
+      margin: 0 40px 8px 0;
       color: var(--accent);
       font-size: 12px;
       font-weight: 750;
@@ -132,6 +193,18 @@ permalink: /solar-system/
       background: rgba(8, 14, 28, 0.58);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
+    }
+
+    body.controls-panel-collapsed .controls {
+      width: auto;
+      min-width: 0;
+      padding: 10px 12px;
+    }
+
+    body.controls-panel-collapsed .control-buttons,
+    body.controls-panel-collapsed .zoom-control,
+    body.controls-panel-collapsed .immersive-button {
+      display: none;
     }
 
     .immersive-button {
@@ -199,6 +272,27 @@ permalink: /solar-system/
       transform: none;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
+    }
+
+    .time-controls .panel-head {
+      display: none;
+    }
+
+    body.time-panel-collapsed .time-controls {
+      grid-template-columns: auto;
+      width: auto;
+      min-width: 0;
+      padding: 10px 12px;
+      align-items: center;
+    }
+
+    body.time-panel-collapsed .time-controls .panel-head {
+      display: flex;
+    }
+
+    body.time-panel-collapsed .time-controls label,
+    body.time-panel-collapsed .restore-button {
+      display: none;
     }
 
     .time-controls label {
@@ -738,7 +832,7 @@ permalink: /solar-system/
       .controls {
         right: 10px;
         left: auto;
-        bottom: calc(172px + env(safe-area-inset-bottom));
+        bottom: calc(174px + env(safe-area-inset-bottom));
         gap: 8px;
         padding: 8px;
       }
@@ -761,10 +855,10 @@ permalink: /solar-system/
         left: 10px;
         right: 10px;
         bottom: max(10px, env(safe-area-inset-bottom));
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) auto;
         gap: 8px;
         width: auto;
-        padding: 10px;
+        padding: 9px;
         transform: none;
       }
 
@@ -809,8 +903,10 @@ permalink: /solar-system/
       }
 
       .restore-button {
-        width: 100%;
+        min-width: 78px;
+        width: auto;
         height: 34px;
+        padding: 0 10px;
         font-size: 12px;
       }
 
@@ -844,6 +940,11 @@ permalink: /solar-system/
         font-size: 10px;
       }
 
+      body.hud-collapsed .sky-compass,
+      body.hud-collapsed .guide-legend {
+        top: calc(max(10px, env(safe-area-inset-top)) + 44px);
+      }
+
       .sky-compass__plot {
         width: 92px;
         height: 92px;
@@ -862,6 +963,75 @@ permalink: /solar-system/
       .label {
         min-width: 112px;
         padding: 7px 9px;
+      }
+
+      body.is-immersive .time-controls {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      body.is-immersive .controls {
+        left: 10px;
+        right: 10px;
+        bottom: max(10px, env(safe-area-inset-bottom));
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+      }
+
+      body.is-immersive .control-buttons {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      body.is-immersive .zoom-control {
+        display: none;
+      }
+
+      body.is-immersive .immersive-button {
+        width: 78px;
+        height: 40px;
+      }
+    }
+
+    @media (max-width: 720px) and (max-height: 720px) {
+      .controls {
+        bottom: calc(152px + env(safe-area-inset-bottom));
+        gap: 6px;
+        padding: 7px;
+      }
+
+      .control-button {
+        height: 38px;
+      }
+
+      .zoom-control {
+        gap: 3px;
+      }
+
+      .immersive-button {
+        height: 26px;
+      }
+
+      .time-controls {
+        gap: 6px;
+        padding: 8px;
+      }
+
+      .time-controls label {
+        gap: 5px;
+      }
+
+      .time-slider-hint {
+        display: none;
+      }
+
+      .restore-button {
+        height: 32px;
+      }
+
+      body.is-immersive .controls {
+        bottom: max(10px, env(safe-area-inset-bottom));
       }
     }
   </style>
@@ -929,6 +1099,10 @@ permalink: /solar-system/
   </aside>
 
   <section class="time-controls" aria-label="Time controls">
+    <div class="panel-head">
+      <span class="panel-tab">Time Offset</span>
+      <button id="time-panel-toggle-collapsed" class="panel-toggle" type="button" aria-label="Expand time controls" title="Expand time controls">+</button>
+    </div>
     <label for="time-slider">
       <span class="time-control__head">
         Time Offset
@@ -938,6 +1112,7 @@ permalink: /solar-system/
           <button id="time-day-button" type="button" aria-pressed="false">Day</button>
           <button id="time-month-button" type="button" aria-pressed="false">Month</button>
         </span>
+        <button id="time-panel-toggle" class="panel-toggle" type="button" aria-label="Collapse time controls" title="Collapse time controls">−</button>
       </span>
       <input id="time-slider" type="range" min="-24" max="24" step="1" value="0">
       <span class="time-slider-hint" aria-hidden="true">
@@ -957,6 +1132,10 @@ permalink: /solar-system/
   </section>
 
   <div class="controls" aria-label="Scene controls">
+    <div class="panel-head">
+      <span class="panel-tab">Zoom / View</span>
+      <button id="controls-panel-toggle" class="panel-toggle" type="button" aria-label="Collapse zoom controls" title="Collapse zoom controls">−</button>
+    </div>
     <div class="control-buttons">
       <button id="focus-button" class="control-button" type="button" aria-label="Solar overview" title="Solar overview"><span class="control-button__icon">☉</span><span class="control-button__label">Solar</span></button>
       <button id="moon-button" class="control-button" type="button" aria-label="Earth-Moon view" title="Earth-Moon view"><span class="control-button__icon">◐</span><span class="control-button__label">Moon</span></button>
@@ -1026,6 +1205,8 @@ permalink: /solar-system/
     const timeStepBack = document.getElementById("time-step-back");
     const timeStepForward = document.getElementById("time-step-forward");
     const restoreTimeButton = document.getElementById("restore-time-button");
+    const timePanelToggle = document.getElementById("time-panel-toggle");
+    const timePanelToggleCollapsed = document.getElementById("time-panel-toggle-collapsed");
     const moonButton = document.getElementById("moon-button");
     const moonObserveButton = document.getElementById("moon-observe-button");
     const skyButton = document.getElementById("sky-button");
@@ -1033,6 +1214,7 @@ permalink: /solar-system/
     const focusButton = document.getElementById("focus-button");
     const zoomSlider = document.getElementById("zoom-slider");
     const zoomReadout = document.getElementById("zoom-readout");
+    const controlsPanelToggle = document.getElementById("controls-panel-toggle");
     const skyCompass = document.getElementById("sky-compass");
     const skyCompassPlot = document.getElementById("sky-compass-plot");
     const skyFacingLabel = document.getElementById("sky-facing-label");
@@ -1130,8 +1312,11 @@ permalink: /solar-system/
     const solarOrbitGlow = createOrbitRing(SOLAR_ORBIT_RADIUS, 0x4aa8ff, 0.54);
     solarOrbitGlow.scale.setScalar(1.006);
     scene.add(solarOrbitGlow);
+    const monthBoundaryLines = createMonthBoundaryLines();
+    monthBoundaryLines.forEach((line) => scene.add(line));
     const monthMarkers = createMonthMarkers();
     monthMarkers.forEach((marker) => scene.add(marker));
+    let monthMarkerYear = null;
 
     const earthSystem = new THREE.Group();
     scene.add(earthSystem);
@@ -1385,21 +1570,49 @@ permalink: /solar-system/
     const screenPosition = new THREE.Vector3();
     const raycaster = new THREE.Raycaster();
     const labelObjects = [earth];
+    const mobileLayoutQuery = window.matchMedia("(max-width: 720px)");
+    let userChangedHudCollapse = false;
 
+    syncMobileHudState();
+    updatePanelToggle(timePanelToggle, false, "time controls");
+    updatePanelToggle(timePanelToggleCollapsed, true, "time controls");
+    updatePanelToggle(controlsPanelToggle, false, "zoom controls");
     setAstronomicalState(new Date());
     setZoomLevel(0);
     updateReadouts();
 
     timeSlider.addEventListener("input", () => {
-      applyTimeSliderValue(Number(timeSlider.value));
-      timeAnimation = null;
+      const fromOffset = sceneOffsetMinutes;
+      const animateTime = shouldAnimateTimeDrag();
+      applyTimeSliderValue(Number(timeSlider.value), { updateScene: !animateTime });
+      timeAnimation = animateTime
+        ? createTimeAnimation(fromOffset, timeOffsetMinutes, getTimeDragDuration(fromOffset, timeOffsetMinutes))
+        : null;
       updateReadouts();
     });
 
+    document.addEventListener("dblclick", (event) => {
+      event.preventDefault();
+    }, { passive: false });
+
     hudToggle.addEventListener("click", () => {
+      userChangedHudCollapse = true;
       const collapsed = document.body.classList.toggle("hud-collapsed");
-      hudToggle.setAttribute("aria-label", collapsed ? "Expand information panel" : "Collapse information panel");
-      hudToggle.title = collapsed ? "Expand information panel" : "Collapse information panel";
+      updateHudToggleLabel(collapsed);
+    });
+
+    timePanelToggle.addEventListener("click", toggleTimePanel);
+    timePanelToggleCollapsed.addEventListener("click", toggleTimePanel);
+
+    function toggleTimePanel() {
+      const collapsed = document.body.classList.toggle("time-panel-collapsed");
+      updatePanelToggle(timePanelToggle, collapsed, "time controls");
+      updatePanelToggle(timePanelToggleCollapsed, collapsed, "time controls");
+    }
+
+    controlsPanelToggle.addEventListener("click", () => {
+      const collapsed = document.body.classList.toggle("controls-panel-collapsed");
+      updatePanelToggle(controlsPanelToggle, collapsed, "zoom controls");
     });
 
     immersiveButton.addEventListener("click", () => {
@@ -1528,6 +1741,28 @@ permalink: /solar-system/
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      syncMobileHudState();
+    }
+
+    function syncMobileHudState() {
+      if (!mobileLayoutQuery.matches || userChangedHudCollapse) {
+        updateHudToggleLabel(document.body.classList.contains("hud-collapsed"));
+        return;
+      }
+      document.body.classList.add("hud-collapsed");
+      updateHudToggleLabel(true);
+    }
+
+    function updateHudToggleLabel(collapsed) {
+      hudToggle.setAttribute("aria-label", collapsed ? "Expand information panel" : "Collapse information panel");
+      hudToggle.title = collapsed ? "Expand information panel" : "Collapse information panel";
+      hudToggle.textContent = collapsed ? "+" : "−";
+    }
+
+    function updatePanelToggle(button, collapsed, label) {
+      button.setAttribute("aria-label", collapsed ? `Expand ${label}` : `Collapse ${label}`);
+      button.title = collapsed ? `Expand ${label}` : `Collapse ${label}`;
+      button.textContent = collapsed ? "+" : "−";
     }
 
     function showFatalError(message) {
@@ -1595,13 +1830,8 @@ permalink: /solar-system/
       const nextValue = Math.max(Number(timeSlider.min), Math.min(Number(timeSlider.max), Number(timeSlider.value) + direction));
       timeSlider.value = String(nextValue);
       const fromOffset = sceneOffsetMinutes;
-      applyTimeSliderValue(nextValue);
-      timeAnimation = {
-        from: fromOffset,
-        to: timeOffsetMinutes,
-        startTime: performance.now(),
-        duration: 760
-      };
+      applyTimeSliderValue(nextValue, { updateScene: false });
+      timeAnimation = createTimeAnimation(fromOffset, timeOffsetMinutes, 760);
       updateReadouts();
     }
 
@@ -1617,10 +1847,31 @@ permalink: /solar-system/
       updateTimeStepperLabels();
     }
 
-    function applyTimeSliderValue(value) {
+    function applyTimeSliderValue(value, options = {}) {
       timeScaleValues[timeScale] = value;
       timeOffsetMinutes = getOffsetMinutesForValue(timeScale, value);
-      sceneOffsetMinutes = timeOffsetMinutes;
+      if (options.updateScene !== false) {
+        sceneOffsetMinutes = timeOffsetMinutes;
+      }
+    }
+
+    function shouldAnimateTimeDrag() {
+      return timeScale === "day" || timeScale === "month";
+    }
+
+    function createTimeAnimation(from, to, duration) {
+      if (Math.abs(to - from) < 0.001) return null;
+      return {
+        from,
+        to,
+        startTime: performance.now(),
+        duration
+      };
+    }
+
+    function getTimeDragDuration(from, to) {
+      const deltaDays = Math.abs(to - from) / 1440;
+      return THREE.MathUtils.clamp(420 + deltaDays * 18, 520, 980);
     }
 
     function getOffsetMinutesForValue(scale, value) {
@@ -1681,6 +1932,7 @@ permalink: /solar-system/
     function setAstronomicalState(date) {
       const astronomy = getAstronomyState(date);
       const earthPosition = astronomy.earth.position;
+      updateMonthMarkers(date);
       earthSystem.position.copy(earthPosition);
       overviewEarth.position.copy(earthPosition);
       overviewEarthHalo.position.copy(earthPosition);
@@ -1913,6 +2165,10 @@ permalink: /solar-system/
       solarOrbitGlow.material.opacity = 0.54 * solarAlpha;
       solarOrbit.visible = solarAlpha > 0.01;
       solarOrbitGlow.visible = solarAlpha > 0.01;
+      monthBoundaryLines.forEach((line) => {
+        line.material.opacity = 0.34 * solarAlpha;
+        line.visible = solarAlpha > 0.01;
+      });
       overviewEarthHalo.material.opacity = 0.62 * solarAlpha;
       overviewEarthHalo.visible = solarAlpha > 0.01;
       overviewEarthGlow.material.opacity = 0.96 * solarAlpha;
@@ -2107,7 +2363,7 @@ permalink: /solar-system/
       return {
         sun,
         earth: {
-          position: sun.direction.clone().multiplyScalar(-SOLAR_ORBIT_RADIUS * sun.distanceAU)
+          position: earthPositionFromSun(sun)
         },
         moon: moonState,
         phase: {
@@ -2136,6 +2392,14 @@ permalink: /solar-system/
         distanceAU,
         direction: eclipticVector(THREE.MathUtils.degToRad(longitudeDeg), 0)
       };
+    }
+
+    function earthPositionFromSun(sunState) {
+      return sunState.direction.clone().multiplyScalar(-SOLAR_ORBIT_RADIUS * sunState.distanceAU);
+    }
+
+    function earthOrbitPositionForDate(date) {
+      return earthPositionFromSun(solarEclipticState(date));
     }
 
     function lunarEclipticState(date) {
@@ -2217,9 +2481,8 @@ permalink: /solar-system/
     function createMonthMarkers() {
       const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       return monthNames.map((name, index) => {
-        const angle = orbitAngle(index / 12);
         const group = new THREE.Group();
-        group.position.set(Math.cos(angle) * SOLAR_ORBIT_RADIUS, 0, Math.sin(angle) * SOLAR_ORBIT_RADIUS);
+        group.userData.monthIndex = index;
 
         const tick = new THREE.Mesh(
           new THREE.SphereGeometry(0.16, 20, 20),
@@ -2253,8 +2516,41 @@ permalink: /solar-system/
       });
     }
 
-    function orbitAngle(fraction) {
-      return fraction * Math.PI * 2 - Math.PI;
+    function createMonthBoundaryLines() {
+      return Array.from({ length: 12 }, (_, index) => {
+        const line = createGuideLine(0x7edcff, 0.34);
+        line.userData.monthIndex = index;
+        return line;
+      });
+    }
+
+    function updateMonthMarkers(date) {
+      const year = getBeijingDateParts(date).year;
+      if (monthMarkerYear === year) return;
+      monthMarkerYear = year;
+      monthBoundaryLines.forEach((line) => {
+        const startDate = new Date(Date.UTC(year, line.userData.monthIndex, 1, -8, 0, 0));
+        const boundaryPosition = earthOrbitPositionForDate(startDate);
+        setGuideLinePoints(line, new THREE.Vector3(0, 0.015, 0), boundaryPosition.clone().add(new THREE.Vector3(0, 0.015, 0)));
+      });
+      monthMarkers.forEach((marker) => {
+        const markerDate = new Date(Date.UTC(year, marker.userData.monthIndex, 15, -8, 0, 0));
+        marker.position.copy(earthOrbitPositionForDate(markerDate));
+      });
+    }
+
+    function getBeijingDateParts(date) {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: BEIJING.timezone,
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      }).formatToParts(date);
+      return {
+        year: Number(parts.find((part) => part.type === "year").value),
+        month: Number(parts.find((part) => part.type === "month").value),
+        day: Number(parts.find((part) => part.type === "day").value)
+      };
     }
 
     function createTextTexture(text, options = {}) {
