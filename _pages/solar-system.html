@@ -180,6 +180,106 @@ permalink: /solar-system/
       line-height: 1.35;
     }
 
+    .rise-panel {
+      position: fixed;
+      z-index: 5;
+      right: 24px;
+      top: 24px;
+      display: grid;
+      gap: 10px;
+      width: min(350px, calc(100vw - 48px));
+      padding: 12px;
+      color: var(--text);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: rgba(8, 14, 28, 0.62);
+      box-shadow: 0 18px 58px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    body.hud-collapsed .rise-panel {
+      top: 24px;
+    }
+
+    body.rise-panel-collapsed .rise-panel {
+      width: auto;
+      min-width: 190px;
+      padding: 10px 12px;
+    }
+
+    body.rise-panel-collapsed .rise-times {
+      display: none;
+    }
+
+    .rise-panel__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .rise-panel__title-text {
+      display: grid;
+      gap: 1px;
+    }
+
+    .rise-panel__title span:last-child {
+      color: var(--muted);
+      text-transform: none;
+    }
+
+    .rise-times {
+      display: grid;
+      gap: 6px;
+    }
+
+    .rise-time {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .rise-time__label {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.25;
+    }
+
+    .rise-time__button {
+      min-width: 54px;
+      height: 26px;
+      padding: 0 9px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 5px;
+      color: #09121f;
+      background: var(--accent);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .rise-time__button:hover,
+    .rise-time__button:focus-visible {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.72);
+      filter: brightness(1.07);
+    }
+
+    .rise-time__button:disabled {
+      color: rgba(226, 236, 249, 0.48);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: default;
+      filter: none;
+    }
+
     .controls {
       position: fixed;
       z-index: 5;
@@ -669,6 +769,11 @@ permalink: /solar-system/
       font-weight: 750;
     }
 
+    .sky-compass,
+    .guide-legend {
+      top: 220px;
+    }
+
     .guide-legend.is-visible {
       display: grid;
     }
@@ -694,6 +799,7 @@ permalink: /solar-system/
     }
 
     body.is-immersive .hud,
+    body.is-immersive .rise-panel,
     body.is-immersive .sky-compass,
     body.is-immersive .guide-legend,
     body.is-immersive #beijing-label {
@@ -829,6 +935,46 @@ permalink: /solar-system/
         line-height: 1.25;
       }
 
+      .rise-panel {
+        left: 10px;
+        right: 10px;
+        top: calc(max(10px, env(safe-area-inset-top)) + 54px);
+        width: auto;
+        padding: 9px;
+        gap: 7px;
+      }
+
+      body:not(.hud-collapsed) .rise-panel {
+        top: calc(min(43vh, 330px) + 20px);
+      }
+
+      body.hud-collapsed .rise-panel {
+        top: calc(max(10px, env(safe-area-inset-top)) + 54px);
+      }
+
+      .rise-panel__title {
+        font-size: 10px;
+      }
+
+      .rise-times {
+        gap: 5px;
+      }
+
+      .rise-time {
+        gap: 6px;
+      }
+
+      .rise-time__label {
+        font-size: 11px;
+      }
+
+      .rise-time__button {
+        min-width: 48px;
+        height: 24px;
+        padding: 0 7px;
+        font-size: 10px;
+      }
+
       .controls {
         right: 10px;
         left: auto;
@@ -926,14 +1072,14 @@ permalink: /solar-system/
       }
 
       .sky-compass {
-        top: calc(min(43vh, 330px) + 20px);
+        top: calc(min(43vh, 330px) + 190px);
         right: 10px;
         width: 152px;
         padding: 9px;
       }
 
       .guide-legend {
-        top: calc(min(43vh, 330px) + 20px);
+        top: calc(min(43vh, 330px) + 190px);
         right: 10px;
         width: 152px;
         padding: 9px;
@@ -942,7 +1088,7 @@ permalink: /solar-system/
 
       body.hud-collapsed .sky-compass,
       body.hud-collapsed .guide-legend {
-        top: calc(max(10px, env(safe-area-inset-top)) + 44px);
+        top: calc(max(10px, env(safe-area-inset-top)) + 214px);
       }
 
       .sky-compass__plot {
@@ -1066,6 +1212,34 @@ permalink: /solar-system/
       </div>
     </div>
   </section>
+
+  <aside class="rise-panel" aria-label="Beijing rise and set times">
+    <div class="rise-panel__title">
+      <span class="rise-panel__title-text">
+        <span>Rise / Set Times</span>
+        <span>Beijing</span>
+      </span>
+      <button id="rise-panel-toggle" class="panel-toggle" type="button" aria-label="Collapse rise and set times" title="Collapse rise and set times">−</button>
+    </div>
+    <div class="rise-times" id="rise-times-readout">
+      <div class="rise-time">
+        <span class="rise-time__label" id="sunrise-readout">Sunrise --</span>
+        <button class="rise-time__button" id="sunrise-jump-button" type="button">Go</button>
+      </div>
+      <div class="rise-time">
+        <span class="rise-time__label" id="sunset-readout">Sunset --</span>
+        <button class="rise-time__button" id="sunset-jump-button" type="button">Go</button>
+      </div>
+      <div class="rise-time">
+        <span class="rise-time__label" id="moonrise-readout">Moonrise --</span>
+        <button class="rise-time__button" id="moonrise-jump-button" type="button">Go</button>
+      </div>
+      <div class="rise-time">
+        <span class="rise-time__label" id="moonset-readout">Moonset --</span>
+        <button class="rise-time__button" id="moonset-jump-button" type="button">Go</button>
+      </div>
+    </div>
+  </aside>
 
   <div id="beijing-label" class="label" aria-hidden="true">
     <div class="label__title">Beijing</div>
@@ -1192,6 +1366,15 @@ permalink: /solar-system/
     const hudToggle = document.getElementById("hud-toggle");
     const phaseReadout = document.getElementById("phase-readout");
     const daylightReadout = document.getElementById("daylight-readout");
+    const sunriseReadout = document.getElementById("sunrise-readout");
+    const sunsetReadout = document.getElementById("sunset-readout");
+    const moonriseReadout = document.getElementById("moonrise-readout");
+    const moonsetReadout = document.getElementById("moonset-readout");
+    const sunriseJumpButton = document.getElementById("sunrise-jump-button");
+    const sunsetJumpButton = document.getElementById("sunset-jump-button");
+    const moonriseJumpButton = document.getElementById("moonrise-jump-button");
+    const moonsetJumpButton = document.getElementById("moonset-jump-button");
+    const risePanelToggle = document.getElementById("rise-panel-toggle");
     const viewReadout = document.getElementById("view-readout");
     const timeSlider = document.getElementById("time-slider");
     const timeOffsetReadout = document.getElementById("time-offset-readout");
@@ -1232,6 +1415,9 @@ permalink: /solar-system/
     let sceneOffsetMinutes = 0;
     let timeAnimation = null;
     let timeScale = "hour";
+    let manualTimeAnchorLabel = null;
+    let riseTimesCacheKey = "";
+    let cachedRiseTimes = null;
     const timeScaleValues = {
       minute: 0,
       hour: 0,
@@ -1577,6 +1763,7 @@ permalink: /solar-system/
     updatePanelToggle(timePanelToggle, false, "time controls");
     updatePanelToggle(timePanelToggleCollapsed, true, "time controls");
     updatePanelToggle(controlsPanelToggle, false, "zoom controls");
+    updatePanelToggle(risePanelToggle, false, "rise and set times");
     setAstronomicalState(new Date());
     setZoomLevel(0);
     updateReadouts();
@@ -1615,6 +1802,11 @@ permalink: /solar-system/
       updatePanelToggle(controlsPanelToggle, collapsed, "zoom controls");
     });
 
+    risePanelToggle.addEventListener("click", () => {
+      const collapsed = document.body.classList.toggle("rise-panel-collapsed");
+      updatePanelToggle(risePanelToggle, collapsed, "rise and set times");
+    });
+
     immersiveButton.addEventListener("click", () => {
       immersiveMode = !immersiveMode;
       document.body.classList.toggle("is-immersive", immersiveMode);
@@ -1627,6 +1819,7 @@ permalink: /solar-system/
 
     restoreTimeButton.addEventListener("click", () => {
       selectedBaseTime = Date.now();
+      manualTimeAnchorLabel = null;
       Object.keys(timeScaleValues).forEach((scale) => {
         timeScaleValues[scale] = 0;
       });
@@ -1659,6 +1852,22 @@ permalink: /solar-system/
 
     timeStepForward.addEventListener("click", () => {
       stepTimeOffset(1);
+    });
+
+    sunriseJumpButton.addEventListener("click", () => {
+      jumpToRiseTime("sunrise");
+    });
+
+    sunsetJumpButton.addEventListener("click", () => {
+      jumpToRiseTime("sunset");
+    });
+
+    moonriseJumpButton.addEventListener("click", () => {
+      jumpToRiseTime("moonrise");
+    });
+
+    moonsetJumpButton.addEventListener("click", () => {
+      jumpToRiseTime("moonset");
     });
 
     moonButton.addEventListener("click", () => {
@@ -1789,6 +1998,7 @@ permalink: /solar-system/
       setAstronomicalState(now);
       phaseReadout.textContent = `${phase.name} · moon age ${phase.age.toFixed(1)} days · ${Math.round(phase.illumination * 100)}% lit`;
       daylightReadout.textContent = daylightAtBeijing();
+      updateRiseTimeReadout(now);
       timeOffsetReadout.textContent = formatTimeOffset();
     }
 
@@ -1796,9 +2006,160 @@ permalink: /solar-system/
       return new Date(selectedBaseTime + sceneOffsetMinutes * 60000);
     }
 
+    function updateRiseTimeReadout(date) {
+      const riseTimes = getRiseTimesForBeijingDay(date);
+      updateRiseRow(sunriseReadout, sunriseJumpButton, "Sunrise", riseTimes.sunrise);
+      updateRiseRow(sunsetReadout, sunsetJumpButton, "Sunset", riseTimes.sunset);
+      updateRiseRow(moonriseReadout, moonriseJumpButton, "Moonrise", riseTimes.moonrise);
+      updateRiseRow(moonsetReadout, moonsetJumpButton, "Moonset", riseTimes.moonset);
+    }
+
+    function updateRiseRow(readout, button, label, time) {
+      if (!time) {
+        readout.textContent = `${label} · No ${label.toLowerCase()} today`;
+        button.disabled = true;
+        button.title = `No ${label.toLowerCase()} on this Beijing date`;
+        return;
+      }
+      readout.textContent = `${label} · ${formatBeijingClock(time)}`;
+      button.disabled = false;
+      button.title = `Move to ${label.toLowerCase()} at ${formatBeijingClock(time)}`;
+    }
+
+    function jumpToRiseTime(kind) {
+      const riseTimes = getRiseTimesForBeijingDay(getSceneDate());
+      const target = riseTimes[kind];
+      if (!target) return;
+      selectedBaseTime = target.getTime();
+      manualTimeAnchorLabel = {
+        sunrise: "Sunrise",
+        sunset: "Sunset",
+        moonrise: "Moonrise",
+        moonset: "Moonset"
+      }[kind] || "Event";
+      Object.keys(timeScaleValues).forEach((scale) => {
+        timeScaleValues[scale] = 0;
+      });
+      timeOffsetMinutes = 0;
+      sceneOffsetMinutes = 0;
+      timeAnimation = null;
+      syncTimeSliderToOffset();
+      updateReadouts();
+    }
+
+    function getRiseTimesForBeijingDay(date) {
+      const parts = getBeijingDateParts(date);
+      const key = `${parts.year}-${parts.month}-${parts.day}`;
+      if (key === riseTimesCacheKey && cachedRiseTimes) return cachedRiseTimes;
+      const dayStart = beijingLocalDateToUtc(parts.year, parts.month, parts.day, 0, 0, 0);
+      const dayEnd = new Date(dayStart.getTime() + 86400000);
+      cachedRiseTimes = {
+        sunrise: findHorizonCrossing(dayStart, dayEnd, "sun", THREE.MathUtils.degToRad(-0.833), true),
+        sunset: findHorizonCrossing(dayStart, dayEnd, "sun", THREE.MathUtils.degToRad(-0.833), false),
+        moonrise: findHorizonCrossing(dayStart, dayEnd, "moon", THREE.MathUtils.degToRad(0.125), true),
+        moonset: findHorizonCrossing(dayStart, dayEnd, "moon", THREE.MathUtils.degToRad(0.125), false)
+      };
+      riseTimesCacheKey = key;
+      return cachedRiseTimes;
+    }
+
+    function findHorizonCrossing(start, end, body, horizonAltitude, rising) {
+      const stepMs = 10 * 60000;
+      let previousTime = start.getTime();
+      let previousAltitude = altitudeForBody(new Date(previousTime), body) - horizonAltitude;
+      for (let time = previousTime + stepMs; time <= end.getTime(); time += stepMs) {
+        const altitude = altitudeForBody(new Date(time), body) - horizonAltitude;
+        const crossed = rising
+          ? previousAltitude < 0 && altitude >= 0
+          : previousAltitude >= 0 && altitude < 0;
+        if (crossed) {
+          return refineAltitudeCrossing(previousTime, time, body, horizonAltitude, rising);
+        }
+        previousTime = time;
+        previousAltitude = altitude;
+      }
+      return null;
+    }
+
+    function refineAltitudeCrossing(startMs, endMs, body, horizonAltitude, rising) {
+      let low = startMs;
+      let high = endMs;
+      for (let i = 0; i < 18; i += 1) {
+        const mid = (low + high) / 2;
+        const altitude = altitudeForBody(new Date(mid), body) - horizonAltitude;
+        if (rising ? altitude >= 0 : altitude < 0) high = mid;
+        else low = mid;
+      }
+      return new Date(high);
+    }
+
+    function altitudeForBody(date, body) {
+      const state = body === "sun"
+        ? { longitudeDeg: solarEclipticState(date).longitudeDeg, latitudeDeg: 0 }
+        : lunarEclipticState(date);
+      const equatorial = equatorialFromEcliptic(
+        THREE.MathUtils.degToRad(state.longitudeDeg),
+        THREE.MathUtils.degToRad(state.latitudeDeg || 0)
+      );
+      return altitudeFromEquatorial(date, equatorial.rightAscension, equatorial.declination);
+    }
+
+    function equatorialFromEcliptic(longitudeRad, latitudeRad) {
+      const obliquity = THREE.MathUtils.degToRad(23.43928);
+      const sinLongitude = Math.sin(longitudeRad);
+      const cosLongitude = Math.cos(longitudeRad);
+      const sinLatitude = Math.sin(latitudeRad);
+      const cosLatitude = Math.cos(latitudeRad);
+      const x = cosLatitude * cosLongitude;
+      const y = cosLatitude * sinLongitude * Math.cos(obliquity) - sinLatitude * Math.sin(obliquity);
+      const z = cosLatitude * sinLongitude * Math.sin(obliquity) + sinLatitude * Math.cos(obliquity);
+      return {
+        rightAscension: Math.atan2(y, x),
+        declination: Math.asin(THREE.MathUtils.clamp(z, -1, 1))
+      };
+    }
+
+    function altitudeFromEquatorial(date, rightAscension, declination) {
+      const latitude = THREE.MathUtils.degToRad(BEIJING.lat);
+      const localSidereal = THREE.MathUtils.degToRad(greenwichSiderealDegrees(date) + BEIJING.lon);
+      const hourAngle = normalizeRadians(localSidereal - rightAscension);
+      return Math.asin(
+        Math.sin(latitude) * Math.sin(declination)
+        + Math.cos(latitude) * Math.cos(declination) * Math.cos(hourAngle)
+      );
+    }
+
+    function greenwichSiderealDegrees(date) {
+      const jd = julianDate(date);
+      const centuries = (jd - 2451545.0) / 36525;
+      return normalizeDegrees(
+        280.46061837
+        + 360.98564736629 * (jd - 2451545.0)
+        + 0.000387933 * centuries * centuries
+        - (centuries * centuries * centuries) / 38710000
+      );
+    }
+
+    function normalizeRadians(radians) {
+      return ((radians + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+    }
+
+    function beijingLocalDateToUtc(year, month, day, hour, minute, second) {
+      return new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second));
+    }
+
+    function formatBeijingClock(date) {
+      return new Intl.DateTimeFormat("zh-CN", {
+        timeZone: BEIJING.timezone,
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }).format(date);
+    }
+
     function formatTimeOffset() {
       const value = timeScaleValues[timeScale];
-      if (value === 0) return "Live now";
+      if (value === 0) return manualTimeAnchorLabel ? `${manualTimeAnchorLabel} selected` : "Live now";
       const absolute = Math.abs(value);
       const sign = value > 0 ? "+" : "-";
       const unit = timeScale === "minute"
@@ -1829,6 +2190,7 @@ permalink: /solar-system/
     function stepTimeOffset(direction) {
       const nextValue = Math.max(Number(timeSlider.min), Math.min(Number(timeSlider.max), Number(timeSlider.value) + direction));
       timeSlider.value = String(nextValue);
+      manualTimeAnchorLabel = null;
       const fromOffset = sceneOffsetMinutes;
       applyTimeSliderValue(nextValue, { updateScene: false });
       timeAnimation = createTimeAnimation(fromOffset, timeOffsetMinutes, 760);
@@ -1848,6 +2210,7 @@ permalink: /solar-system/
     }
 
     function applyTimeSliderValue(value, options = {}) {
+      manualTimeAnchorLabel = null;
       timeScaleValues[timeScale] = value;
       timeOffsetMinutes = getOffsetMinutesForValue(timeScale, value);
       if (options.updateScene !== false) {
