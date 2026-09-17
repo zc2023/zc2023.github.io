@@ -7,7 +7,17 @@
       masthead.classList.toggle("is-scrolled", window.scrollY > 12);
     }
 
+    function updateClearance() {
+      document.documentElement.style.setProperty("--bottom-nav-height", Math.ceil(masthead.getBoundingClientRect().height) + "px");
+    }
+
     update();
+    updateClearance();
+    if (window.ResizeObserver) {
+      new ResizeObserver(updateClearance).observe(masthead);
+    } else {
+      window.addEventListener("resize", updateClearance, { passive: true });
+    }
     window.addEventListener("scroll", update, { passive: true });
   }
 
@@ -22,6 +32,66 @@
     var activeLink = null;
     var currentLink = getCurrentLink();
     var hideTimer = 0;
+    var transitionKey = "masthead-indicator-transition";
+    var pendingDestination = null;
+
+    if (currentLink) currentLink.setAttribute("aria-current", "page");
+
+    function setIndicatorBox(box) {
+      nav.style.setProperty("--indicator-x", box.x.toFixed(2) + "px");
+      nav.style.setProperty("--indicator-y", box.y.toFixed(2) + "px");
+      nav.style.setProperty("--indicator-width", box.width.toFixed(2) + "px");
+      nav.style.setProperty("--indicator-height", box.height.toFixed(2) + "px");
+    }
+
+    function saveDeparture() {
+      if (!pendingDestination || !activeLink) return;
+      var navRect = nav.getBoundingClientRect();
+      var rect = indicator.getBoundingClientRect();
+      try {
+        window.sessionStorage.setItem(transitionKey, JSON.stringify({
+          destination: pendingDestination, savedAt: Date.now(),
+          viewportWidth: window.innerWidth, navWidth: navRect.width, navHeight: navRect.height,
+          x: rect.left - navRect.left, y: rect.top - navRect.top,
+          width: rect.width, height: rect.height
+        }));
+      } catch (error) {
+        // Storage may be disabled; direct placement remains available.
+      }
+    }
+
+    function readDeparture() {
+      try {
+        var saved = window.sessionStorage.getItem(transitionKey);
+        window.sessionStorage.removeItem(transitionKey);
+        if (!saved || !currentLink) return null;
+        var box = JSON.parse(saved);
+        var rect = nav.getBoundingClientRect();
+        var navigation = window.performance.getEntriesByType("navigation")[0];
+        if (navigation && navigation.type !== "navigate") return null;
+        if (box.destination !== window.location.href || Date.now() - box.savedAt > 15000) return null;
+        if (![box.x, box.y, box.width, box.height, box.savedAt].every(Number.isFinite)) return null;
+        if (box.viewportWidth !== window.innerWidth || Math.abs(box.navWidth - rect.width) > 2 || Math.abs(box.navHeight - rect.height) > 2) return null;
+        if (box.width <= 0 || box.height <= 0 || box.x < -4 || box.y < -4 || box.x + box.width > rect.width + 4 || box.y + box.height > rect.height + 4) return null;
+        return box;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function placeInitialIndicator(box) {
+      nav.classList.add("is-indicator-positioning");
+      if (box) {
+        setIndicatorBox(box);
+        nav.classList.add("is-indicator-active");
+      } else {
+        moveToCurrent();
+      }
+      // Commit the previous page's visible box (or the current button on a fresh visit).
+      void indicator.offsetWidth;
+      nav.classList.remove("is-indicator-positioning");
+      if (box) moveToCurrent();
+    }
 
     function normalizePath(path) {
       if (!path || path === "/") return "/";
@@ -39,7 +109,7 @@
           return false;
         }
 
-        return normalizePath(linkUrl.pathname) === currentPath;
+        return linkUrl.origin === window.location.origin && normalizePath(linkUrl.pathname) === currentPath;
       }) || null;
     }
 
@@ -55,8 +125,8 @@
     function moveTo(link) {
       var navRect = nav.getBoundingClientRect();
       var linkRect = link.getBoundingClientRect();
-      var padX = 8;
-      var padY = 5;
+      var padX = 2;
+      var padY = 2;
 
       activeLink = link;
       window.clearTimeout(hideTimer);
@@ -65,10 +135,10 @@
         item.classList.toggle("is-glass-active", item === link);
       });
 
-      nav.style.setProperty("--indicator-x", (linkRect.left - navRect.left - padX).toFixed(2) + "px");
-      nav.style.setProperty("--indicator-y", (linkRect.top - navRect.top - padY).toFixed(2) + "px");
-      nav.style.setProperty("--indicator-width", (linkRect.width + padX * 2).toFixed(2) + "px");
-      nav.style.setProperty("--indicator-height", (linkRect.height + padY * 2).toFixed(2) + "px");
+      setIndicatorBox({
+        x: linkRect.left - navRect.left - padX, y: linkRect.top - navRect.top - padY,
+        width: linkRect.width + padX * 2, height: linkRect.height + padY * 2
+      });
       nav.classList.add("is-indicator-active");
     }
 
@@ -95,6 +165,15 @@
     }
 
     links.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (link.hasAttribute("download") || (link.target && link.target !== "_self")) return;
+        var destination = new URL(link.getAttribute("href"), window.location.href);
+        if (destination.origin !== window.location.origin || destination.href === window.location.href) return;
+        pendingDestination = destination.href;
+        saveDeparture();
+      });
+
       link.addEventListener("pointerenter", function (event) {
         moveTo(link);
         setPointer(event, link);
@@ -119,11 +198,50 @@
       if (activeLink) moveTo(activeLink);
     }, { passive: true });
 
-    window.addEventListener("scroll", function () {
-      if (activeLink) moveTo(activeLink);
-    }, { passive: true });
+    if (window.ResizeObserver) {
+      new ResizeObserver(function () {
+        if (activeLink) moveTo(activeLink);
+      }).observe(nav);
+    }
 
-    window.setTimeout(moveToCurrent, 0);
+    if (document.fonts) {
+      document.fonts.ready.then(function () {
+        if (activeLink) moveTo(activeLink);
+      });
+    }
+
+    // Capture the final animation position just before this document leaves.
+    window.addEventListener("pagehide", saveDeparture);
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        pendingDestination = null;
+        placeInitialIndicator(null);
+      }
+    });
+
+    placeInitialIndicator(readDeparture());
+  }
+
+  function initMastheadRefraction() {
+    if (!window.Hyalite) return;
+
+    var glass = document.querySelector(".masthead__glass");
+    var indicator = document.querySelector(".masthead-glass-indicator");
+    if (!glass) return;
+
+    // Independent sibling surfaces keep the text out of the refraction filter.
+    Hyalite.attach(glass, {
+      bevel: 18, thickness: 32, slope: 1.8, shape: "squircle",
+      blur: 1.2, dispersion: 0.6, shade: 0.22, rim: 1.2,
+      edgeW: 4, edge: 0.38, sat: 0.95, materialize: 220
+    });
+    if (indicator) {
+      Hyalite.attach(indicator, {
+        bevel: 10, thickness: 18, slope: 0.8, shape: "squircle",
+        blur: 0.6, dispersion: 0, shade: 0.16, rim: 1,
+        edgeW: 3, edge: 0.3, sat: 1, settle: 100
+      });
+    }
   }
 
   function initGalleryPreview() {
@@ -273,6 +391,7 @@
   function initSite() {
     initMasthead();
     initMastheadGlassIndicator();
+    initMastheadRefraction();
     initGalleryPreview();
     initBackToTop();
     initDeferredVisitors();

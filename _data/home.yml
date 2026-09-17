@@ -104,6 +104,8 @@ publications:
 
 internship:
   - title_html: "Lingxi Lab, HiSilicon Semiconductor Business Department, Huawei"
+    logo: "/images/huawei.png"
+    logo_alt: "Huawei logo"
     subtitle_html: "Research Intern"
     date: "May 20, 2026 - Present"
     details:
@@ -111,6 +113,10 @@ internship:
 
 research_experience:
   - title_html: "VLRLab, Huazhong University of Science and Technology, Wuhan"
+    logo: "/images/vlr.webp"
+    logo_alt: "VLRLab logo"
+    logo_width: 100
+    logo_height: 96
     subtitle_html: "Member"
     date: "Sep 2024 - Current"
     spacing: "roomy"
@@ -118,6 +124,11 @@ research_experience:
       - '<strong>Advisor:</strong> <a href="https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en">Xiang Bai</a>'
       - "<strong>Research Topics:</strong> 3D Multimodal Large Language Models, Embodied AI"
   - title_html: "National Engineering Research Center for E-Learning, Central China Normal University, Wuhan"
+    logo: "/images/national.png"
+    logo_alt: "National Engineering Research Center logo"
+    logo_width: 435
+    logo_height: 214
+    logo_crop: true
     subtitle_html: "Research Assistant"
     date: "Sep 2022 - Jun 2024"
     details:
@@ -156,11 +167,19 @@ patents:
 
 education:
   - title_html: "Huazhong University of Science and Technology"
+    logo: "/images/hust.png"
+    logo_alt: "Huazhong University of Science and Technology logo"
+    logo_width: 1024
+    logo_height: 791
     subtitle_html: "Graduate Student, Pursuing Master’s degree in Software Engineering"
     date: "Sep 2024 - Current"
     details:
       - '<strong>Supervised by Prof.</strong> <a href="https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en">Xiang Bai</a>'
   - title_html: "Central China Normal University"
+    logo: "/images/ccnu.png"
+    logo_alt: "Central China Normal University logo"
+    logo_width: 1024
+    logo_height: 1024
     subtitle_html: "Bachelor of Engineering in Artificial Intelligence"
     date: "Jun 2024"
     details:

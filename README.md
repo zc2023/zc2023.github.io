@@ -32,6 +32,25 @@ Change footer: `_includes/footer.html`
 
 This project uses Ruby `3.2.2` via `.ruby-version` and Bundler `2.7.2` from `Gemfile.lock`.
 
+Start the local development server:
+
+```bash
+bundle install
+bundle exec jekyll serve --config _config.yml,_config.dev.yml --host 127.0.0.1 --port 4000 --livereload
+```
+
+Open the site at:
+
+```text
+http://127.0.0.1:4000/
+```
+
+Solar System page:
+
+```text
+http://127.0.0.1:4000/solar-system/
+```
+
 If you use `rbenv`:
 
 ```bash
@@ -40,7 +59,7 @@ rbenv install 3.2.2
 bundle install
 ```
 
-Run the local server:
+Alternative local server command:
 
 ```bash
 bundle exec jekyll serve --config _config.yml,_config.dev.yml

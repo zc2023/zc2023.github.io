@@ -1,7 +1,12 @@
 {% assign entries = include.items %}
 {% for entry in entries %}
 {% assign spacing = entry.spacing | default: include.spacing | default: "default" %}
-<div class="home-entry home-entry--{{ spacing }}{% if include.compact %} home-entry--compact{% endif %}">
+<div class="home-entry home-entry--{{ spacing }}{% if include.compact %} home-entry--compact{% endif %}{% if entry.logo %} home-entry--with-logo{% endif %}">
+  {% if entry.logo %}
+    <div class="home-entry__logo{% if entry.logo_crop %} home-entry__logo--cropped{% endif %}">
+      <img src="{{ entry.logo | relative_url }}" alt="{{ entry.logo_alt | escape }}" loading="lazy" decoding="async" draggable="false" width="{{ entry.logo_width | default: 1000 }}" height="{{ entry.logo_height | default: 650 }}" />
+    </div>
+  {% endif %}
   <div>
     <p class="home-entry__title">{{ entry.title_html }}</p>
     {% if entry.subtitle_html %}

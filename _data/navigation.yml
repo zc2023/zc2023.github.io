@@ -10,12 +10,6 @@ main:
   # - title: "Google Scholar Profile"
   #   url: https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en  
 
-  - title: "3D Space"
-    url: /space/   
-
-  - title: "Solar System"
-    url: /solar-system/
-         
   # - title: "Blog Posts"
   #   url: /year-archive/
     

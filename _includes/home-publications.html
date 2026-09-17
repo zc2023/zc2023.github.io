@@ -3,7 +3,7 @@
 <div class="publication-grid">
   <div class="publication-img">
     <div class="badge">{{ publication.label }}</div>
-    <img class="publication-thumb" src="{{ publication.image }}" alt="{{ publication.alt }}" />
+    <img class="publication-thumb" src="{{ publication.image }}" alt="{{ publication.alt }}" draggable="false" />
   </div>
   <div>
     <h4>{{ publication.title }}
@@ -11,7 +11,7 @@
         <a href="{{ link.url }}"{% if link.class %} class="{{ link.class }}"{% endif %}{% if link.repo %} data-repo="{{ link.repo }}"{% endif %} title="{{ link.title }}"><i class="{{ link.icon }}" aria-hidden="true"></i></a>
       {% endfor %}
       {% if publication.badge_image %}
-        <img src="{{ publication.badge_image }}" alt="" />
+        <img src="{{ publication.badge_image }}" alt="" draggable="false" />
       {% endif %}
     </h4>
     <p>

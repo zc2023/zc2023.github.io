@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>hyalite · playground</title>
+<script src="legacy/hyalite-0.1.0.js?v=0.5.0"></script>
+<script src="legacy/hyalite-0.2.0.js?v=0.5.0"></script>
+<script src="legacy/hyalite-0.3.1.js?v=0.5.0"></script>
+<script src="../hyalite.js?v=0.5.0"></script>
+<script src="mark.js?v=0.5.0"></script>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{
+    position:relative;width:100vw;height:100vh;color:#f2efe6;
+    font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background-color:#0f1a2b;
+    background-image:
+      radial-gradient(260px 260px at 14% 32%, #ff4d6d 0 30%, transparent 31%),
+      radial-gradient(300px 300px at 86% 72%, #ffd166 0 32%, transparent 33%),
+      radial-gradient(220px 220px at 56% 16%, #06d6a0 0 30%, transparent 31%),
+      repeating-linear-gradient(45deg, #101a2b 0 14px, #2b3d5c 14px 28px);
+    background-size:cover;background-position:center;
+  }
+  body.grid{background-image:
+      repeating-linear-gradient(0deg, transparent 0 11px, rgba(255,255,255,.55) 11px 12px),
+      repeating-linear-gradient(90deg, transparent 0 11px, rgba(255,255,255,.55) 11px 12px);background-color:#1d2a1f}
+  body.photo{background-image:var(--photo)}
+  .big{position:absolute;left:0;right:0;top:38%;text-align:center;font-size:min(150px,14vw);font-weight:800;letter-spacing:-.04em;
+       color:rgba(255,255,255,.85);white-space:nowrap;pointer-events:none}
+  /* The mark: the repository as a masthead line over the word, part of the scene. It gets recorded
+     with the word and bent by any card dragged across it — a clip of this page carries its own way
+     back here. Above rather than below because the lower row of cards sits on the word's feet. */
+  .big small{position:absolute;left:0;right:0;top:1em;font:500 min(16px,1.2vw)/1 ui-monospace,Menlo,monospace;letter-spacing:.22em;opacity:.8}
+  body.grid .big{color:rgba(255,255,255,.35)}
+
+  /* ── the glass ─────────────────────────────────────────── */
+  .slot{position:absolute;width:340px;touch-action:none;cursor:grab;user-select:none}
+  .slot.dragging{cursor:grabbing}
+  .slot .label{position:absolute;left:0;right:0;top:100%;margin-top:10px;text-align:center;font:12px/1.4 ui-monospace,Menlo,monospace;
+               color:rgba(255,255,255,.78);text-shadow:0 1px 4px rgba(0,0,0,.8)}
+  .glass{
+    position:relative;box-sizing:border-box;border-radius:30px;padding:22px 24px 20px;
+    /* neutral darkening only: never brighten or saturate what is behind (that is frosted glass, not clear glass) */
+    background:rgba(0,0,0,.13);
+    box-shadow:0 16px 42px rgba(0,0,0,.36);
+  }
+  /* 0.1.0 – 0.3.1 painted their rim light inside the filter as an additive white pass, so they all
+     lean on the hand-drawn inset highlights those versions shipped with. Each reads its own variable
+     so four engines can render on one page. */
+  .glass.old{border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 16px 42px rgba(0,0,0,.36), inset 0 .5px 0 rgba(255,255,255,.42), inset 0 -.5px 0 rgba(255,255,255,.14),
+               inset 3px 0 9px -6px rgba(255,255,255,.42), inset -3px 0 9px -6px rgba(255,255,255,.42)}
+  .glass.v010{backdrop-filter:var(--hyalite-010, blur(3px));-webkit-backdrop-filter:var(--hyalite-010, blur(3px))}
+  .glass.v020{backdrop-filter:var(--hyalite-020, blur(3px));-webkit-backdrop-filter:var(--hyalite-020, blur(3px))}
+  .glass.v031{backdrop-filter:var(--hyalite-031, blur(3px));-webkit-backdrop-filter:var(--hyalite-031, blur(3px))}
+  /* B: 0.4.0 writes --hyalite (the filter) and --hyalite-edge (the sharp rim, as inset shadows), so
+     this card needs no hand-drawn highlights — the rim is computed from the geometry, not painted on. */
+  .glass.lens{
+    box-shadow:var(--hyalite-edge,none), 0 16px 42px rgba(0,0,0,.36);
+    backdrop-filter:var(--hyalite, blur(3px));-webkit-backdrop-filter:var(--hyalite, blur(3px))}
+  .glass h3{margin:0 0 4px;font-size:18px;font-weight:600}
+  .glass p{margin:0;font-size:12.5px;line-height:1.5;opacity:.8}
+  /* the signature, engraved in the bottom padding of every card — a zoomed-in clip still has it */
+  .glass .sig{position:absolute;right:20px;bottom:7px;font:9.5px/1 ui-monospace,Menlo,monospace;font-style:normal;
+              letter-spacing:.06em;color:rgba(255,255,255,.42)}
+
+  /* ── HUD ───────────────────────────────────────────────── */
+  .hud{position:absolute;z-index:20;left:16px;top:14px;width:236px;display:flex;flex-direction:column;gap:6px;padding:11px 12px;border-radius:12px;
+       background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.12);font:12px/1.3 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.85)}
+  .hud h1{margin:0 0 2px;font:600 13px/1.2 system-ui,sans-serif}
+  .hud label{display:grid;grid-template-columns:72px 1fr 42px;align-items:center;gap:7px}
+  .hud label>b{text-align:right;font-weight:400;opacity:.8}
+  .hud input[type=range]{width:100%;min-width:0;accent-color:#dfc174;margin:0}
+  .hud .btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+  .hud a.btn{text-decoration:none;display:inline-block}
+  .hud button,.hud .file,.hud a.btn{font:10.5px/1.2 ui-monospace,Menlo,monospace;white-space:nowrap;padding:4px 7px;border-radius:7px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.10);color:inherit;cursor:pointer}
+  .hud button:hover,.hud .file:hover,.hud a.btn:hover{background:rgba(255,255,255,.18)}
+  .hud .hint{opacity:.6}
+  .hud .warn{color:#ffb4a2}
+  .hud input[type=file]{display:none}
+  /* laptops: the HUD would otherwise sit on the word's first letter and on the byline */
+  @media (max-width: 1180px) and (min-width: 761px){ .big{left:268px} }
+  /* phones: stack everything, no absolute positioning */
+  @media (max-width: 760px){
+    body{overflow:auto;height:auto;min-height:100vh}
+    .big{position:static;font-size:22vw;margin:12px 0 4px}
+    .big small{position:static;display:block;font-size:11px;margin-bottom:6px}
+    .slot{position:relative!important;left:auto!important;top:auto!important;width:min(380px,92vw);margin:18px auto 34px;cursor:default}
+    .hud{position:static;width:auto;margin:12px}
+    .hud label{grid-template-columns:72px 1fr 42px}.hud input[type=range]{width:100%}
+  }
+</style></head>
+<body>
+<div class="big">HYALITE<small>VII-Cae (VII) · github.com/VII-Cae/hyalite--liquid-glass</small></div>
+
+<div class="slot" id="s010" style="left:25%;top:13%">
+  <div class="glass old v010" id="g010">
+    <h3>0.1.0</h3><p>Refraction arrives: an SDF per element, Snell for the offsets, a no-fold cap. Shown at a 25px bevel over 10px of glass.</p>
+    <i class="sig">hyalite · VII-Cae (VII)</i>
+  </div>
+  <div class="label">0.1.0 · it bends</div>
+</div>
+<div class="slot" id="s020" style="left:60%;top:13%">
+  <div class="glass old v020" id="g020">
+    <h3>0.2.0</h3><p>Same picture, built cheaply: two-level cache, size buckets, the CSS corner rule. Adds a light direction — the only part of it you can see.</p>
+    <i class="sig">hyalite · VII-Cae (VII)</i>
+  </div>
+  <div class="label">0.2.0 · same, but cached</div>
+</div>
+<div class="slot" id="s031" style="left:25%;top:52%">
+  <div class="glass old v031" id="g031">
+    <h3>0.3.1</h3><p>The staircase goes: two displacement passes with a blur between them. Circles stop tearing, and the glass gets thicker: 19px.</p>
+    <i class="sig">hyalite · VII-Cae (VII)</i>
+  </div>
+  <div class="label">0.3.1 · no stairs</div>
+</div>
+<div class="slot" id="s040" style="left:60%;top:52%">
+  <div class="glass lens" id="lens">
+    <h3>0.5.0</h3><p>0.4.0 made the edge darken where it magnifies, fold, and return a specular line. 0.5.0 keeps it on: resize this card, or hit materialize — no frost, no white hairline.</p>
+    <i class="sig">hyalite · VII-Cae (VII)</i>
+  </div>
+  <div class="label">0.5.0 · shaded, and never off</div>
+</div>
+
+<div class="hud">
+  <h1>hyalite · playground</h1>
+  <label>bevel <input id="bevel" type="range" min="4" max="140" value="37" step="1"><b id="bevelV"></b></label>
+  <label>thickness <input id="thickness" type="range" min="2" max="220" value="59" step="1"><b id="thicknessV"></b></label>
+  <label>slope <input id="slope" type="range" min="0.3" max="3" value="2.7" step="0.05"><b id="slopeV"></b></label>
+  <label>shade <input id="shade" type="range" min="0" max="1" value="0.46" step="0.02"><b id="shadeV"></b></label>
+  <label>edge px <input id="edgeW" type="range" min="0.5" max="24" value="8" step="0.5"><b id="edgeWV"></b></label>
+  <label>rim <input id="rim" type="range" min="0" max="2" value="1.76" step="0.02"><b id="rimV"></b></label>
+  <label>blur <input id="blur" type="range" min="0" max="12" value="1" step="0.5"><b id="blurV"></b></label>
+  <label>disp px <input id="dispersion" type="range" min="0" max="3" value="1.6" step="0.05"><b id="dispersionV"></b></label>
+  <label>light <input id="light" type="range" min="-180" max="180" value="-140" step="5"><b id="lightV"></b></label>
+  <div class="hint" id="readout"></div>
+  <div class="btns">
+    <button id="mat2">materialize</button><a class="btn" href="edge-lab.html">profile lab →</a><button id="grid">grid</button>
+    <label class="file">load image<input id="file" type="file" accept="image/*"></label>
+    <button id="reset">reset</button>
+    <a class="btn" href="https://github.com/VII-Cae/hyalite--liquid-glass" target="_blank" rel="noopener">github ↗</a>
+  </div>
+  <div class="hint">drag the cards · each shows what its release was shown at; the sliders drive 0.5.0 only</div>
+  <div class="hint" id="sup"></div>
+</div>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const lens = $('#lens');
+  const q = new URLSearchParams(location.search);
+  // Nine knobs — the ones that move the look most. Everything else (shape, the CSS rim strength,
+  // smooth, settle) rides along from the engine's own defaults, which are the set VII-Cae tuned by
+  // eye on 2026-09-10 and are what the README card shows.
+  const D = Hyalite.DEFAULTS;
+  const KEYS = ['bevel', 'thickness', 'slope', 'shade', 'edgeW', 'rim', 'blur', 'dispersion', 'light'];
+  const FMT = {
+    bevel: (v) => v + 'px', thickness: (v) => v + 'px', slope: (v) => v.toFixed(2),
+    shade: (v) => v.toFixed(2), edgeW: (v) => v + 'px', rim: (v) => v.toFixed(2),
+    blur: (v) => v + 'px', dispersion: (v) => v.toFixed(2) + 'px', light: (v) => v + '\u00b0',
+  };
+  const P = Object.assign({}, D);
+
+  if (q.get('bg') === 'grid') document.body.classList.add('grid');
+  for (const k of KEYS) {
+    const el = $('#' + k);
+    if (q.has(k)) el.value = q.get(k);
+    P[k] = +el.value; $('#' + k + 'V').textContent = FMT[k](P[k]);
+    el.addEventListener('input', () => { P[k] = +el.value; $('#' + k + 'V').textContent = FMT[k](P[k]); schedule(); });
+  }
+
+  // Every knob rebuilds the map (a canvas pass over the card), so coalesce a drag into one frame.
+  const readout = (i) => { if (i) $('#readout').textContent =
+    `max edge offset \u2248 ${i.maxDisplacement.toFixed(1)}px \u00b7 bevel ${i.bevel}px \u00b7 ` +
+    `${i.folds ? 'folds (one pass)' : 'no fold (two passes)'}`; };
+  const schedule = () => Hyalite.setOpts(P).then(() => readout(Hyalite.info()));
+
+  const ok = window.Hyalite && Hyalite.supported();
+  $('#sup').textContent = ok
+    ? `refraction on \u00b7 ${(navigator.userAgent.match(/(Chrome|Edg|Safari|Firefox)\/[\d.]+/) || ['?'])[0]}`
+    : 'this browser cannot run SVG backdrop filters \u2014 B is showing the plain-blur fallback';
+  if (!ok) $('#sup').classList.add('warn');
+  if (ok) Hyalite.attach(lens, Object.assign({ onBuild: readout }, P));
+
+  /* Each older card renders on the parameters *its own release was shown at* — recovered from
+     `demo/index.html` at each tag, not from the engine's DEFAULTS. The defaults were always
+     deliberately conservative; what a version looked like is what its playground displayed. */
+  const OLD = [
+    ['Hyalite010', 'g010', { bevel: 25, thickness: 10, blur: 0.5, dispersion: 0.09, rim: 0.3 }],
+    ['Hyalite020', 'g020', { bevel: 25, thickness: 10, blur: 0.5, dispersion: 0.09, rim: 0.3, light: -20 }],
+    ['Hyalite031', 'g031', { bevel: 28, thickness: 19, blur: 1, dispersion: 0.11, rim: 0.3, light: -25, smooth: 0.75 }],
+  ];
+  for (const [name, id, opts] of OLD) {
+    const api = window[name];
+    if (api && api.supported()) api.attach($('#' + id), opts);
+  }
+
+  // drag
+  for (const slot of document.querySelectorAll('.slot')) {
+    let sx = 0, sy = 0, ox = 0, oy = 0;
+    slot.addEventListener('pointerdown', (ev) => { if (ev.button !== 0) return; slot.setPointerCapture(ev.pointerId); slot.classList.add('dragging'); sx = ev.clientX; sy = ev.clientY; ox = slot.offsetLeft; oy = slot.offsetTop; });
+    slot.addEventListener('pointermove', (ev) => { if (!slot.classList.contains('dragging')) return; slot.style.left = (ox + ev.clientX - sx) + 'px'; slot.style.top = (oy + ev.clientY - sy) + 'px'; });
+    const end = () => slot.classList.remove('dragging');
+    slot.addEventListener('pointerup', end); slot.addEventListener('pointercancel', end);
+  }
+  $('#grid').addEventListener('click', () => { document.body.classList.toggle('grid'); document.body.classList.remove('photo'); });
+  $('#file').addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    document.body.style.setProperty('--photo', `url(${URL.createObjectURL(f)})`);
+    document.body.classList.remove('grid'); document.body.classList.add('photo');
+  });
+  $('#reset').addEventListener('click', () => location.href = location.pathname);
+  $('#mat2') && $('#mat2').addEventListener('click', () => { Hyalite.detach(lens); Hyalite.attach(lens, Object.assign({ onBuild: readout, materialize: 520 }, P)); });
+})();
+</script>
+</body></html>

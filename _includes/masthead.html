@@ -1,38 +1,21 @@
 {% include base_path %}
 
-<svg class="liquid-glass-filter" aria-hidden="true" focusable="false">
-  <filter id="masthead-liquid-glass" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-    <feTurbulence type="fractalNoise" baseFrequency="0.018 0.036" numOctaves="2" seed="7" result="noise" />
-    <feGaussianBlur in="noise" stdDeviation="1.3" result="softNoise" />
-    <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="12" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-    <feColorMatrix
-      in="displaced"
-      type="matrix"
-      values="1.04 0 0 0 0
-              0 1.03 0 0 0
-              0 0 1.08 0 0
-              0 0 0 1 0"
-      result="colored"
-    />
-    <feComposite in="colored" in2="SourceGraphic" operator="over" />
-  </filter>
-</svg>
-
 <div class="masthead">
   <div class="masthead__inner-wrap">
+    <div class="masthead__glass" aria-hidden="true"></div>
     <div class="masthead__menu">
-      <nav id="site-nav" class="greedy-nav">
+      <nav id="site-nav" class="greedy-nav" aria-label="Main navigation">
         <button class="hidden" type="button" aria-label="More navigation links"><div class="navicon"></div></button>
         <span class="masthead-glass-indicator" aria-hidden="true"></span>
         <ul class="visible-links">
-          <li class="masthead__menu-item masthead__menu-item--lg"><a href="{{ base_path }}/">{{ site.title }}</a></li>
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></li>
           {% for link in site.data.navigation.main %}
             {% if link.url contains 'http' %}
-              {% assign domain = '' %}
+              {% assign nav_url = link.url %}
               {% else %}
-              {% assign domain = base_path %}
+              {% assign nav_url = link.url | relative_url %}
             {% endif %}
-            <li class="masthead__menu-item"><a href="{{ domain }}{{ link.url }}">{{ link.title }}</a></li>
+            <li class="masthead__menu-item"><a href="{{ nav_url }}">{{ link.title }}</a></li>
           {% endfor %}
         </ul>
         <ul class="hidden-links hidden"></ul>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>hyalite · 剖面台</title>
+<script src="../hyalite.js?v=0.5.0"></script>
+<script src="mark.js?v=0.5.0"></script>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#0b1016}
+  body{font:13px/1.45 system-ui,-apple-system,"PingFang SC",sans-serif;color:#eee}
+
+  /* ── 底图 ───────────────────────────────────────────── */
+  #stage{position:absolute;inset:0;background-size:cover;background-position:center;overflow:hidden}
+  #stage.drop{outline:3px dashed rgba(255,255,255,.5);outline-offset:-8px}
+
+  /* ── 三块玻璃 ────────────────────────────────────────── */
+  .slot{position:absolute;top:12%;width:264px;touch-action:none;cursor:grab;user-select:none}
+  .slot.dragging{cursor:grabbing}
+  .slot:nth-of-type(1){left:27%}  .slot:nth-of-type(2){left:51%}  .slot:nth-of-type(3){left:75%}
+  .slot .tag{position:absolute;left:0;right:0;top:100%;margin-top:9px;text-align:center;
+             font:11px/1.5 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.8);text-shadow:0 1px 4px #000}
+  .glass{position:relative;box-sizing:border-box;border-radius:30px;padding:20px 22px;
+         background:rgba(0,0,0,.13);                       /* 铁律 1：只压暗，不提亮不提饱和 */
+         backdrop-filter:var(--hyalite,blur(3px));-webkit-backdrop-filter:var(--hyalite,blur(3px));
+         box-shadow:var(--hyalite-edge,none), 0 16px 42px rgba(0,0,0,.36)}
+  .glass h3{margin:0 0 3px;font-size:17px;font-weight:600}
+  .glass p{margin:0;font-size:12px;opacity:.75}
+  .glass .bar{margin-top:14px;height:26px;border-radius:13px;background:rgba(255,255,255,.16)}
+  .glass .bar i{display:block;height:100%;width:52%;border-radius:13px;background:rgba(255,255,255,.8)}
+  /* 落款：刻在每块玻璃的底边里，截去别的也截不掉它 */
+  .glass .sig{position:absolute;right:18px;bottom:6px;font:9.5px/1 ui-monospace,Menlo,monospace;font-style:normal;
+              letter-spacing:.06em;color:rgba(255,255,255,.42)}
+
+  .dots{position:absolute;left:28%;top:52%;display:flex;gap:26px}
+  .dot{position:relative;width:132px;height:132px;border-radius:50%;box-sizing:border-box;
+       display:grid;place-items:center;background:rgba(0,0,0,.05);
+       backdrop-filter:var(--hyalite,blur(3px));-webkit-backdrop-filter:var(--hyalite,blur(3px));
+       box-shadow:var(--hyalite-edge,none)}
+  .dot b{font:300 46px/1 system-ui;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+  .dot i{position:absolute;bottom:-22px;font:11px/1 ui-monospace,Menlo,monospace;
+         font-style:normal;color:rgba(255,255,255,.75);text-shadow:0 1px 4px #000}
+
+  /* ── 示波器 ──────────────────────────────────────────── */
+  #scope{position:absolute;z-index:20;right:16px;bottom:16px;width:330px;padding:11px 12px 9px;border-radius:12px;
+         background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px)}
+  #scope h2{margin:0 0 7px;font:600 12px/1.2 system-ui,sans-serif;color:rgba(255,255,255,.9)}
+  #scope canvas{display:block;width:306px;border-radius:4px}
+  #curve{height:104px;background:#11161d}
+  #strip{height:30px;margin-top:6px;image-rendering:pixelated}
+  #scope .key{display:flex;gap:11px;margin-top:6px;font:10px/1.4 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.62)}
+  #scope .key b{font-weight:400}
+  #scope .out{margin-top:5px;font:10px/1.5 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.55)}
+
+  /* ── 面板 ────────────────────────────────────────────── */
+  #hud{position:absolute;z-index:20;left:14px;top:12px;width:212px;max-height:calc(100% - 24px);overflow:auto;
+       display:flex;flex-direction:column;gap:4px;padding:10px 11px;border-radius:11px;
+       background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);
+       font:11px/1.3 ui-monospace,Menlo,monospace;color:rgba(255,255,255,.85)}
+  #hud h1{margin:0 0 3px;font:600 12px/1.2 system-ui,sans-serif;cursor:pointer;user-select:none}
+  #hud h1::after{content:' ▾';opacity:.5}
+  #hud.fold h1::after{content:' ▸'}
+  #hud.fold>:not(h1){display:none}
+  #hud .sec{margin:5px 0 0;font:600 10px/1.4 system-ui,sans-serif;color:#dfc174;letter-spacing:.04em}
+  #hud label{display:grid;grid-template-columns:50px 1fr 32px;align-items:center;gap:6px}
+  #hud label>span:last-child{text-align:right;font-size:10px;opacity:.75}
+  #hud input[type=range]{width:100%;min-width:0;accent-color:#dfc174;height:13px;margin:0}
+  #hud select{width:100%;min-width:0;font:10px/1.3 ui-monospace,Menlo,monospace;
+              background:rgba(255,255,255,.1);color:inherit;
+              border:1px solid rgba(255,255,255,.18);border-radius:5px;padding:1px 2px}
+  #hud .btns{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+  #hud button,#hud .file{font:10px/1.2 ui-monospace,Menlo,monospace;padding:3px 6px;border-radius:6px;
+                         border:1px solid rgba(255,255,255,.18);white-space:nowrap;
+                         background:rgba(255,255,255,.1);color:inherit;cursor:pointer}
+  #hud button:hover,#hud .file:hover{background:rgba(255,255,255,.2)}
+  #hud button.on{background:#dfc174;color:#1b1f1a;border-color:#dfc174}
+  #hud input[type=file]{display:none}
+  #hud .note{margin-top:5px;font:9.5px/1.4 system-ui,sans-serif;color:rgba(255,255,255,.5)}
+  #hud .warn{color:#ffb4a2}
+</style></head><body>
+
+<div id="stage">
+  <div class="slot"><div class="glass" id="g0"><h3>circle</h3><p>四分之一圆，最陡</p><div class="bar"><i></i></div><i class="sig">hyalite · VII-Cae (VII)</i></div>
+    <div class="tag">circle</div></div>
+  <div class="slot"><div class="glass" id="g1"><h3>squircle</h3><p>接平板接得更缓</p><div class="bar"><i></i></div><i class="sig">hyalite · VII-Cae (VII)</i></div>
+    <div class="tag">squircle</div></div>
+  <div class="slot"><div class="glass" id="g2"><h3>lip</h3><p>外凸内凹，多一组明暗带</p><div class="bar"><i></i></div><i class="sig">hyalite · VII-Cae (VII)</i></div>
+    <div class="tag">lip</div></div>
+  <div class="dots">
+    <div class="dot" id="d0"><b>1</b><i>circle</i></div>
+    <div class="dot" id="d1"><b>2</b><i>squircle</i></div>
+    <div class="dot" id="d2"><b>3</b><i>lip</i></div>
+  </div>
+</div>
+
+<div id="hud">
+  <h1 id="fold">剖面台</h1>
+  <div class="sec">几何</div>
+  <label>倒角<input type="range" id="bevel" min="4" max="200" step="1" value="37"><span id="v_bevel"></span></label>
+  <label>厚度<input type="range" id="thickness" min="0" max="220" step="1" value="59"><span id="v_thickness"></span></label>
+  <label>斜率<input type="range" id="slope" min="0.3" max="4" step="0.05" value="2.7"><span id="v_slope"></span></label>
+  <div class="sec">边缘</div>
+  <label>暗<input type="range" id="shade" min="0" max="2" step="0.02" value="0.46"><span id="v_shade"></span></label>
+  <label>反光<input type="range" id="rim" min="0" max="4" step="0.02" value="1.76"><span id="v_rim"></span></label>
+  <label>边宽<input type="range" id="edgeW" min="0.5" max="40" step="0.5" value="8"><span id="v_edgeW"></span></label>
+  <label>饱和<input type="range" id="sat" min="0" max="2" step="0.02" value="0.86"><span id="v_sat"></span></label>
+  <label>外描边<input type="range" id="edge" min="0" max="2" step="0.02" value="0.32"><span id="v_edge"></span></label>
+  <div class="sec">通用</div>
+  <label>模糊<input type="range" id="blur" min="0" max="14" step="0.25" value="1"><span id="v_blur"></span></label>
+  <label>色散<input type="range" id="dispersion" min="0" max="8" step="0.05" value="1.6"><span id="v_dispersion"></span></label>
+  <label>光向<input type="range" id="light" min="-180" max="180" step="5" value="-140"><span id="v_light"></span></label>
+  <label>smooth<input type="range" id="smooth" min="0" max="4" step="0.25" value="1"><span id="v_smooth"></span></label>
+  <div class="btns">
+    <button id="bg_test" class="on">测试底</button><button id="bg_stripe">条纹</button><button id="bg_grid">网格</button><button id="bg_dark">暗底</button>
+    <label class="file">拖/选图<input type="file" id="pick" accept="image/*"></label>
+  </div>
+  <div class="btns">
+    <button id="reset">复位</button><button id="p_nofold">不折叠</button><button id="p_copy">抄参数</button>
+  </div>
+  <div class="note" id="note">三种倒角剖面并排，同一组参数。示波器画的是 lip 那块。<br>玻璃可以拖动；拖张图进来当底。</div>
+</div>
+
+<div id="scope">
+  <h2>剖面（外沿 → 内沿）· lip</h2>
+  <canvas id="curve" width="612" height="208"></canvas>
+  <canvas id="strip" width="306" height="30"></canvas>
+  <div class="key"><b style="color:#7fcdcd">— 位移 m</b><b style="color:#ffb4a2">— 亮度 1+m′</b><b style="color:#dfc174">— 净剖面 E</b></div>
+  <div class="out" id="out"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   驱动
+   ══════════════════════════════════════════════════════════════════════ */
+const KEYS=['bevel','thickness','slope','shade','rim','edgeW','sat','edge','blur','dispersion','light','smooth'];
+const el=id=>document.getElementById(id);
+const opts=()=>{ const o={}; KEYS.forEach(k=>o[k]=+el(k).value); return o; };
+
+const SAVE='hyalite_edgelab';
+function saveOpts(){ try{ const o={}; KEYS.forEach(k=>o[k]=el(k).value); localStorage.setItem(SAVE, JSON.stringify(o)); }catch(e){} }
+function loadOpts(){
+  try{ const raw=localStorage.getItem(SAVE); if(!raw) return false;
+       const o=JSON.parse(raw); KEYS.forEach(k=>{ if(o[k]!=null) el(k).value=o[k]; }); return true; }catch(e){ return false; }
+}
+function copyOpts(){
+  const o={}; KEYS.forEach(k=>o[k]=+el(k).value);
+  const t=JSON.stringify(o);
+  navigator.clipboard?.writeText(t).then(()=>{ el('note').textContent='参数已复制到剪贴板'; }, ()=>{ el('note').textContent=t; });
+}
+
+/* 三块矩形 + 三个圆：同一组参数，三种倒角剖面并排。示波器画最后建的那块（lip 的圆）。 */
+const SHAPES=['circle','squircle','lip'];
+function render(){
+  const o=opts();
+  KEYS.forEach(k=>{const t=el('v_'+k); if(t) t.textContent=el(k).value;});
+  if(!(window.Hyalite && Hyalite.supported())) return;
+  ['g0','g1','g2','d0','d1','d2'].forEach((id,i)=>{
+    Hyalite.detach(el(id));
+    Hyalite.attach(el(id), Object.assign({}, o, { shape:SHAPES[i%3], materialize:0, settle:0 },
+                                         id==='d2' ? { onBuild: drawScope } : {}));
+  });
+  saveOpts();
+}
+
+/* 示波器：位移、亮度因子、净剖面三条曲线，外加一条把净剖面铺平的灰阶带 —— 肉眼数带用。 */
+function drawScope(info){
+  if(!info || !info.profile) return;
+  const pr=info.profile, N=pr.m.length-1;
+  const cv=el('curve'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+  g.fillStyle='#11161d'; g.fillRect(0,0,W,H);
+  const X=i=>i/N*(W-2)+1;
+  g.strokeStyle='rgba(255,255,255,.13)'; g.lineWidth=1;
+  for(let i=0;i<=4;i++){g.beginPath();g.moveTo(1,H*i/4);g.lineTo(W-1,H*i/4);g.stroke();}
+  g.strokeStyle='rgba(255,255,255,.3)'; g.setLineDash([3,3]);
+  g.beginPath();g.moveTo(1,H/2);g.lineTo(W-1,H/2);g.stroke(); g.setLineDash([]);
+  const line=(arr,f,color)=>{ g.strokeStyle=color; g.lineWidth=1.6; g.beginPath();
+    for(let i=0;i<=N;i++){const y=H-f(arr[i])*H; i?g.lineTo(X(i),y):g.moveTo(X(i),y);} g.stroke(); };
+  const mx=Math.max(...pr.m.map(Math.abs),1e-6);
+  line(pr.m,    v=>.5+v/mx*.45,                       '#7fcdcd');
+  const gm=Math.max(1,...pr.gain);                    // lip 下 gain 可以 > 1（位移压缩，边缘反而变亮）
+  line(pr.gain, v=>v/gm,                              '#ffb4a2');
+  line(pr.edge, v=>.5+Math.max(-1,Math.min(1,v))*.45, '#dfc174');
+  const sv=el('strip'), sc=sv.getContext('2d'), SW=sv.width;
+  for(let x=0;x<SW;x++){
+    const i=Math.round(x/(SW-1)*N), e=pr.edge[i], base=.42;
+    const lum = e>=0 ? base+(1-base)*Math.min(1,e) : base*Math.max(0.02,1+e);
+    const c=Math.round(lum*255);
+    sc.fillStyle='rgb('+c+','+c+','+c+')'; sc.fillRect(x,0,1,sv.height);
+  }
+  el('out').textContent='倒角 '+info.bevel+'px · 最大位移 '+info.maxDisplacement.toFixed(1)+'px · '+
+    (info.folds?'折叠（单段）':'不折叠（两段）')+' · 亮度 ×'+Math.min(...pr.gain).toFixed(2)+'–'+Math.max(...pr.gain).toFixed(2);
+}
+
+/* ── 底图 ────────────────────────────────────────────────────── */
+function testBg(){
+  const c=document.createElement('canvas'); c.width=1400; c.height=900;
+  const x=c.getContext('2d');
+  const gr=x.createLinearGradient(0,0,1400,900);
+  gr.addColorStop(0,'#12304f'); gr.addColorStop(.5,'#7b2d5e'); gr.addColorStop(1,'#1d5c4e');
+  x.fillStyle=gr; x.fillRect(0,0,1400,900);
+  const cols=['#ff4d6d','#ffd166','#06d6a0','#4cc9f0','#ffffff','#0a0a0a'];
+  cols.forEach((col,i)=>{x.fillStyle=col; x.fillRect(90+i*210,120,150,300);});   // 硬边色块：看明暗带最灵
+  x.fillStyle='rgba(255,255,255,.85)';
+  for(let i=0;i<26;i++) x.fillRect(60,470+i*16,1280,2);                           // 细横线：看阶梯和压缩
+  x.fillStyle='#fff'; x.font='800 130px system-ui'; x.fillText('THICK',420,830);
+  return c.toDataURL('image/png');
+}
+function stripeBg(){          // 对她第二张截图的条纹床单
+  const c=document.createElement('canvas'); c.width=1200; c.height=900;
+  const x=c.getContext('2d');
+  x.fillStyle='#8f8f8f'; x.fillRect(0,0,1200,900);
+  x.save(); x.translate(600,450); x.rotate(-0.22); x.translate(-600,-450);
+  x.fillStyle='#303030';
+  for(let i=-700;i<1900;i+=24) x.fillRect(i,-400,12,1700);
+  x.restore();
+  return c.toDataURL('image/png');
+}
+function gridBg(){
+  const c=document.createElement('canvas'); c.width=800; c.height=800;
+  const x=c.getContext('2d'); x.fillStyle='#1d2a1f'; x.fillRect(0,0,800,800);
+  x.strokeStyle='rgba(255,255,255,.55)'; x.lineWidth=1;
+  for(let i=0;i<=800;i+=12){x.beginPath();x.moveTo(i,0);x.lineTo(i,800);x.moveTo(0,i);x.lineTo(800,i);x.stroke();}
+  return c.toDataURL('image/png');
+}
+const stage=el('stage');
+const BGBTN=['bg_test','bg_stripe','bg_grid','bg_dark'];
+const setBg=(url,which)=>{
+  stage.style.backgroundImage=`url("${url}")`;
+  stage.style.backgroundSize = which==='grid' ? '800px 800px' : 'cover';
+  BGBTN.forEach(id=>el(id).classList.toggle('on',id==='bg_'+which));
+};
+el('bg_test').onclick=()=>setBg(testBg(),'test');
+el('bg_stripe').onclick=()=>setBg(stripeBg(),'stripe');
+el('bg_grid').onclick =()=>setBg(gridBg(),'grid');
+el('bg_dark').onclick =()=>{stage.style.backgroundImage='none';stage.style.background='#141a22';
+                            BGBTN.forEach(id=>el(id).classList.toggle('on',id==='bg_dark'));};
+const loadFile=f=>{ if(!f||!/^image\//.test(f.type)) return;
+  const r=new FileReader(); r.onload=()=>{setBg(r.result,'file'); el('note').textContent='底图已换成你的图。三块玻璃可以拖动，拖到参考控件旁边比。';}; r.readAsDataURL(f); };
+el('pick').onchange=e=>loadFile(e.target.files[0]);
+addEventListener('dragover',e=>{e.preventDefault();stage.classList.add('drop');});
+addEventListener('dragleave',()=>stage.classList.remove('drop'));
+addEventListener('drop',e=>{e.preventDefault();stage.classList.remove('drop');loadFile(e.dataTransfer.files[0]);});
+
+/* ── 拖动 ────────────────────────────────────────────────────── */
+document.querySelectorAll('.slot').forEach(s=>{
+  let sx,sy,ox,oy;
+  s.addEventListener('pointerdown',e=>{
+    if(e.target.closest('#hud,#scope')) return;
+    s.setPointerCapture(e.pointerId); s.classList.add('dragging');
+    sx=e.clientX; sy=e.clientY; ox=s.offsetLeft; oy=s.offsetTop;
+  });
+  s.addEventListener('pointermove',e=>{
+    if(!s.classList.contains('dragging')) return;
+    s.style.left=(ox+e.clientX-sx)+'px'; s.style.top=(oy+e.clientY-sy)+'px';
+  });
+  s.addEventListener('pointerup',e=>{s.classList.remove('dragging');s.releasePointerCapture(e.pointerId);});
+});
+
+/* ── 启动 ────────────────────────────────────────────────────── */
+const DEF = Hyalite.DEFAULTS;
+/* 一个对照档：不折叠。折叠是默认档「液态感」的来源，但它同时关掉了两段抗阶梯 ——
+   把斜率压到 1 以下，就能看到干净但没有漩涡的另一种成色。 */
+const PRESETS = { nofold: { ...DEF, slope: 0.95, blur: 1.5, dispersion: 0.8 } };
+const useP=n=>{const p=n?PRESETS[n]:DEF; KEYS.forEach(k=>{ if(p[k]!=null) el(k).value=p[k]; }); render();};
+el('reset').onclick=()=>useP(null);
+el('p_nofold').onclick=()=>useP('nofold');
+el('p_copy').onclick=copyOpts;
+el('fold').onclick=()=>el('hud').classList.toggle('fold');
+KEYS.forEach(k=>el(k).addEventListener('input',render));
+if(!loadOpts()) useP(null);
+setBg(testBg(),'test');
+if(!(window.Hyalite&&Hyalite.supported()))
+  el('note').innerHTML='<span class="warn">这个浏览器不跑 SVG backdrop filter，只有 Chromium 能看。</span>';
+render();
+</script>
+</body></html>

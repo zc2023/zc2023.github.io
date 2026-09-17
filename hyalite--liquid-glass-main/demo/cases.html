@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>hyalite · cases</title>
+<script src="../hyalite.js?v=0.5.0"></script>
+<style>
+  body{margin:0;min-height:100vh;color:#f2efe6;font:14px/1.45 system-ui,sans-serif;background:#1d2a1f;
+       background-image:repeating-linear-gradient(0deg,transparent 0 11px,rgba(255,255,255,.55) 11px 12px),repeating-linear-gradient(90deg,transparent 0 11px,rgba(255,255,255,.55) 11px 12px)}
+  main{padding:24px 24px 46vh;display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+  .glass{position:relative;box-sizing:border-box;padding:14px 16px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.12);
+         box-shadow:0 12px 30px rgba(0,0,0,.35), inset 0 .5px 0 rgba(255,255,255,.4);
+         backdrop-filter:var(--hyalite, blur(2px));-webkit-backdrop-filter:var(--hyalite, blur(2px))}
+  .bubble{border-radius:16px 16px 6px 16px;width:300px}
+  .circle{border-radius:50%;width:120px;height:120px}
+  .ellipse{border-radius:40px / 16px;width:260px;height:90px}
+  /* deliberately fixed, not min(900px,92vw): 900×420 = 378k px is over MAX_MAP_PX whatever the
+     window is, so the downsampling case never silently tests nothing on a narrow viewport */
+  .big{border-radius:32px;width:900px;height:420px}
+  .twin{border-radius:24px;width:220px;height:90px}
+  .grow{border-radius:18px;width:320px}
+  /* 320×40 with 24px top corners. CSS keeps them at 24 (they share edges with 0s and fit);
+     clamping each corner to half the short side would wrongly say 20. */
+  .norm{border-radius:24px 24px 0 0;width:320px;height:40px;padding:0 14px;display:flex;align-items:center;gap:10px;overflow:hidden;font-size:11px}
+  .norm h2{margin:0}
+  /* 300 and 304 land in the same size bucket, so they must end up on the same map */
+  .bkt{border-radius:20px;height:120px}
+  h2{margin:0 0 4px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+  pre{position:fixed;left:12px;bottom:12px;margin:0;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.78);
+      font:12px/1.5 ui-monospace,Menlo,monospace;max-width:90vw;max-height:42vh;overflow:auto;white-space:pre-wrap}
+</style></head>
+<body>
+<main>
+  <div class="glass bubble" id="bubble"><h2>asymmetric radii</h2>16 / 16 / 6 / 16 — bevel is clamped to the largest corner, the 6px tail gets a faint local kink, no crease along the edges.</div>
+  <div class="glass circle" id="circle"><h2>50%</h2>circle · mirrored</div>
+  <div class="glass ellipse" id="ellipse"><h2>40px / 16px</h2>elliptical radii are approximated by the horizontal value</div>
+  <div class="glass norm" id="norm"><h2>radius rule</h2>320×40, radius 24 24 0 0</div>
+  <div class="glass twin" id="twinA"><h2>twin A</h2>attached first, no ramp</div>
+  <div class="glass twin" id="twinB"><h2>twin B</h2>same geometry, attached later with materialize</div>
+  <div class="glass bkt" id="bktA" style="width:300px"><h2>bucket A</h2>300 × 120</div>
+  <div class="glass bkt" id="bktB" style="width:304px"><h2>bucket B</h2>304 × 120 — same map</div>
+  <div class="glass grow" id="grow"><h2>growing bubble</h2><span id="growText">streaming text… </span></div>
+  <div class="glass big" id="big"><h2>large element</h2>the map is downsampled to ≈ 320k pixels and stretched back by feImage</div>
+  <div class="glass twin" id="noedge"><h2>edge: 0</h2>no CSS rim</div>
+  <div class="glass twin" id="fold"><h2>shipped default</h2>slope 2.7 — folds, one pass</div>
+  <div class="glass bkt" id="thick" style="border-radius:60px"><h2>thick lens</h2>thickness 300 — the channel separation is capped, not scaled with the displacement</div>
+</main>
+<pre id="out">running…</pre>
+<script>
+(async () => {
+  const wait = (ms) => new Promise(r => setTimeout(r, ms));
+  // The ramps are time-based but advance one requestAnimationFrame at a time, and the runner paints
+  // on the CPU (--disable-gpu), where a frame with a dozen glass surfaces can take 100 ms+. So the
+  // two cases that wait for a ramp to *end* poll up to a deadline instead of trusting one sleep.
+  const until = async (fn, ms) => { const t0 = performance.now(); while (performance.now() - t0 < ms) { if (fn()) return true; await wait(40); } return fn(); };
+  const $ = (id) => document.getElementById(id);
+  const v = (el) => el.style.getPropertyValue('--hyalite');
+  const filterOf = (ref) => document.querySelector(String(ref).replace('url(', '').replace(')', ''));
+  const scaleOf = (ref) => { const f = filterOf(ref), d = f && f.querySelector('feDisplacementMap'); return d ? +d.getAttribute('scale') : null; };
+  // A deliberately non-folding baseline (slope ≤ 1) so the two-pass cases still have something to
+  // check; the shipped default folds and is covered on its own below.
+  const O = { bevel: 20, thickness: 30, slope: 0.85, blur: 1, dispersion: 0.5, shade: 0.5, rim: 1, edgeW: 4 };
+  const results = [];
+  const check = (name, ok, detail) => results.push(`${ok ? '✓' : '✗'} ${name}${detail ? ' — ' + detail : ''}`);
+  // info() reports the last *map* build, and most rebuilds now reuse a cached map on purpose,
+  // so every case that wants an element's own numbers catches them through onBuild.
+  const seen = {};
+  const catching = (id, extra) => Object.assign({ onBuild: (i) => { seen[id] = i; } }, O, extra || {});
+
+  if (!Hyalite.supported()) { $('out').textContent = 'this browser cannot run SVG backdrop filters; nothing to test here.'; return; }
+
+  for (const id of ['bubble', 'circle', 'ellipse', 'norm', 'big']) Hyalite.attach($(id), catching(id));
+  await wait(100);
+  check('asymmetric radii attach', /^url/.test(v($('bubble'))), v($('bubble')));
+  check('50% radius attach', /^url/.test(v($('circle'))), v($('circle')));
+  check('elliptical radius attach', /^url/.test(v($('ellipse'))), v($('ellipse')));
+  const bigPx = $('big').offsetWidth * $('big').offsetHeight, kpx = (n) => (n / 1000).toFixed(0) + 'k';
+  check('large element map downsampled', seen.big && bigPx > 320000 && seen.big.mapSize[0] * seen.big.mapSize[1] < bigPx,
+        seen.big && `map ${seen.big.mapSize.join('×')} = ${kpx(seen.big.mapSize[0] * seen.big.mapSize[1])} px for ` +
+                    `${$('big').offsetWidth}×${$('big').offsetHeight} = ${kpx(bigPx)} px (cap ≈ 320k)`);
+
+  // CSS corner-overlap rule: 24px corners on a 40px-tall card survive, they are not clamped to 20
+  check('CSS radius rule keeps 24px on a 40px-tall card', seen.norm && Math.abs(seen.norm.radii[0] - 24) < 0.01,
+        seen.norm && `top corners ${seen.norm.radii[0].toFixed(2)}px · per-corner clamping would say ${($('norm').offsetHeight / 2).toFixed(0)}px`);
+
+  // shared-filter isolation: B's ramp must not touch A's filter
+  Hyalite.attach($('twinA'), O); await wait(60);
+  const aRef = v($('twinA')), aScale = scaleOf(aRef);
+  Hyalite.attach($('twinB'), Object.assign({ materialize: 400 }, O)); await wait(120);
+  const bRef = v($('twinB'));
+  check('twins share the canonical filter', aRef && /-m\d+\)$/.test(bRef) && bRef.replace(/-m\d+\)$/, ')') === aRef, `A ${aRef} · B ${bRef}`);
+  check('A untouched during B ramp', scaleOf(aRef) === aScale, `A scale ${aScale} → ${scaleOf(aRef)}`);
+  await until(() => v($('twinB')) === aRef, 6000);   // the ramp clock starts at its first frame, and a runner frame can take 100 ms+ with this many surfaces
+  check('B lands on the shared filter', v($('twinB')) === aRef, v($('twinB')));
+
+  // two-level cache: sizes within one bucket share a map, and blur never invalidates one
+  let builds = 0;
+  const counting = Object.assign({ onBuild: () => builds++ }, O);
+  Hyalite.attach($('bktA'), counting); await wait(60);
+  const afterA = builds;
+  Hyalite.attach($('bktB'), counting); await wait(60);
+  check('300px and 304px share one map', builds === afterA, `map builds ${afterA} → ${builds} (bucket ≤ 2 %)`);
+  const beforeTune = builds;
+  await Hyalite.setOpts({ blur: 3 });
+  await Hyalite.setOpts({ blur: O.blur });
+  check('setOpts(blur) rebuilds no map', builds === beforeTune, `map builds ${beforeTune} → ${builds}`);
+
+  // quarter-symmetry: with four equal corners three quadrants are mirrored, not computed.
+  // Mirroring x negates the x offset (R + R′ = 256, ±1 for rounding) and leaves y alone (G = G′).
+  let worstR = 0, worstG = 0;
+  try {
+    const im = new Image(); im.src = seen.circle.map; await im.decode();
+    const cv = document.createElement('canvas'); cv.width = im.width; cv.height = im.height;
+    const c2 = cv.getContext('2d', { willReadFrequently: true });
+    c2.drawImage(im, 0, 0);
+    const P = c2.getImageData(0, 0, im.width, im.height).data;
+    for (let y = 0; y < im.height; y++) for (let x = 0; x < im.width; x++) {
+      const a = (y * im.width + x) * 4, b = (y * im.width + (im.width - 1 - x)) * 4;
+      worstR = Math.max(worstR, Math.abs(P[a] + P[b] - 256));
+      worstG = Math.max(worstG, Math.abs(P[a + 1] - P[b + 1]));
+    }
+    check('quarter-symmetry mirrors exactly', worstR <= 1 && worstG <= 1, `worst |R+R′−256| ${worstR} · |G−G′| ${worstG}`);
+  } catch (e) { check('quarter-symmetry mirrors exactly', false, 'could not read the map back: ' + e.message); }
+
+  // rule 3 widens the radii for the direction field, but makeSDF only holds while R ≤ half the short
+  // side. A circle is exactly at the limit, so any bevel used to push it past — and the gradient then
+  // flipped sign across the axes: a cross-shaped seam. The map is 120×120, so rows 59/60 straddle the
+  // horizontal axis and columns 59/60 the vertical one; G must not jump across one, nor R across the other.
+  let seamG = 0, seamR = 0;
+  try {
+    const im = new Image(); im.src = seen.circle.map; await im.decode();
+    const cv = document.createElement('canvas'); cv.width = im.width; cv.height = im.height;
+    const c2 = cv.getContext('2d', { willReadFrequently: true });
+    c2.drawImage(im, 0, 0);
+    const P = c2.getImageData(0, 0, im.width, im.height).data;
+    const mid = Math.floor(im.height / 2), at = (x, y) => (y * im.width + x) * 4;
+    for (let i = 2; i < im.width - 2; i++) {
+      seamG = Math.max(seamG, Math.abs(P[at(i, mid - 1) + 1] - P[at(i, mid) + 1]));
+      seamR = Math.max(seamR, Math.abs(P[at(mid - 1, i)] - P[at(mid, i)]));
+    }
+    check('circle direction field has no seam on the axes', seamG <= 12 && seamR <= 12,
+          `worst jump across the axis — G ${seamG}, R ${seamR} (was ≈ 114 before the cap fix)`);
+  } catch (e) { check('circle direction field has no seam on the axes', false, 'could not read the map back: ' + e.message); }
+
+  Hyalite.attach($('fold'), catching('fold', Hyalite.DEFAULTS));
+  await wait(80);
+
+  // Dispersion is a fixed pixel count, not a share of the displacement: doubling the thickness must
+  // not touch it. Before 0.4.0 it scaled with the lens and a thick one painted a radial rainbow.
+  const sepOf = (el) => {
+    const f = filterOf(v(el)), d = f ? Array.from(f.querySelectorAll('feDisplacementMap')).map((n) => +n.getAttribute('scale')) : [];
+    return d.length >= 3 ? (d[d.length - 1] - d[d.length - 2]) / 2 : NaN;
+  };
+  Hyalite.attach($('thick'), catching('thick', { thickness: 300, bevel: 60, dispersion: 2 }));
+  await wait(80);
+  const sepThick = sepOf($('thick')), sepThin = sepOf($('circle'));
+  check('dispersion is a fixed pixel count, not a share of the displacement',
+        Math.abs(sepThick - 2) < 0.02 && Math.abs(sepThin - O.dispersion) < 0.02,
+        `${seen.thick ? seen.thick.maxDisplacement.toFixed(0) : '?'}px lens separates by ${sepThick.toFixed(2)}px, ` +
+        `${seen.circle ? seen.circle.maxDisplacement.toFixed(0) : '?'}px lens by ${sepThin.toFixed(2)}px`);
+
+  // The shade is an edge effect: the map's blue channel sits at neutral in the centre and only drops
+  // near the rim. (128 = neutral, below = multiply down, above = add light.)
+  let bMid = -1, bMin = 999, bMax = -1;
+  try {
+    const im = new Image(); im.src = seen.circle.map; await im.decode();
+    const cv = document.createElement('canvas'); cv.width = im.width; cv.height = im.height;
+    const c2 = cv.getContext('2d', { willReadFrequently: true });
+    c2.drawImage(im, 0, 0);
+    const P = c2.getImageData(0, 0, im.width, im.height).data;
+    const at = (x, y) => P[(y * im.width + x) * 4 + 2];
+    bMid = at(im.width >> 1, im.height >> 1);
+    for (let x = 0; x < im.width; x++) { const b = at(x, im.height >> 1); bMin = Math.min(bMin, b); bMax = Math.max(bMax, b); }
+    check('the shade lives on the edge, the centre stays neutral', bMid === 128 && bMin < 124,
+          `centre ${bMid} · darkest ${bMin} · brightest ${bMax} (128 = untouched)`);
+  } catch (e) { check('the shade lives on the edge, the centre stays neutral', false, 'could not read the map back: ' + e.message); }
+
+  /* Both signs are present in the profile itself. Read there rather than off the map: the specular
+     line is exp 44, so it peaks within the outermost fraction of a pixel and the map's first pixel
+     centre already misses it — inside the filter `rim` is the wide Fresnel sheen, and the pixel-sharp
+     line is the CSS one. */
+  const dp = seen.fold && seen.fold.profile.edge;
+  check('the profile carries light and shade, in that order outward',
+        !!dp && Math.max(...dp) > 0 && Math.min(...dp) < 0 && dp[0] > dp[Math.round(dp.length / 4)],
+        dp ? `outermost ${dp[0].toFixed(2)} · darkest ${Math.min(...dp).toFixed(2)} · brightest ${Math.max(...dp).toFixed(2)}` : 'no build');
+
+  // The sharp outer line is CSS, so it is written to its own variable and survives detach
+  const edgeVar = $('circle').style.getPropertyValue('--hyalite-edge');
+  Hyalite.attach($('noedge'), Object.assign({}, O, { edge: 0 }));
+  await wait(60);
+  check('--hyalite-edge carries the CSS rim, and edge:0 turns it off',
+        /inset/.test(edgeVar) && $('noedge').style.getPropertyValue('--hyalite-edge') === 'none',
+        `${(edgeVar.split(',')[0] || '—').trim()} … · edge:0 → ${$('noedge').style.getPropertyValue('--hyalite-edge')}`);
+
+  /* Rule 6: a growing element never leaves the glass. Until 0.4.0 it dropped to a plain blur while
+     it grew and ramped back after `settle` ms of quiet — a lens → frost → lens flicker at every pause
+     in a streaming reply. Now the filter region is the element's own box, the first change of a burst
+     rebuilds inside the ResizeObserver callback (before that frame paints), and the rest are throttled.
+     Watch the variable on the frame each resize lands, not after a sleep. */
+  Hyalite.attach($('grow'), O); await wait(60);
+  const frame = () => new Promise((r) => requestAnimationFrame(() => r()));
+  const idBefore = v($('grow'));
+  let sawFallback = false, sawSync = false;
+  const ro = new ResizeObserver(() => { if (/^url/.test(v($('grow'))) && v($('grow')) !== idBefore) sawSync = true; });
+  ro.observe($('grow'));       // registered after Hyalite's own observer, so it runs after the engine's callback in the same frame
+  for (let i = 0; i < 12; i++) {
+    $('growText').textContent += 'more words arrive and the bubble grows taller ';
+    await frame(); if (/^blur/.test(v($('grow')))) sawFallback = true;
+    await wait(40); if (/^blur/.test(v($('grow')))) sawFallback = true;
+  }
+  ro.disconnect();
+  check('growing element never drops to plain blur', !sawFallback && /^url/.test(v($('grow'))), v($('grow')));
+  check('the first change of a burst is rebuilt before its frame paints', sawSync, sawSync ? 'new filter seen inside the same ResizeObserver pass' : 'still the old filter when the frame painted');
+  await until(() => v($('grow')) !== idBefore, 2000);
+  check('rebuilt for the new size', v($('grow')) !== idBefore, `${idBefore} → ${v($('grow'))}`);
+  const gf = filterOf(v($('grow')));
+  check('the filter region follows the element (objectBoundingBox 0 0 1 1, feImage fills it)',
+        !!gf && gf.getAttribute('filterUnits') === 'objectBoundingBox' && gf.getAttribute('width') === '1' &&
+        Array.from(gf.querySelectorAll('feImage')).every((im) => !im.hasAttribute('width') && im.getAttribute('preserveAspectRatio') === 'none'),
+        gf ? `filterUnits ${gf.getAttribute('filterUnits')} · ${gf.querySelectorAll('feImage[width]').length} feImage with a fixed width` : 'no filter');
+  /* settle > 0: the glass stays on through the changes and one rebuild lands for the final size.
+     Not asserted: *when* it lands. On the runner's software rasteriser a frame can outlast any
+     sensible settle window, so timing here would only measure the machine. */
+  const coal = document.body.appendChild(Object.assign(document.createElement('div'), { className: 'glass twin' }));
+  coal.style.height = '80px';
+  let coalBuild = null;
+  Hyalite.attach(coal, Object.assign({}, O, { settle: 150, onBuild: (i) => { coalBuild = i; } })); await wait(60);
+  const coalBefore = v(coal);
+  let coalDropped = false;
+  const peekCoal = () => { if (!/^url/.test(v(coal))) coalDropped = true; };
+  coal.style.height = '110px'; await frame(); peekCoal(); await wait(50); peekCoal();
+  coal.style.height = '140px'; await frame(); peekCoal();
+  await until(() => v(coal) !== coalBefore, 2000); peekCoal();
+  check('settle keeps the glass on through resizes and rebuilds for the final size',
+        !coalDropped && v(coal) !== coalBefore && !!coalBuild && coalBuild.mapSize[1] >= 140,
+        `${coalBefore} → ${v(coal)} · last map ${coalBuild ? coalBuild.mapSize.join('×') : '—'} for 220×140${coalDropped ? ' · DROPPED to blur' : ''}`);
+  Hyalite.detach(coal); coal.remove();
+
+  // clamps — read the values back rather than trusting that nothing threw
+  const probe = document.body.appendChild(Object.assign(document.createElement('div'), { className: 'glass twin' }));
+  Hyalite.attach(probe, { bevel: -5, thickness: 10, slope: 0.85, blur: 999, dispersion: 99, rim: -1, shade: 0.5, light: 999, smooth: 0, onBuild: (i) => { seen.probe = i; } });
+  await wait(60);
+  const pf = filterOf(v(probe));
+  const pb = pf && pf.querySelector('feGaussianBlur');
+  const ps = pf ? Array.from(pf.querySelectorAll('feDisplacementMap')).map((n) => +n.getAttribute('scale')) : [];
+  check('bevel −5 clamps to 1', seen.probe && seen.probe.bevel === 1, seen.probe && `bevel ${seen.probe.bevel}px`);
+  check('blur 999 clamps to 64', pb && +pb.getAttribute('stdDeviation') === 64, pb && `stdDeviation ${pb.getAttribute('stdDeviation')}`);
+  check('dispersion 99 clamps to 8px of separation', ps.length === 3 && Math.abs((ps[2] - ps[1]) / 2 - 8) < 0.02, `separation ${ps.length === 3 ? ((ps[2] - ps[1]) / 2).toFixed(2) : '—'}px`);
+  check('rim −1 clamps to 0 (no light in the profile)', !!seen.probe && seen.probe.profile.edge.every((e) => e <= 1e-9), seen.probe ? `max edge ${Math.max(...seen.probe.profile.edge).toFixed(3)} (≤ 0 = shade only)` : 'no build');
+  check('smooth 0 is one pass', !!pf && pf.querySelectorAll('feImage').length === 1 && ps.length === 3, pf && `${pf.querySelectorAll('feImage').length} feImage · ${ps.length} feDisplacementMap`);
+  /* Rule 7: the blurred backdrop is pinned opaque before the channel passes sample it. The blur fades
+     the outermost rows of the backdrop into transparency (the backdrop stops at the element's box),
+     and the three-pass dispersion sum triples premultiplied colour where alpha < 1 — a white
+     hairline on the frames where the rim samples its own boundary. */
+  const pin = pf && pf.querySelector('feColorMatrix[result="soft"]');
+  const blurThenPin = !!pin && !!pin.previousElementSibling && pin.previousElementSibling.tagName === 'feGaussianBlur' && pin.getAttribute('in') === pin.previousElementSibling.getAttribute('result');
+  check('the blurred backdrop is pinned opaque before dispersion samples it',
+        blurThenPin && /0 0 0 0 1\s*$/.test(pin.getAttribute('values')),
+        pin ? `${pin.getAttribute('in')} → alpha row "${pin.getAttribute('values').trim().split(/\s{2,}/).pop()}"` : 'no pin node');
+
+  /* Rule 4: where the field does not fold it is split into two displacement passes whose tables
+     compose back to the one-pass field — inner(x + split·m(x)) + split·m(x) = m(x). Once it folds
+     there is no such split, so the shipped default (slope 2.7) is deliberately a single pass. */
+  const tf = filterOf(v($('circle')));
+  const tImgs = tf ? tf.querySelectorAll('feImage').length : 0;
+  const tDisp = tf ? Array.from(tf.querySelectorAll('feDisplacementMap')).map((n) => +n.getAttribute('scale')) : [];
+  check('a non-folding field gets two passes', tImgs === 2 && tDisp.length === 4 && tf.querySelectorAll('feGaussianBlur').length === 2,
+        `${tImgs} feImage · ${tDisp.length} feDisplacementMap · ${tf ? tf.querySelectorAll('feGaussianBlur').length : 0} feGaussianBlur`);
+
+  const ff = filterOf(v($('fold')));
+  check('the shipped default folds, so it stays one pass',
+        !!seen.fold && seen.fold.folds === true && seen.fold.twoPass === false &&
+        !!ff && ff.querySelectorAll('feImage').length === 1,
+        seen.fold ? `slope ${Hyalite.DEFAULTS.slope} folds · ${ff ? ff.querySelectorAll('feImage').length : '?'} feImage` : 'no build');
+
+  let worstSum = 0;
+  try {
+    const rd = async (src) => { const im = new Image(); im.src = src; await im.decode(); const cv = document.createElement('canvas'); cv.width = im.width; cv.height = im.height;
+                                const c2 = cv.getContext('2d', { willReadFrequently: true }); c2.drawImage(im, 0, 0); return { P: c2.getImageData(0, 0, im.width, im.height).data, w: im.width, h: im.height }; };
+    const outer = await rd(seen.circle.map), inner = await rd(seen.circle.mapInner);
+    const maxd = seen.circle.maxDisplacement, split = seen.circle.split;
+    const ymid = Math.floor(outer.h / 2);                       // a horizontal line through the middle: the field is 1-D there
+    const off = (im, x, sc) => ((im.P[(ymid * im.w + x) * 4] - 128) / 127) * sc;
+    const innerMax = tDisp[0] / 2;
+    for (let x = 0; x < Math.floor(outer.w / 2); x++) {
+      const m = off(outer, x, maxd), m2 = split * m;             // outer pass moves the sample by m2 (inward = +x)
+      if (m < 0.5) break;
+      const xs = x + m2, xi = Math.min(inner.w - 1, Math.floor(xs)), u = xs - xi;
+      const m1 = off(inner, xi, innerMax) * (1 - u) + off(inner, Math.min(inner.w - 1, xi + 1), innerMax) * u;
+      worstSum = Math.max(worstSum, Math.abs(m1 + m2 - m));
+    }
+    check('inner ∘ outer equals the one-pass field', worstSum < 0.6, `worst |inner + outer − m| ${worstSum.toFixed(2)}px of ${maxd.toFixed(1)}px · split ${split.toFixed(2)}`);
+  } catch (e) { check('inner ∘ outer equals the one-pass field', false, 'could not read the maps back: ' + e.message); }
+
+  /* Handover between watchers. An element dragged from one observed container to another produces
+     two records in the same microtask — B sees an addition, A sees a removal — and the order they
+     arrive in is just the order the observers were created. Responding to each record on its own
+     loses the element: B's attach is skipped because it is still bound to A, then A's detach
+     unbinds it, and nothing in B ever picks it up. */
+  const wcA = document.body.appendChild(Object.assign(document.createElement('div'), { id: 'wcA' }));
+  const wcB = document.body.appendChild(Object.assign(document.createElement('div'), { id: 'wcB' }));
+  const mover = Object.assign(document.createElement('div'), { className: 'glass twin' });
+  wcA.appendChild(mover);
+  /* B is created first on purpose: observer callbacks fire in creation order, so B sees the
+     addition before A sees the removal — the order that loses the element. */
+  const wB = Hyalite.watch(wcB, '.twin', O);
+  const wA = Hyalite.watch(wcA, '.twin', O);
+  await wait(120);
+  const inA = /^url/.test(v(mover));
+  wcB.appendChild(mover);                       // the move
+  await until(() => /^url/.test(v(mover)), 400);
+  const afterMove = /^url/.test(v(mover));
+  wA.stop();                                    // if B never took over, this takes the glass away
+  await wait(90);
+  const ownedByB = /^url/.test(v(mover));
+  check('an element moved between watchers is taken over by the new one', inA && afterMove && ownedByB,
+        `bound in A ${inA} · still glass after the move ${afterMove} · survives A stopping ${ownedByB}`);
+  wB.stop();
+
+  // escape hatch for the day WebKit ships backdrop filters
+  const off = Hyalite.force(false) === false && Hyalite.supported() === false;
+  Hyalite.force(null);
+  check('force() overrides the engine sniff', off && Hyalite.supported() === true, `force(false) → off, force(null) → ${Hyalite.supported()}`);
+
+  const okAll = results.every(r => r.startsWith('✓'));
+  $('out').textContent = (okAll ? 'ALL OK\n' : 'FAILURES\n') + results.join('\n');
+  window.__hyaliteCases = { ok: okAll, results };
+})();
+</script>
+</body></html>

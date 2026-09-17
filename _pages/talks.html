@@ -7,7 +7,7 @@ author_profile: True
 
 <div class="publication-grid">
   <div class="publication-img">
-    <img class="publication-thumb" src="/images/publications/cdr.png" alt="TransCDR paper thumbnail" />
+    <img class="publication-thumb" src="/images/publications/cdr.png" alt="TransCDR paper thumbnail" draggable="false" />
   </div>
   <div>
     <h4>TransCDR: User Group Enhanced Cross-Domain Recommendation via Transformers
@@ -19,5 +19,27 @@ author_profile: True
     
   </div>
 </div>
+
+<a class="publication-grid personal-post-card" href="{{ '/space/' | relative_url }}" draggable="false" aria-labelledby="space-post-title">
+  <div class="publication-img">
+    <img class="publication-thumb" src="{{ '/images/3dspace.png' | relative_url }}" alt="3D Space preview with four navigation doors" draggable="false" loading="lazy" decoding="async" />
+  </div>
+  <div>
+    <h4 id="space-post-title">3D Space</h4>
+    <p>Interactive 3D experience</p>
+    <p>Explore a three-dimensional space with adjustable time and view controls.</p>
+  </div>
+</a>
+
+<a class="publication-grid personal-post-card" href="{{ '/solar-system/' | relative_url }}" draggable="false" aria-labelledby="solar-system-post-title">
+  <div class="publication-img">
+    <img class="publication-thumb" src="{{ '/images/solar.png' | relative_url }}" alt="Solar System preview showing Earth, the Moon's orbit and Beijing" draggable="false" loading="lazy" decoding="async" />
+  </div>
+  <div>
+    <h4 id="solar-system-post-title">Solar System</h4>
+    <p>Interactive solar system</p>
+    <p>Explore the solar system, Earth and Moon with time controls and multiple viewpoints.</p>
+  </div>
+</a>
 
 {% include floating-nav.html %}
