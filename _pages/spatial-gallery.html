@@ -1,0 +1,48 @@
+---
+layout: archive
+title: "Spatial Gallery"
+permalink: /spatial-gallery/
+author_profile: true
+---
+
+{% include floating-nav.html %}
+<link rel="stylesheet" href="{{ '/assets/css/spatial-gallery.css' | relative_url }}">
+<script type="importmap">
+  {"imports":{"three":"{{ '/assets/js/vendor/three/build/three.module.js' | relative_url }}","three/addons/":"{{ '/assets/js/vendor/three/examples/jsm/' | relative_url }}"}}
+</script>
+
+<div class="spatial-gallery-intro">
+  <p>Moments to step inside. Each window follows a reconstructed camera path; open a scene to explore it yourself.</p>
+  <button type="button" class="spatial-motion-toggle" aria-pressed="false">Pause previews</button>
+</div>
+
+{% assign scenes = site.spatial | sort: 'order' %}
+{% assign sections = scenes | group_by: 'category' %}
+{% for section in sections %}
+  <div class="center"><h2>{{ section.name }}</h2></div>
+  <div class="gallery-grid spatial-gallery-grid">
+    {% for scene in section.items %}
+      <figure class="gallery-card spatial-card" data-assets="{{ scene.assets_path | relative_url }}" data-preview-model="{{ scene.preview_model }}">
+        <div class="gallery-card__media spatial-card__media">
+          <a class="spatial-card__link" href="{{ scene.url | relative_url }}" aria-label="Explore {{ scene.title | escape }} in 3D">
+            <div class="spatial-card__viewport">
+              <img class="spatial-card__poster" src="{{ scene.poster | relative_url }}" alt="{{ scene.description | escape }}" width="448" height="252" loading="lazy" decoding="async">
+            </div>
+            <span class="spatial-card__badge">3D SCENE</span>
+            <span class="spatial-card__status">Smooth path preview</span>
+            <span class="spatial-card__open" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <figcaption class="gallery-card__caption spatial-card__caption">
+          <a href="{{ scene.url | relative_url }}">{{ scene.title }}</a>
+          <p>{{ scene.description }}</p>
+          {% if scene.acquisition_note %}<p>{{ scene.acquisition_note | escape }}</p>{% endif %}
+          {% if scene.reference_url %}<p class="spatial-card__reference"><a href="{{ scene.reference_url | escape }}" target="_blank" rel="noopener">{{ scene.reference_label | escape }} ↗</a></p>{% endif %}
+        </figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+{% endfor %}
+
+<noscript><p>Open any window to visit its scene page and download the 3D files. JavaScript enables the animated previews.</p></noscript>
+<script type="module" src="{{ '/assets/js/spatial-gallery.js' | relative_url }}"></script>

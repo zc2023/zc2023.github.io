@@ -3,6 +3,9 @@ main:
   - title: "Gallery"
     url: /portfolio/
 
+  - title: "Spatial Gallery"
+    url: /spatial-gallery/
+
   - title: "Personal Posts"
     url: /talks/  
 

@@ -40,6 +40,8 @@ include:
   - _pages
   - files
 exclude:
+  - map-anything
+  - scripts
   - "*.sublime-project"
   - "*.sublime-workspace"
   - .asset-cache
@@ -77,6 +79,11 @@ kramdown:
 
 
 # Defaults
+collections:
+  spatial:
+    output: true
+    permalink: /spatial-gallery/:name/
+
 defaults:
   # _pages
   - scope:

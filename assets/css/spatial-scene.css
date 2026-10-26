@@ -1,0 +1,36 @@
+:root{color-scheme:light;--bg:#f7f8f5;--panel:#fff;--line:#dce3db;--ink:#2c3c34;--muted:#758077;--accent:#4b8068}
+body{background:var(--bg);color:var(--ink)}
+.topbar{background:#ffffffd9;border-color:#e0e6de}
+.panel{background:#fff}
+.scene-acquisition{margin:-12px 0 26px;color:var(--muted);font-size:11px;line-height:1.7;grid-column:1/-1}
+.scene-reference{margin:-12px 0 26px;font-size:11px;line-height:1.7;grid-column:1/-1}
+.scene-reference a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.stage{background:radial-gradient(ellipse at 55% 42%,#fff 0%,#f0f4ee 65%,#e9eee7 100%)}
+.stage:fullscreen{background:#f0f4ed}
+.segmented{background:#edf2ec}
+.segmented button[aria-pressed=true]{background:#dce9dc;color:#315d46}
+.actions button:hover{background:#edf4ed}
+.stage-label{color:#6e8271}
+.live-dot{background:#6b9472}
+.view-caption{color:#63796a}
+.view-caption i{color:#96a597}
+.view-caption button{background:#ffffffdf;border-color:#cbd8c9;color:#405b48}
+.stage-footnote{color:#889b89}
+.load-state{background:#f3f7f0ef;color:#4c6855}
+.spinner{border-color:#d1dfce;border-top-color:#608d6d}
+#camera-select{background:#f7faf5;color:#354b3c;border-color:#d8e2d5}
+.trajectory-timeline{background:#f6f9f3;border-color:#d9e3d5}
+.timeline-play{background:#e6eee0;border-color:#cad9c4;color:#3b6046}
+.timeline-play:hover{background:#dce9d6}
+.timeline-tick{background:#bdcbbc}
+.timeline-tick.selected{background:#3c6f4c}
+#trajectory-time::-webkit-slider-thumb{background:#fff;border-color:#3f7053;box-shadow:0 0 0 2px #fff9}
+#trajectory-time::-moz-range-thumb{background:#fff;border-color:#3f7053;box-shadow:0 0 0 2px #fff9}
+.camera-frame{border-color:#88a78055;box-shadow:0 0 0 200vmax #e8eee5b3}
+.camera-frame>span{background:#ffffffe0;color:#53724f}
+.rgb-card{background:#fffffff2;border-color:#d2dfcd;box-shadow:0 8px 30px #42563d16}
+.rgb-card img{background:#edf3e7}
+.rgb-card button:hover{background:#e8f0e3}
+.camera-tooltip{background:#fffffff2;border-color:#cbdac4;color:#4c6d45}
+.downloads a{border-color:#afc2a5}
+.noscript{background:#fff;border-color:#d2dfcd}

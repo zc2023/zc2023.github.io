@@ -7,3 +7,5 @@ vendor/bundle/
 
 .DS_Store
 **/.DS_Store
+/map-anything/
+/scripts/reconstruction/__pycache__/

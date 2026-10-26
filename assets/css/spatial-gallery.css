@@ -1,0 +1,23 @@
+.spatial-gallery-intro{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;color:#65726f;font-size:.9rem;line-height:1.7}
+.spatial-gallery-intro p{max-width:580px;margin:0}
+.spatial-motion-toggle{flex-shrink:0;padding:8px 12px;border:1px solid #d5dfda;border-radius:20px;background:#f7faf8;color:#405a50;font:inherit;font-size:.7rem;cursor:pointer}
+.spatial-motion-toggle:hover{background:#eaf2ed}
+.spatial-motion-toggle:focus-visible,.spatial-card a:focus-visible{outline:2px solid #438573;outline-offset:4px}
+.spatial-gallery-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));align-items:start}
+.spatial-card{margin:0;min-width:0}
+.spatial-card__media{height:auto;aspect-ratio:16/9;padding:7px;background:#fff;border-color:#dde5df;box-shadow:0 5px 18px #253e3010}
+.spatial-card__media:hover{transform:translateY(-4px);box-shadow:0 12px 26px #253e3022}
+.spatial-card__link{display:block;position:relative;width:100%;height:100%;border-radius:7px;overflow:hidden;isolation:isolate;color:#263d32;cursor:pointer}
+.spatial-card__viewport{position:absolute;inset:0;background:#f3f6f2;overflow:hidden}
+.spatial-card__viewport img,.spatial-card__viewport canvas{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;border-radius:0}
+.spatial-card__viewport canvas{pointer-events:none}
+.spatial-card__badge,.spatial-card__status,.spatial-card__open{position:absolute;z-index:1;background:#ffffffd9;backdrop-filter:blur(6px);border:1px solid #fff9;pointer-events:none}
+.spatial-card__badge{top:9px;left:9px;padding:4px 6px;border-radius:4px;font-size:8px;letter-spacing:1px}
+.spatial-card__status{left:9px;bottom:9px;padding:4px 7px;border-radius:4px;font-size:9px}
+.spatial-card__open{right:9px;bottom:9px;width:25px;height:25px;display:grid;place-items:center;border-radius:50%;font-size:15px}
+.spatial-card__caption{text-align:left;padding:0 4px}
+.spatial-card__caption>a{font-size:.95rem;font-weight:600;color:#344e43;text-decoration:none}
+.spatial-card__caption p{margin:6px 0 0;color:#78827b;font-size:.75rem;line-height:1.65}
+.spatial-card__reference a{color:#4b8068;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:600px){.spatial-gallery-intro{flex-direction:column;gap:12px}.spatial-gallery-grid{gap:24px}.spatial-card__caption p{font-size:.8rem}}
+@media(prefers-reduced-motion:reduce){.spatial-card__media{transition:none}.spatial-card__media:hover{transform:none}}

@@ -1,0 +1,87 @@
+{% assign scene = site.spatial | where: 'scene_id', page.scene_id | first %}
+{% assign scene = scene | default: page %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ scene.description | escape }}">
+  <meta name="theme-color" content="#f7f8f5">
+  <title>{{ scene.title | escape }} · Spatial Gallery · {{ site.title }}</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="{{ '/assets/css/reconstruction.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/spatial-scene.css' | relative_url }}">
+  <script type="importmap">
+    {"imports":{"three":"{{ '/assets/js/vendor/three/build/three.module.js' | relative_url }}","three/addons/":"{{ '/assets/js/vendor/three/examples/jsm/' | relative_url }}"}}
+  </script>
+</head>
+<body class="spatial-scene">
+  <header class="topbar">
+    <a class="wordmark" href="{{ '/' | relative_url }}">Cheng Zhang <span>/ Spatial Gallery</span></a>
+    <a class="back" href="{{ '/spatial-gallery/' | relative_url }}">← Spatial Gallery</a>
+  </header>
+  <main class="experience" data-assets="{{ scene.assets_path | relative_url }}" data-model-prefix="{{ scene.model_prefix }}" data-theme="light">
+    <aside class="panel">
+      <p class="eyebrow"><span></span> SPATIAL GALLERY / VIDEO TO 3D</p>
+      <h1>{{ scene.title }}</h1>
+      <p class="intro">{{ scene.description }} Orbit, zoom and explore the space.</p>
+      {% if scene.acquisition_note %}<p class="scene-acquisition">{{ scene.acquisition_note | escape }}</p>{% endif %}
+      {% if scene.reference_url %}<p class="scene-reference"><a href="{{ scene.reference_url | escape }}" target="_blank" rel="noopener">{{ scene.reference_label | escape }} ↗</a></p>{% endif %}
+      <div class="facts"><div><strong id="view-count">{{ scene.view_count | default: "—" }}</strong><span>full-frame views</span></div><div><strong id="point-count">—</strong><span>colored points</span></div></div>
+      <fieldset class="view-mode">
+        <legend>View as</legend>
+        <div class="segmented">
+          <button type="button" data-mode="points" aria-pressed="true">Point cloud</button>
+          <button type="button" data-mode="surface" aria-pressed="false">Surface</button>
+        </div>
+      </fieldset>
+      <div class="range-row" id="point-controls"><label for="point-size">Point size</label><input id="point-size" type="range" min="0.6" max="2.2" step="0.1" value="1.2"></div>
+      <div class="actions">
+        <button type="button" id="rotate" aria-pressed="false"><span class="button-icon">↻</span> Auto rotate</button>
+        <button type="button" id="reset"><span class="button-icon">⌖</span> Reset view</button>
+      </div>
+      <fieldset class="camera-controls" id="camera-controls" disabled>
+        <legend>Capture cameras</legend>
+        <label class="toggle-row"><input type="checkbox" id="show-cameras" checked><span>Camera frustums</span></label>
+        <label class="toggle-row"><input type="checkbox" id="show-camera-rgb" checked><span>Translucent RGB camera planes</span></label>
+        <label class="toggle-row"><input type="checkbox" id="show-trajectory" checked><span>Camera trajectory · colored by time</span></label>
+        <div class="trajectory-timeline is-overview" id="trajectory-timeline" hidden>
+          <div class="timeline-heading"><label for="trajectory-time">Capture timeline</label><output id="trajectory-time-value" for="trajectory-time" aria-live="off">Overview</output></div>
+          <div class="segmented timeline-mode" role="group" aria-label="Timeline camera mode">
+            <button type="button" data-timeline-mode="frames" aria-pressed="true">Captured frames</button>
+            <button type="button" data-timeline-mode="smooth" aria-pressed="false">Smooth path</button>
+          </div>
+          <input id="trajectory-time" type="range" min="0" max="1" step="0.001" value="0" aria-describedby="trajectory-help">
+          <div class="timeline-ticks" id="trajectory-ticks" aria-hidden="true"></div>
+          <div class="timeline-labels"><span id="trajectory-start"></span><span id="trajectory-end"></span></div>
+          <button type="button" id="timeline-play" class="timeline-play" aria-pressed="false" hidden>Play path · 1×</button>
+          <p id="trajectory-help">Blue → red follows capture time. Drag to enter the nearest captured view.</p>
+        </div>
+        <label class="select-label" for="camera-select">Jump to a video frame</label>
+        <select id="camera-select"><option value="">Scene overview</option></select>
+        <p class="camera-help">Click an RGB rectangle to glide into its camera view. Drag to explore; Align view returns to the exact camera.</p>
+      </fieldset>
+      <div class="source"><img src="{{ scene.assets_path | append: 'source.jpg' | relative_url }}" alt="Source video frame for {{ scene.title | escape }}" width="112" height="63"><div><span class="eyebrow">THE ORIGINAL</span><p>The complete video view.</p></div></div>
+      <details class="about"><summary>About this reconstruction</summary><p>Created with <a href="https://github.com/facebookresearch/map-anything" target="_blank" rel="noopener">MapAnything</a>. {{ scene.capture_note }}</p><p>The PLY includes all points accepted by the model's geometry-validity filter. The displayed GLB uses spatial downsampling. Background objects are retained. Unseen regions and uncertain surfaces remain incomplete; scale is estimated, not measured.</p><p>Model: <a href="https://huggingface.co/facebook/map-anything" target="_blank" rel="noopener">facebook/map-anything</a> · CC BY-NC 4.0.</p></details>
+      <div class="downloads"><a id="download-glb" href="{{ scene.assets_path | append: scene.model_prefix | append: '-points.glb' | relative_url }}" download>Download GLB <span>↗</span></a><a href="{{ scene.assets_path | append: scene.model_prefix | append: '.ply' | relative_url }}" download>Full PLY <span>↗</span></a></div>
+    </aside>
+    <section class="stage" aria-label="Interactive 3D reconstruction">
+      <div id="viewer" tabindex="0" aria-label="3D scene. Click an RGB camera rectangle to enter its viewpoint. Drag to rotate, scroll to zoom, right-drag to pan. Arrow keys rotate; plus and minus zoom; R resets."></div>
+      <div class="stage-label"><span class="live-dot"></span><span id="mode-label">COLORED POINT CLOUD</span></div>
+      <div id="camera-frame" class="camera-frame" hidden><span id="camera-frame-label"></span></div>
+      <section class="rgb-card" id="rgb-card" aria-label="Selected camera RGB frame" hidden>
+        <header><div><span class="eyebrow">SOURCE RGB</span><strong id="rgb-title"></strong></div><button type="button" id="close-camera" aria-label="Return to scene overview">×</button></header>
+        <img id="camera-image" alt="" width="448" height="252">
+        <p id="camera-state" role="status"></p>
+        <div class="rgb-actions"><button type="button" id="previous-camera" aria-label="Previous camera">←</button><button type="button" id="align-camera">Align view</button><button type="button" id="next-camera" aria-label="Next camera">→</button></div>
+      </section>
+      <span class="camera-tooltip" id="camera-tooltip" hidden></span>
+      <div class="load-state" id="load-state" role="status"><span class="spinner"></span><p id="load-text">Loading reconstruction…</p></div>
+      <div class="view-caption"><span>Drag to orbit <i>·</i> Scroll to zoom <i>·</i> Click an RGB frame</span><button type="button" id="fullscreen" aria-label="Enter fullscreen">⛶</button></div>
+      <div class="stage-footnote">RECONSTRUCTED FROM REAL VIDEO</div>
+    </section>
+  </main>
+  <noscript><p class="noscript">Enable JavaScript to explore the 3D model. You can still download the GLB and PLY files.</p></noscript>
+  <script type="module" src="{{ '/assets/js/reconstruction.js' | relative_url }}"></script>
+</body>
+</html>
