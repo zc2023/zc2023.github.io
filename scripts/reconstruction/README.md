@@ -91,6 +91,69 @@ map-anything/.venv/bin/python scripts/reconstruction/export_cameras.py \
   map-anything/outputs/IMG_5064/scene-result assets/spatial/img-5064
 ```
 
+## VGGT-Omega version
+
+The separate `/spatial-gallery/img-5064-vggt-omega/` scene (also available at
+`/reconstruction-vggt-omega/`) uses the same 24 frames with
+`weights/vggt_omega_1b_512.pt`. Its official `max_size` preprocessing at resolution
+512 produces 512 × 288 inputs; the original scene uses MapAnything at 448 × 252.
+This preserves the complete 16:9 frame and fits the local 16 GB MPS workflow.
+`--resize-mode balanced` remains available for the 688 × 384 pixel-budget mode,
+which is substantially slower on this Mac and was not used for these scene assets.
+These are application demos, not a controlled benchmark comparison.
+
+The local NumPy 2 compatible package is installed in `map-anything/.venv`.
+Its packaging changes are recorded in
+`map-anything/.deps/vggt-omega/LOCAL_COMPATIBILITY.txt`.
+
+```sh
+map-anything/.venv/bin/python scripts/reconstruction/infer_vggt_omega.py \
+  map-anything/outputs/IMG_5064/frames map-anything/outputs/IMG_5064/vggt-omega-result
+
+map-anything/.venv/bin/python scripts/reconstruction/export_scene.py \
+  map-anything/outputs/IMG_5064/vggt-omega-result assets/spatial/img-5064-vggt-omega
+
+map-anything/.venv/bin/python scripts/reconstruction/prepare_gallery.py \
+  assets/spatial/img-5064-vggt-omega
+
+cp assets/spatial/img-5064-vggt-omega/rgb/004.jpg \
+  assets/spatial/img-5064-vggt-omega/source.jpg
+
+map-anything/.venv/bin/python scripts/reconstruction/render_preview.py \
+  assets/spatial/img-5064-vggt-omega/scene.ply assets/spatial/img-5064-vggt-omega/preview.jpg
+
+node scripts/reconstruction/verify_cameras.mjs img-5064-vggt-omega
+node scripts/reconstruction/verify_gallery.mjs img-5064-vggt-omega
+node scripts/reconstruction/verify_viewer.mjs img-5064-vggt-omega 4
+```
+
+Inference uses all frames jointly in FP32 on MPS. Independent image encoding
+and dense decoding use one frame at a time, and exact query-chunked attention
+bounds temporary memory while retaining all keys for every query. K/V tensors
+and query chunks are made contiguous. Each large attention chunk is synchronized
+before the next is queued, allowing MPS to reuse temporary buffers on 16 GB
+unified memory. A full 25,176-token attention check agreed with CPU FP32 to a
+maximum absolute error of approximately 2e-7. The checkpoint
+is loaded strictly. Metadata records its SHA-256, package/source revision, input
+dimensions, filtering, timings and the largest logged live MPS allocation.
+The export retains finite positive depth above the per-view 15th confidence
+percentile and rejects intersecting depth/normal discontinuities. There is no
+foreground segmentation. VGGT-Omega scale is relative, not physically calibrated.
+
+The two pages and gallery cards share the same viewer, with model-specific
+attribution and links between versions. Checkpoints under `weights/` are excluded
+from the Jekyll build as well as Git.
+
+The completed 24-view run took 76.3 seconds for inference, with a largest logged
+live MPS allocation of 5.23 GB. It exported 2,963,230 valid dense points,
+436,829 browser points and 1,433,327 per-view triangles. The gallery preview has
+164,213 points. The page opens directly at calibrated frame 05 so that the car
+is visible within the much larger reconstructed room; Reset view shows the
+complete scene. The original MapAnything page still starts in overview.
+
+VGGT-Omega checkpoint SHA-256:
+`c02da418b18bb01d0392598d3f6147366bcde1bb70fd08a5e3bf7925b0667934`.
+
 ## Reproduce the car-only version
 
 ```sh

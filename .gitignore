@@ -9,3 +9,4 @@ vendor/bundle/
 **/.DS_Store
 /map-anything/
 /scripts/reconstruction/__pycache__/
+/weights/

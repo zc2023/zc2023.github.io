@@ -28,7 +28,7 @@ author_profile: true
             <div class="spatial-card__viewport">
               <img class="spatial-card__poster" src="{{ scene.poster | relative_url }}" alt="{{ scene.description | escape }}" width="448" height="252" loading="lazy" decoding="async">
             </div>
-            <span class="spatial-card__badge">3D SCENE</span>
+            <span class="spatial-card__badge">{{ scene.reconstruction_model | default: '3D SCENE' | escape }}</span>
             <span class="spatial-card__status">Smooth path preview</span>
             <span class="spatial-card__open" aria-hidden="true">↗</span>
           </a>

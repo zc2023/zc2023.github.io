@@ -2,6 +2,9 @@
 body{background:var(--bg);color:var(--ink)}
 .topbar{background:#ffffffd9;border-color:#e0e6de}
 .panel{background:#fff}
+.scene-model{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:0 0 18px;grid-column:1/-1;font-size:11px;line-height:1.6}
+.scene-model>span{padding:5px 10px;border:1px solid #d4e1d3;border-radius:20px;background:#edf4eb;color:#365d43;font-weight:600;letter-spacing:.04em}
+.scene-model>a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .scene-acquisition{margin:-12px 0 26px;color:var(--muted);font-size:11px;line-height:1.7;grid-column:1/-1}
 .scene-reference{margin:-12px 0 26px;font-size:11px;line-height:1.7;grid-column:1/-1}
 .scene-reference a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}

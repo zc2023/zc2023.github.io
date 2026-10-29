@@ -1,4 +1,4 @@
-// Run from the repository root: node scripts/reconstruction/verify_viewer.mjs
+// Run from the repository root: node scripts/reconstruction/verify_viewer.mjs [scene-id] [initial-camera]
 // Executes the production viewer/controller with real Three.js and OrbitControls.
 // DOM, renderer and model loading are mocked; this does not replace browser visual QA.
 import assert from 'node:assert/strict';
@@ -15,7 +15,8 @@ const helpers = await moduleAt('assets/js/reconstruction-cameras.js');
 const trajectory = await moduleAt('assets/js/reconstruction-trajectory.js');
 const timelineMath = await moduleAt('assets/js/reconstruction-timeline.js');
 const { OrbitControls } = await moduleAt('assets/js/vendor/three/examples/jsm/controls/OrbitControls.js');
-const metadata = JSON.parse(await readFile('assets/spatial/img-5064/metadata.json', 'utf8'));
+const directory = `assets/spatial/${process.argv[2] || 'img-5064'}/`;
+const metadata = JSON.parse(await readFile(directory + 'metadata.json', 'utf8'));
 class Element {
  constructor() { this.style={}; this.dataset={}; this.listeners={}; this.children=[]; this.value=''; this.checked=true; this.clientWidth=1000; this.clientHeight=850; this.classList={add(){},remove(){},toggle(){}}; }
  addEventListener(name,fn) { (this.listeners[name]??=[]).push(fn); }
@@ -37,7 +38,7 @@ const modeButtons=['points','surface'].map(mode=>{const button=new Element();but
 const timelineModeButtons=['frames','smooth'].map(mode=>{const button=new Element();button.dataset.timelineMode=mode;return button;});
 doc.querySelectorAll=selector=>selector.includes('data-timeline-mode') ? timelineModeButtons : modeButtons;
 doc.createElement=()=>new Element();
-doc.querySelector('.experience').dataset={assets:'/assets/spatial/img-5064/',modelPrefix:'scene'};
+doc.querySelector('.experience').dataset={assets:'/'+directory,modelPrefix:'scene',initialCamera:process.argv[3]};
 doc.querySelector('#point-size').value='1.2';
 let loop, now=0, reduceMotion=false;
 class Renderer {
@@ -57,12 +58,19 @@ class Loader {
 }
 let source=await readFile('assets/js/reconstruction.js','utf8');
 source=source.replace(/^import .*;\n/gm,'');
-source=source.replace('  buildTrajectory();\n}',`  buildTrajectory();\n  return { camera, selectCamera, resetView, resize, stopCameraTransition, handleWheel, updateSmoothZoom, updateFrustumProximity, leaveAlignedView, cameraObjects, seekSmoothTime, advanceTimeline, releaseTimeline, get state() { return { aligned, selectedCamera, cameraTransition, viewport, controls, orbitProjection, zoomTarget, smoothTimeline, trajectory, timelineTime, timelineMode, timelinePlaying, followingTimeline }; } };\n}`);
+source=source.replace('  // Viewer ready.\n}',`  // Viewer ready.\n  return { camera, selectCamera, resetView, resize, stopCameraTransition, handleWheel, updateSmoothZoom, updateFrustumProximity, leaveAlignedView, cameraObjects, seekSmoothTime, advanceTimeline, releaseTimeline, get state() { return { aligned, selectedCamera, cameraTransition, viewport, controls, orbitProjection, zoomTarget, smoothTimeline, trajectory, timelineTime, timelineMode, timelinePlaying, followingTimeline }; } };\n}`);
 source=source.replace('boot().catch(showError);','return await boot();');
 const env={THREE:{...RealThree,WebGLRenderer:Renderer,TextureLoader},OrbitControls,GLTFLoader:Loader,...helpers,...trajectory,...timelineMath,document:doc,window:{devicePixelRatio:1,matchMedia:()=>({get matches(){return reduceMotion;}})},ResizeObserver:class{observe(){}},Option:class{constructor(text,value){this.text=text;this.value=value;}},fetch:async()=>({ok:true,json:async()=>metadata}),performance:{now:()=>now}};
 const AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;
 const api=await new AsyncFunction(...Object.keys(env),source)(...Object.values(env));
 assert.equal(api.cameraObjects.length,24);
+if (process.argv[3] !== undefined) {
+ assert.equal(api.state.selectedCamera, Number(process.argv[3]));
+ assert(api.state.aligned && !api.state.cameraTransition && api.state.controls.enabled);
+ assert.equal(api.cameraObjects[Number(process.argv[3])].group.visible, false);
+ console.log('PASS: configured initial camera opens directly at its calibrated pose.');
+ api.resetView();
+}
 assert(api.cameraObjects.every(o=>o.plane.material.opacity===.5));
 const start=api.camera.position.clone();
 api.selectCamera(0);

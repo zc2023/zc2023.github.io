@@ -1,4 +1,4 @@
-// Run with: node scripts/reconstruction/verify_cameras.mjs
+// Run with: node scripts/reconstruction/verify_cameras.mjs [scene-id]
 // Exercises the shipped camera math and OrbitControls without requiring WebGL.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -12,7 +12,8 @@ async function browserModule(path) {
 }
 const { cameraMatrix, calibratedProjection, imageCorners, imagePlaneGeometry, containedViewport, interpolateCameraPose } = await browserModule('assets/js/reconstruction-cameras.js');
 const { OrbitControls } = await browserModule('assets/js/vendor/three/examples/jsm/controls/OrbitControls.js');
-const metadata = JSON.parse(await readFile(new URL('assets/spatial/img-5064/metadata.json', root), 'utf8'));
+const sceneDirectory = `assets/spatial/${process.argv[2] || 'img-5064'}/`;
+const metadata = JSON.parse(await readFile(new URL(sceneDirectory + 'metadata.json', root), 'utf8'));
 const center = new THREE.Vector3().fromArray(metadata.bounds[0]).add(new THREE.Vector3().fromArray(metadata.bounds[1])).multiplyScalar(.5);
 const fakeDocument = { addEventListener() {}, removeEventListener() {} };
 const fakeCanvas = { ...fakeDocument, style: {}, getRootNode: () => fakeDocument };
@@ -39,7 +40,7 @@ for (const [index, view] of metadata.views.entries()) {
   camera.projectionMatrix.copy(calibratedProjection(view, .01, 1000));
   camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
   const [[fx, skew, cx], [, fy, cy]] = view.intrinsics;
-  for (const [u, v] of [[0, 0], [448, 0], [448, 252], [0, 252], [cx, cy], [73, 188]]) {
+  for (const [u, v] of [[0, 0], [view.width, 0], [view.width, view.height], [0, view.height], [cx, cy], [view.width * .2, view.height * .7]]) {
     // Independently place a known pixel ray in exported OpenCV world space.
     const z = view.focus_distance, y = (v - cy) * z / fy, x = ((u - cx) * z - skew * y) / fx;
     const world = new THREE.Vector3(...view.camera_to_world.slice(0, 3).map(row => row[0] * x + row[1] * y + row[2] * z + row[3])).sub(center);
@@ -75,7 +76,7 @@ for (const [index, view] of metadata.views.entries()) {
   plane.geometry.dispose();
   plane.material.dispose();
   assert.equal(view.frame, metadata.frames[index]);
-  assert.ok((await readFile(new URL(`assets/spatial/img-5064/${view.image}`, root))).length > 1000);
+  assert.ok((await readFile(new URL(sceneDirectory + view.image, root))).length > 1000);
   const from = { position: expectedPosition.clone().add(new THREE.Vector3(3, 1, -2)), quaternion: new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), .9), fov: 34 };
   const to = { position: expectedPosition, quaternion: orientation, fov: THREE.MathUtils.radToDeg(2 * Math.atan(view.height / (2 * fy))) };
   let lastDistance = Infinity, lastAngle = Infinity;
@@ -95,10 +96,10 @@ for (const [index, view] of metadata.views.entries()) {
   assert.ok(camera.position.distanceTo(interrupted.position) < 1e-10 && camera.quaternion.angleTo(interrupted.quaternion) < 1e-7, 'Retargeting must preserve the current pose');
 }
 
-// Portrait, landscape and fullscreen layouts must preserve 16:9 and center it.
+// Portrait, landscape and fullscreen layouts preserve the calibrated image ratio.
 for (const [width, height] of [[390, 600], [1200, 800], [1920, 1080]]) {
-  const vp = containedViewport(width, height, 448, 252);
-  assert.ok(Math.abs(vp.width / vp.height - 16 / 9) < 1e-12);
+  const vp = containedViewport(width, height, metadata.image_width, metadata.image_height);
+  assert.ok(Math.abs(vp.width / vp.height - metadata.image_width / metadata.image_height) < 1e-12);
   assert.ok(vp.width <= width && vp.height <= height);
   assert.equal(vp.x * 2 + vp.width, width);
   assert.equal(vp.y * 2 + vp.height, height);

@@ -1,6 +1,6 @@
 """Export the entire reconstructed field of view, without object segmentation.
 
-PLY contains every finite point accepted by MapAnything's geometry-validity
+PLY contains every finite point accepted by the reconstruction's geometry-validity
 mask. GLB points are spatially downsampled for the browser. No foreground masks,
 object bounds, table-plane clipping or multi-view support threshold are used.
 """
@@ -91,7 +91,7 @@ def main():
              "voxel_size":voxel,"viewer_point_size":voxel*1.5,"mesh_stride":args.mesh_stride,
              "processing":"Model geometry validity and finite positive depth only for PLY; spatial voxel sampling for GLB points. All scene objects retained.",
              "geometry_note":"Observed car, table and room geometry. Unseen regions remain incomplete; surfaces are per-view triangles.",
-             "scale_note":"Model-estimated scale; no measured reference was supplied.",
+             "scale_note":meta.get("scale_note", "Model-estimated scale; no measured reference was supplied."),
              "files":{p.name:p.stat().st_size for p in args.output.iterdir() if p.suffix in ['.glb','.ply']}}
     export_cameras(args.result, args.output, summary)
     (args.output/'metadata.json').write_text(json.dumps(summary,indent=2,allow_nan=False))

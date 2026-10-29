@@ -1,0 +1,26 @@
+---
+layout: spatial-scene
+scene_id: img-5064-vggt-omega
+title: "DiDi LEGO Car · VGGT-Ω"
+category: "Souvenirs"
+order: 2
+description: "The DiDi autonomous driving LEGO car, tabletop and room reconstructed with VGGT-Ω from the same 34-second video and 24 captured frames."
+acquisition_note: "Model obtained at the 2026 DiDi Elite Camp on August 29, 2026."
+reference_url: "https://www.didiglobal.com/news/newsDetail?id=1100&type=news"
+reference_label: "DiDi Robotaxi R2: official announcement"
+assets_path: /assets/spatial/img-5064-vggt-omega/
+model_prefix: scene
+preview_model: preview-points.glb
+poster: /assets/spatial/img-5064-vggt-omega/source.jpg
+view_count: 24
+initial_camera: 4
+reconstruction_model: "VGGT-Ω · 1B / 512"
+model_id: facebook/VGGT-Omega
+model_url: https://huggingface.co/facebook/VGGT-Omega
+model_code_url: https://github.com/facebookresearch/vggt-omega
+model_license: "FAIR Noncommercial Research License"
+alternate_scene: /spatial-gallery/img-5064/
+alternate_label: "View MapAnything version"
+capture_note: "Uses vggt_omega_1b_512.pt with the official max_size 512 preprocessing, producing 512 × 288 inputs. All 24 full video frames are reconstructed jointly, preserving the original 16:9 field of view. Confidence and depth-edge filtering retain the observed scene."
+scale_note: "Relative reconstruction scale; not calibrated to physical units."
+---

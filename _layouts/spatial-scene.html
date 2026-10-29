@@ -20,9 +20,10 @@
     <a class="wordmark" href="{{ '/' | relative_url }}">Cheng Zhang <span>/ Spatial Gallery</span></a>
     <a class="back" href="{{ '/spatial-gallery/' | relative_url }}">← Spatial Gallery</a>
   </header>
-  <main class="experience" data-assets="{{ scene.assets_path | relative_url }}" data-model-prefix="{{ scene.model_prefix }}" data-theme="light">
+  <main class="experience" data-assets="{{ scene.assets_path | relative_url }}" data-model-prefix="{{ scene.model_prefix }}" data-theme="light" data-initial-camera="{{ scene.initial_camera }}">
     <aside class="panel">
       <p class="eyebrow"><span></span> SPATIAL GALLERY / VIDEO TO 3D</p>
+      <div class="scene-model"><span>{{ scene.reconstruction_model | default: 'MapAnything' }}</span>{% if scene.alternate_scene %}<a href="{{ scene.alternate_scene | relative_url }}">{{ scene.alternate_label | escape }} ↗</a>{% endif %}</div>
       <h1>{{ scene.title }}</h1>
       <p class="intro">{{ scene.description }} Orbit, zoom and explore the space.</p>
       {% if scene.acquisition_note %}<p class="scene-acquisition">{{ scene.acquisition_note | escape }}</p>{% endif %}
@@ -62,7 +63,7 @@
         <p class="camera-help">Click an RGB rectangle to glide into its camera view. Drag to explore; Align view returns to the exact camera.</p>
       </fieldset>
       <div class="source"><img src="{{ scene.assets_path | append: 'source.jpg' | relative_url }}" alt="Source video frame for {{ scene.title | escape }}" width="112" height="63"><div><span class="eyebrow">THE ORIGINAL</span><p>The complete video view.</p></div></div>
-      <details class="about"><summary>About this reconstruction</summary><p>Created with <a href="https://github.com/facebookresearch/map-anything" target="_blank" rel="noopener">MapAnything</a>. {{ scene.capture_note }}</p><p>The PLY includes all points accepted by the model's geometry-validity filter. The displayed GLB uses spatial downsampling. Background objects are retained. Unseen regions and uncertain surfaces remain incomplete; scale is estimated, not measured.</p><p>Model: <a href="https://huggingface.co/facebook/map-anything" target="_blank" rel="noopener">facebook/map-anything</a> · CC BY-NC 4.0.</p></details>
+      <details class="about"><summary>About this reconstruction</summary><p>Created with <a href="{{ scene.model_code_url | default: 'https://github.com/facebookresearch/map-anything' }}" target="_blank" rel="noopener">{{ scene.reconstruction_model | default: 'MapAnything' }}</a>. {{ scene.capture_note }}</p><p>The PLY includes points accepted by the confidence and geometry filters. The displayed GLB uses spatial downsampling. Background objects are retained. Unseen regions and uncertain surfaces remain incomplete. {{ scene.scale_note | default: 'Scale is estimated, not measured.' }}</p><p>Model: <a href="{{ scene.model_url | default: 'https://huggingface.co/facebook/map-anything' }}" target="_blank" rel="noopener">{{ scene.model_id | default: 'facebook/map-anything' }}</a> · {{ scene.model_license | default: 'CC BY-NC 4.0' }}.</p></details>
       <div class="downloads"><a id="download-glb" href="{{ scene.assets_path | append: scene.model_prefix | append: '-points.glb' | relative_url }}" download>Download GLB <span>↗</span></a><a href="{{ scene.assets_path | append: scene.model_prefix | append: '.ply' | relative_url }}" download>Full PLY <span>↗</span></a></div>
     </aside>
     <section class="stage" aria-label="Interactive 3D reconstruction">

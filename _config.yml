@@ -26,7 +26,7 @@ social:
 author:
   name             : "Cheng Zhang | 张 诚"
   avatar           : "LOGOpro.png"
-  bio              : "Second year graduate student at HUST."
+  bio              : "Third-year master's student at HUST."
   location         : "Wuhan, China"
   employer         : "HUST"
   googlescholar    : "https://scholar.google.com/citations?user=YVDMI8EAAAAJ&hl=en"
@@ -41,6 +41,7 @@ include:
   - files
 exclude:
   - map-anything
+  - weights
   - scripts
   - "*.sublime-project"
   - "*.sublime-workspace"

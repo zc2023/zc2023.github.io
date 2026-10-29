@@ -11,7 +11,11 @@ redirect_from:
 
 
 
-I'm currently studying at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en) ([IEEE Fellow](https://mp.weixin.qq.com/s/U9_vbKV15dzJyxy5S72Q8A)). My current research interests are mainly in Multi-modal Large Language Models (MLLMs), embodied AI, and 3D vision. I work closely with [Dingkang Liang](https://dk-liang.github.io/) at HUST VLRLab.
+I'm a third-year master's student at Huazhong University of Science and Technology, under the supervision of Prof. [Xiang Bai](https://scholar.google.com/citations?user=UeltiQ4AAAAJ&hl=en) ([IEEE Fellow](https://mp.weixin.qq.com/s/U9_vbKV15dzJyxy5S72Q8A)). I work closely with [Dingkang Liang](https://dk-liang.github.io/) at HUST VLRLab. Previously, I was advised by Prof. [Hai Liu](https://scholar.google.com/citations?user=Tjw7zHEAAAAJ&hl=en) at Central China Normal University.
+
+My research interests include spatial intelligence, multimodal large language models (MLLMs), embodied AI, and 3D vision.
+
+**I'm currently seeking PhD opportunities.** Please feel free to contact me if you are interested in my research.
 
 <div class="windsong-regular gradient-text">
   Less is more, slow is fast.

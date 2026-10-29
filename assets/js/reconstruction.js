@@ -758,6 +758,12 @@ async function boot() {
   await setMode(currentMode);
   buildCameras();
   buildTrajectory();
+  const initialCamera = document.querySelector('.experience').dataset.initialCamera;
+  if (initialCamera !== undefined && initialCamera !== '') {
+    const index = Number(initialCamera);
+    if (Number.isInteger(index) && metadata.views?.[index]) selectCamera(index, { animate: false });
+  }
+  // Viewer ready.
 }
 
 boot().catch(showError);

@@ -16,7 +16,7 @@ const timelines = await import(asModule(await moduleSource('assets/js/reconstruc
 const utils = asModule(await moduleSource('assets/js/vendor/three/examples/jsm/utils/BufferGeometryUtils.js'));
 const loaderSource = (await moduleSource('assets/js/vendor/three/examples/jsm/loaders/GLTFLoader.js')).replace('../utils/BufferGeometryUtils.js', utils);
 const { GLTFLoader } = await import(asModule(loaderSource));
-const directory = 'assets/spatial/img-5064/';
+const directory = `assets/spatial/${process.argv[2] || 'img-5064'}/`;
 const metadata = JSON.parse(await readFile(directory + 'metadata.json', 'utf8'));
 async function parseGLB(name) {
   const bytes = await readFile(directory + name);
@@ -59,7 +59,7 @@ async function setup(reduced = false, failure = false) {
   const toggle = new Element(), card = new Element(), host = new Element(), status = new Element();
   motion.matches = reduced; doc.hidden = false; win.devicePixelRatio = 2;
   win.matchMedia = () => motion;
-  card.dataset = { assets: '/assets/spatial/img-5064/', previewModel: metadata.gallery_preview.file };
+  card.dataset = { assets: '/' + directory, previewModel: metadata.gallery_preview.file };
   card.querySelector = selector => selector.endsWith('viewport') ? host : status;
   doc.querySelector = () => toggle;
   doc.querySelectorAll = () => [card];
